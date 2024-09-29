@@ -1,0 +1,39 @@
+name: citizens_voice_app
+description: "A new Flutter project."
+# publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_localizations:
+          sdk: flutter
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/fonts/
+
+  fonts:
+    - family: IBM Plex Sans Arabic
+      fonts:
+        - asset: assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Regular.ttf
+        - asset: assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Bold.ttf
+        - asset: assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Medium.ttf
+        - asset: assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-SemiBold.ttf
+        - asset: assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Light.ttf
+        - asset: assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-ExtraLight.ttf
+        - asset: assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Thin.ttf
+flutter_intl:
+  enabled: true
