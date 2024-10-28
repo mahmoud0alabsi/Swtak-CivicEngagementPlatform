@@ -13,6 +13,21 @@ dependencies:
   flutter_localizations:
           sdk: flutter
   intl: ^0.19.0
+  flutter_bloc: ^8.1.6
+  hive_flutter: ^1.1.0
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.3
+  firebase_crashlytics: ^4.1.3
+  change_app_package_name: ^1.4.0
+  firebase_analytics: ^11.3.3
+  connectivity_plus: ^6.0.5
+  bloc: ^8.1.4
+  crypto: ^3.0.5
+  animations: ^2.0.11
+  google_nav_bar: ^5.0.6
+  flutter_svg: ^2.0.10+1
+  device_preview: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -24,6 +39,8 @@ flutter:
 
   assets:
     - assets/fonts/
+    - assets/images/
+    - assets/icons/
 
   fonts:
     - family: IBM Plex Sans Arabic
@@ -35,5 +52,8 @@ flutter:
         - asset: assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Light.ttf
         - asset: assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-ExtraLight.ttf
         - asset: assets/fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Thin.ttf
+    - family: Custom Icons
+      fonts:
+        - asset: assets/fonts/custom_icons.ttf
 flutter_intl:
   enabled: true

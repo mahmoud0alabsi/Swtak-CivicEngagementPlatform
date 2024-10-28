@@ -1,12 +1,52 @@
+import 'package:citizens_voice_app/features/auth/presentation/bloc/login/login_bloc.dart';
+import 'package:citizens_voice_app/features/auth/presentation/bloc/otp/otp_bloc.dart';
+import 'package:citizens_voice_app/features/auth/presentation/bloc/registration/registration_bloc.dart';
+import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
+import 'package:citizens_voice_app/features/auth/presentation/pages/router.dart';
+import 'package:citizens_voice_app/firebase_options.dart';
 import 'package:citizens_voice_app/generated/l10n.dart';
 import 'package:citizens_voice_app/theme/light_theme.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'theme/dark_theme.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Pass all uncaught "fatal" errors from the framework to Crashlytics
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => OtpBloc(),
+        ),
+        BlocProvider(
+          create: (context) => LoginBloc(),
+        ),
+        BlocProvider(
+          create: (context) => RegistrationBloc(),
+        ),
+        BlocProvider(
+          create: (context) => UserManagerBloc(),
+        ),
+      ],
+      child: const MyApp(),
+      // child: DevicePreview(
+      //   enabled: true,
+      //   builder: (context) => const MyApp(),
+      // ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -29,7 +69,8 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.system,
-      home: const MainPage(),
+      home: const RouterPage(),
+      // const MainPage(),
       // ================================================
     );
   }

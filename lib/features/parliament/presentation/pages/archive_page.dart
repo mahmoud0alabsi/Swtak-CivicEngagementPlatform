@@ -1,0 +1,383 @@
+import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
+import 'package:citizens_voice_app/features/parliament/business/entities/parliament_round_entity.dart';
+import 'package:citizens_voice_app/features/parliament/presentation/bloc/archived_rounds/archived_rounds_bloc.dart';
+import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:citizens_voice_app/metadata/suggestions_metadata.dart';
+
+class ParliamentArchivePage extends StatefulWidget {
+  const ParliamentArchivePage({super.key});
+
+  @override
+  ParliamentArchivePageState createState() => ParliamentArchivePageState();
+}
+
+class ParliamentArchivePageState extends State<ParliamentArchivePage> {
+  final int _expandedCardIndex = -1; // To track the currently expanded card
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => ArchivedRoundsBloc(
+        user: context.read<UserManagerBloc>().user,
+      ),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: appBar(context),
+        body: BlocConsumer<ArchivedRoundsBloc, ArchivedRoundsState>(
+          listener: (context, state) {
+            if (state is ArchivedRoundsError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state is ArchivedRoundsLoading) {
+              return const LoadingSpinner();
+            }
+            ArchivedRoundsBloc bloc = context.read<ArchivedRoundsBloc>();
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(14.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceContainer,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.archive_outlined,
+                                color: Theme.of(context).colorScheme.secondary,
+                                size: 28,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  'الأرشيف',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            'تصفح المشاريع السابقة ونتائج التصويت عليها، بالاضافة الى مشاركاتك في التصويت.',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: bloc.archivedRounds.length,
+                      itemBuilder: (context, index) {
+                        ParliamentRoundEntity round =
+                            bloc.archivedRounds[index];
+                        round.projects.sort((a, b) =>
+                            a.projectNumber.compareTo(b.projectNumber));
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'جولة رقم: ${round.roundNumber}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              textAlign: TextAlign
+                                  .right, // Ensure the text is aligned to the right
+                            ),
+                            const SizedBox(height: 5),
+                            ...round.projects.map(
+                              (project) {
+                                return Column(
+                                  children: [
+                                    IssueCard(
+                                      issueNumber: project.projectNumber,
+                                      title: project.title,
+                                      voteDetails: project.details,
+                                      // voteDate: issue['date']!,
+                                      voteResult: 'المواطنين: أوافق',
+                                      myvote: project.userVote,
+                                      parlvote: 'أوافق',
+                                      isExpanded: true,
+                                      // _expandedCardIndex ==
+                                      //     (roundIndex * 10 + issueIndex),
+                                      icon: Icons
+                                          .help, // Use the custom icon for each card
+                                      onCardTap: () {
+                                        setState(() {
+                                          // _expandedCardIndex =
+                                          //     _expandedCardIndex ==
+                                          //             (roundIndex * 10 +
+                                          //                 issueIndex)
+                                          //         ? -1
+                                          //         : (roundIndex * 10 +
+                                          //             issueIndex);
+                                        });
+                                      },
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                );
+                              },
+                            ),
+                            const Divider(
+                              indent: 10.0,
+                              endIndent: 10.0,
+                              thickness: 1,
+                              color: Color.fromARGB(255, 206, 206, 206),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  AppBar appBar(BuildContext context) {
+    return AppBar(
+      titleSpacing: 0,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_outlined,
+            color: Theme.of(context).colorScheme.primary),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(
+              'مجلس النواب',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class IssueCard extends StatelessWidget {
+  final int issueNumber;
+  final String title;
+  final String voteDetails;
+  final String voteResult;
+  final String myvote;
+  final String parlvote;
+  final bool isExpanded;
+  final VoidCallback onCardTap;
+  final IconData icon;
+
+  const IssueCard({
+    super.key,
+    required this.issueNumber,
+    required this.title,
+    required this.voteDetails,
+    required this.voteResult,
+    required this.myvote,
+    required this.parlvote,
+    required this.isExpanded,
+    required this.onCardTap,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onCardTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainer,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    shape: BoxShape.rectangle,
+                  ),
+                  child: Center(
+                    child: Icon(
+                      icon,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 40,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'قضية رقم $issueNumber',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        textDirection: TextDirection.rtl,
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            if (isExpanded) ...[
+              const SizedBox(height: 10),
+              _buildExpandedText('تفاصيل التصويت: ', voteDetails, context),
+              const SizedBox(height: 8),
+              if (myvote != '') _buildExpandedText('تصويتك: ', myvote, context),
+              const SizedBox(height: 8),
+              Text(
+                'نتائج التصويت:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              const SizedBox(height: 8),
+              _buildBarGraph(voteResult, parlvote, context),
+              const SizedBox(height: 10),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBarGraph(
+      String voteResult, String parlvote, BuildContext context) {
+    double extractNumericValue(String input) {
+      final numericString = input.replaceAll(RegExp(r'[^0-9.]'), '');
+      return double.tryParse(numericString) ?? 0.0;
+    }
+
+    double voteValue = extractNumericValue(voteResult) / 100;
+    double parlValue = extractNumericValue(parlvote) / 100;
+
+    return Column(
+      children: [
+        Row(
+          children: [
+            const Text('المواطنين '),
+            Expanded(
+              child: LinearProgressIndicator(
+                value: voteValue,
+                backgroundColor: Colors.grey.shade300,
+                color: const Color(0xFFD90429),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(voteResult),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            const Text('النواب '),
+            Expanded(
+              child: LinearProgressIndicator(
+                value: parlValue,
+                backgroundColor: Colors.grey.shade300,
+                color: const Color(0xFFD90429),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(parlvote),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildExpandedText(
+      String label, String content, BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: RichText(
+        textAlign: TextAlign.right,
+        text: TextSpan(
+          text: label,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+            color: Theme.of(context).colorScheme.secondary,
+            fontFamily: 'IBM Plex Sans Arabic',
+          ),
+          children: [
+            TextSpan(
+              text: content,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.secondary,
+                fontFamily: 'IBM Plex Sans Arabic',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
