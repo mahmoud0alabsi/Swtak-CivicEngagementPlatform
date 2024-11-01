@@ -1,6 +1,8 @@
 import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
+import 'package:citizens_voice_app/features/citizens_suggestions/presentation/bloc/municipality_suggestions/municipality_suggestions_bloc.dart';
 import 'package:citizens_voice_app/features/citizens_suggestions/presentation/bloc/parliament_suggestions/parliament_suggestions_bloc.dart';
 import 'package:citizens_voice_app/features/citizens_suggestions/presentation/pages/suggestions_main_page.dart';
+import 'package:citizens_voice_app/features/municipality/presentation/bloc/archived_projects/archived_projects_bloc.dart';
 import 'package:citizens_voice_app/features/municipality/presentation/bloc/ongoing_projects/ongoing_projects_bloc.dart';
 import 'package:citizens_voice_app/features/municipality/presentation/pages/municipalitie_main_page.dart';
 import 'package:citizens_voice_app/features/parliament/presentation/bloc/ongoing_round/ongoing_round_bloc.dart';
@@ -36,11 +38,18 @@ class _PagesWrapperState extends State<PagesWrapper> {
           create: (context) => OngoingProjectsBloc(),
           lazy: false,
         ),
+        BlocProvider(
+          create: (context) => ArchivedProjectsBloc(),
+          lazy: false,
+        ),
 
         // ================ Suggestions Blocs ================
         BlocProvider(
-          create: (context) => ParliamentSuggestionsBloc(
-          ),
+          create: (context) => ParliamentSuggestionsBloc(),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (context) => MunicipalitySuggestionsBloc(),
           lazy: false,
         ),
       ],

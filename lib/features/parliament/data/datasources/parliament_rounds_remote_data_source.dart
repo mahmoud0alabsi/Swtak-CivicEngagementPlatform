@@ -176,40 +176,38 @@ class ParliamentRoundsDataSourceImpl implements IParliamentRoundsDataSource {
   Future<Map<String, dynamic>> voteForProject(
       String roundId, String projectId, String vote) async {
     try {
-      final projectDoc = await _firestore
+      final projectDoc = _firestore
           .collection(parliamentRoundsCollection)
           .doc(roundId)
           .collection(projectsSubCollection)
-          .doc(projectId)
-          .get();
-
-      if (projectDoc.exists) {
-        final projectData = projectDoc.data() as Map<String, dynamic>;
-        int agree = projectData[kVoting][kAgree];
-        int disagree = projectData[kVoting][kDisagree];
-
+          .doc(projectId);
+      await _firestore.runTransaction((transaction) async {
+        final project = await transaction.get(projectDoc);
+        if (!project.exists) {
+          return Future.value({'success': false});
+        }
+        var agree = project.data()?[kVoting][kAgree];
+        var disagree = project.data()?[kVoting][kDisagree];
         if (vote == kAgree) {
           agree++;
+          transaction.update(projectDoc, {
+            kVoting: {
+              kAgree: agree,
+              kDisagree: disagree,
+            }
+          });
         } else {
           disagree++;
+          transaction.update(projectDoc, {
+            kVoting: {
+              kAgree: agree,
+              kDisagree: disagree,
+            }
+          });
         }
+      });
 
-        await _firestore
-            .collection(parliamentRoundsCollection)
-            .doc(roundId)
-            .collection(projectsSubCollection)
-            .doc(projectId)
-            .update({
-          kVoting: {
-            kAgree: agree,
-            kDisagree: disagree,
-          }
-        });
-
-        return Future.value({'success': true});
-      } else {
-        return Future.value({'success': false});
-      }
+      return Future.value({'success': true});
     } catch (e) {
       ErrorHandler.crashlyticsLogError(e, StackTrace.current,
           reason: 'Error in voteForProject');

@@ -11,6 +11,7 @@ class CustomUserModel extends CustomUserEntity {
     required super.phoneNumber,
     required super.parliamentVotes,
     required super.municipalityVotes,
+    super.municipalityProjectsCommented = const {},
   });
 
   factory CustomUserModel.fromJson({required Map<String, dynamic> json}) {
@@ -22,6 +23,7 @@ class CustomUserModel extends CustomUserEntity {
       phoneNumber: json[kPhoneNumber],
       parliamentVotes: json[kParliamentVotes] ?? {},
       municipalityVotes: json[kMunicipalityVotes] ?? {},
+      municipalityProjectsCommented: json[kMunicipalityProjectsCommented] ?? {},
     );
   }
 
@@ -45,6 +47,7 @@ class CustomUserModel extends CustomUserEntity {
       residence: '',
       parliamentVotes: {},
       municipalityVotes: {},
+      municipalityProjectsCommented: {},
     );
   }
 
@@ -57,6 +60,7 @@ class CustomUserModel extends CustomUserEntity {
       residence: '',
       parliamentVotes: {},
       municipalityVotes: {},
+      municipalityProjectsCommented: {},
     );
   }
 }

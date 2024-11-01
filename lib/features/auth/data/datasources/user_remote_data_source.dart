@@ -7,6 +7,8 @@ abstract class IUserRemoteDataSource {
       String roundId, String projectId, String voteOption);
 
   Future<void> addUserVoteInMunicipality(String projectId, String voteOption);
+  Future<void> addCommentToMunicipalityProject(
+      String projectId, String comment);
 }
 
 class UserRemoteDataSourceImpl implements IUserRemoteDataSource {
@@ -44,6 +46,21 @@ class UserRemoteDataSourceImpl implements IUserRemoteDataSource {
           .doc(_auth.currentUser!.uid)
           .update({
         '$kMunicipalityVotes.$projectId': voteOption,
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> addCommentToMunicipalityProject(
+      String projectId, String comment) {
+    try {
+      return _firestore
+          .collection(usersCollection)
+          .doc(_auth.currentUser!.uid)
+          .update({
+        '$kMunicipalityProjectsCommented.$projectId': comment,
       });
     } catch (e) {
       rethrow;

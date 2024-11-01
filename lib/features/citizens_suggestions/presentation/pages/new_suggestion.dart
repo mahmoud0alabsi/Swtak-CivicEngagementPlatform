@@ -1,4 +1,5 @@
 import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
+import 'package:citizens_voice_app/features/citizens_suggestions/presentation/bloc/municipality_suggestions/municipality_suggestions_bloc.dart';
 import 'package:citizens_voice_app/features/citizens_suggestions/presentation/bloc/parliament_suggestions/parliament_suggestions_bloc.dart';
 import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,12 @@ import 'suggestions_metadata.dart';
 
 class NewSuggestion extends StatefulWidget {
   final ParliamentSuggestionsBloc parliamentSuggestionsBloc;
-  const NewSuggestion({super.key, required this.parliamentSuggestionsBloc});
+  final MunicipalitySuggestionsBloc municipalitySuggestionsBloc;
+  const NewSuggestion({
+    super.key,
+    required this.parliamentSuggestionsBloc,
+    required this.municipalitySuggestionsBloc,
+  });
 
   @override
   NewSuggestionPageState createState() => NewSuggestionPageState();
@@ -17,6 +23,7 @@ class NewSuggestion extends StatefulWidget {
 
 class NewSuggestionPageState extends State<NewSuggestion> {
   late ParliamentSuggestionsBloc parliamentSuggestionsBloc;
+  late MunicipalitySuggestionsBloc municipalitySuggestionsBloc;
 
   String? suggestionType;
   String? selectedGovernorate;
@@ -32,6 +39,7 @@ class NewSuggestionPageState extends State<NewSuggestion> {
   void initState() {
     super.initState();
     parliamentSuggestionsBloc = widget.parliamentSuggestionsBloc;
+    municipalitySuggestionsBloc = widget.municipalitySuggestionsBloc;
   }
 
   @override
@@ -59,6 +67,29 @@ class NewSuggestionPageState extends State<NewSuggestion> {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
+                        onTap: () {
+                          if (item == 'النواب') {
+                            parliamentSuggestionsBloc.add(GetMySuggestions(
+                              context.read<UserManagerBloc>().user.uid,
+                            ));
+                          } else {
+                            municipalitySuggestionsBloc
+                                .add(GetMyMunicipalitySuggestions(
+                              context.read<UserManagerBloc>().user.uid,
+                            ));
+                          }
+
+                          // clear the form
+                          titleController.clear();
+                          descriptionController.clear();
+
+                          // clear the selected values
+                          setState(() {
+                            selectedGovernorate = null;
+                            selectedCity = null;
+                            selectedArea = null;
+                          });
+                        },
                       ),
                     )
                     .toList(),
@@ -152,10 +183,6 @@ class NewSuggestionPageState extends State<NewSuggestion> {
         }
       },
       builder: (context, state) {
-        parliamentSuggestionsBloc.add(GetMySuggestions(
-          context.read<UserManagerBloc>().user.uid,
-        ));
-
         if (state is ParliamentMySuggestionsLoading) {
           return const LoadingSpinner();
         }
@@ -263,64 +290,129 @@ class NewSuggestionPageState extends State<NewSuggestion> {
     );
   }
 
-  Form municipalityForm(double screenWidth, BuildContext context) {
-    return Form(
-      key: _municipalityFormKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildMunicipalityCard(screenWidth),
-          const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {
-                if (_municipalityFormKey.currentState!.validate()) {
-                  _showPublishConfirmationDialog();
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                shape: RoundedRectangleBorder(
-                  // Define the shape with border radius
-                  borderRadius: BorderRadius.circular(
-                      12.0), // Set your desired radius here
-                ),
-              ),
-              child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.identity()
-                        ..rotateY(
-                            3.14159), // Flip horizontally using a Y-axis rotation
-                      child: SvgPicture.asset(
-                        'assets/icons/post.svg',
-                        color: Theme.of(context).colorScheme.surfaceContainer,
-                        width: 24,
-                        height: 24,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      'نشر',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.surfaceContainer,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+  BlocConsumer municipalityForm(double screenWidth, BuildContext context) {
+    return BlocConsumer<MunicipalitySuggestionsBloc,
+        MunicipalitySuggestionsState>(
+      bloc: municipalitySuggestionsBloc,
+      listener: (context, state) {
+        if (state is MunicipalitySuggestionPosted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('تم نشر المقترح بنجاح'),
+              backgroundColor: Colors.green,
             ),
+          );
+          titleController.clear();
+          descriptionController.clear();
+
+          // pop the page
+          Navigator.pop(context);
+        }
+        if (state is MunicipalitySuggestionPostError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('حدث خطأ أثناء نشر المقترح'),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is MunicipalitySuggestionsLoading) {
+          return const LoadingSpinner();
+        }
+
+        if (municipalitySuggestionsBloc.mySuggestions.length >= 3) {
+          return Center(
+            child: Text(
+              'لا يمكنك نشر أكثر من 3 مقترحات، يرجى الإنتظار حتى انتهاء مدة المقترحات الحالية، أو حذف مقترحاتك',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
+        return Form(
+          key: _municipalityFormKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildMunicipalityCard(screenWidth),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_municipalityFormKey.currentState!.validate()) {
+                      municipalitySuggestionsBloc.add(
+                        PostMunicipalitySuggestion(
+                          uid: context.read<UserManagerBloc>().user.uid,
+                          name: context
+                              .read<UserManagerBloc>()
+                              .user
+                              .fullName
+                              .split(' ')[0],
+                          title: titleController.text,
+                          details: descriptionController.text,
+                          dateOfPost: DateTime.now(),
+                          type: '',
+                          tags: const [],
+                          governorate: selectedGovernorate!,
+                          municipality: selectedCity!,
+                          area: selectedArea!,
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    shape: RoundedRectangleBorder(
+                      // Define the shape with border radius
+                      borderRadius: BorderRadius.circular(
+                          12.0), // Set your desired radius here
+                    ),
+                  ),
+                  child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Transform(
+                          alignment: Alignment.center,
+                          transform: Matrix4.identity()
+                            ..rotateY(
+                                3.14159), // Flip horizontally using a Y-axis rotation
+                          child: SvgPicture.asset(
+                            'assets/icons/post.svg',
+                            color:
+                                Theme.of(context).colorScheme.surfaceContainer,
+                            width: 24,
+                            height: 24,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'نشر',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color:
+                                Theme.of(context).colorScheme.surfaceContainer,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -355,10 +447,10 @@ class NewSuggestionPageState extends State<NewSuggestion> {
         ),
       ),
       const SizedBox(height: 20),
-      _buildTextField('العنوان', controller: titleController),
+      _buildTextField('العنوان', controller: titleController, maxLength: 50),
       const SizedBox(height: 20),
       _buildTextField('وصف المقترح...',
-          controller: descriptionController, maxLines: 5),
+          controller: descriptionController, maxLines: 5, maxLength: 250),
     ];
   }
 
@@ -432,12 +524,13 @@ class NewSuggestionPageState extends State<NewSuggestion> {
     String hintText, {
     required TextEditingController controller,
     int maxLines = 1,
-    Color hintTextColor = Colors.grey, // Allow hint text color customization
-    double fieldHeight = 60.0, // Default field height
+    Color hintTextColor = Colors.grey,
+    int maxLength = -1,
   }) {
     return TextFormField(
       controller: controller,
       maxLines: maxLines,
+      maxLength: maxLength == -1 ? null : maxLength,
       validator: (value) =>
           value == null || value.isEmpty ? 'هذا الحقل مطلوب' : null,
       decoration: InputDecoration(
@@ -466,6 +559,7 @@ class NewSuggestionPageState extends State<NewSuggestion> {
                   .colorScheme
                   .primary), // Customize focused border color
         ),
+        counterText: '',
       ),
     );
   }

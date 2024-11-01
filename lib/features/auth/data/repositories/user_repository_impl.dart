@@ -25,4 +25,9 @@ class UserRepositoryImpl implements IUserRepository {
   Future<void> addUserVoteInMunicipality(String projectId, String voteOption) {
     return _userRemoteDataSourceImpl.addUserVoteInMunicipality(projectId, voteOption);
   }
+  
+  @override
+  Future<void> addCommentToMunicipalityProject(String projectId, String comment) {
+    return _userRemoteDataSourceImpl.addCommentToMunicipalityProject(projectId, comment);
+  }
 }

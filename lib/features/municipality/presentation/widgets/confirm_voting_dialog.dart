@@ -64,7 +64,6 @@ void showConfirmationDialog(BuildContext context, String voteOption,
                       fontSize: 14,
                       color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
                     ),
                   ),
                   TextSpan(

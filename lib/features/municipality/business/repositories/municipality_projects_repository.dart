@@ -5,4 +5,10 @@ abstract class IMunicipalityProjectsRepository {
   Future<List<MunicipalityProjectEntity>> getArchivedProjects();
 
   Future<void> voteForProject(String projectId, String vote);
+  Future<void> addCommentToProject(
+    String projectId,
+    String comment,
+    String commenter,
+    String commenterId,
+  );
 }

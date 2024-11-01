@@ -22,3 +22,11 @@ final class VoteOnProjectDone extends OngoingProjectsState {
 
   VoteOnProjectDone(this.message);
 }
+
+final class AddCommentToProjectLoading extends OngoingProjectsState {}
+
+final class AddCommentToProjectDone extends OngoingProjectsState {
+  final String message;
+
+  AddCommentToProjectDone(this.message);
+}

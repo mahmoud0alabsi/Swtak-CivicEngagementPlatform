@@ -20,7 +20,7 @@ class MunicipalitySuggestionsBloc
         _onToggleUpvoteMunicipalitySuggestion);
     on<AddCommentToMunicipalitySuggestion>(
         _onAddCommentToMunicipalitySuggestion);
-    on<GetMySuggestions>(_onGetMySuggestions);
+    on<GetMyMunicipalitySuggestions>(_onGetMyMunicipalitySuggestions);
     on<PostMunicipalitySuggestion>(_onPostMunicipalitySuggestion);
 
     add(LoadMunicipalitySuggestions());
@@ -95,8 +95,8 @@ class MunicipalitySuggestionsBloc
     }
   }
 
-  void _onGetMySuggestions(
-      GetMySuggestions event, Emitter<MunicipalitySuggestionsState> emit) {
+  void _onGetMyMunicipalitySuggestions(
+      GetMyMunicipalitySuggestions event, Emitter<MunicipalitySuggestionsState> emit) {
     emit(MunicipalityMySuggestionsLoading());
     try {
       mySuggestions = suggestions

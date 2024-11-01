@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class filtercard extends StatelessWidget {
-  const filtercard({super.key});
+class Filtercard extends StatelessWidget {
+  const Filtercard({super.key});
 
   @override
   Widget build(BuildContext context) {

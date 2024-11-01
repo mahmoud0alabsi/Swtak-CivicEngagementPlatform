@@ -34,4 +34,15 @@ class MunicipalityProjectsRepositoryImpl
     return _municipalityProjectsRemoteDataSourceImpl.voteForProject(
         projectId, vote);
   }
+
+  @override
+  Future<void> addCommentToProject(
+      String projectId, String comment, String commenter, String commenterId) {
+    return _municipalityProjectsRemoteDataSourceImpl.addCommentToProject(
+      projectId,
+      comment,
+      commenter,
+      commenterId,
+    );
+  }
 }

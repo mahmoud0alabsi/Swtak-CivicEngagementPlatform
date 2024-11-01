@@ -1,3 +1,4 @@
+import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
 import 'package:citizens_voice_app/features/municipality/business/entities/municipality_project_entity.dart';
 import 'package:citizens_voice_app/features/municipality/const.dart';
 import 'package:citizens_voice_app/features/municipality/presentation/bloc/ongoing_projects/ongoing_projects_bloc.dart';
@@ -18,6 +19,7 @@ class ProjectDetailsPage extends StatefulWidget {
 }
 
 class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
+  final TextEditingController _commentController = TextEditingController();
   late OngoingProjectsBloc _bloc;
   late MunicipalityProjectEntity _project;
 
@@ -36,6 +38,13 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
         bloc: _bloc,
         listener: (context, state) {
           if (state is VoteOnProjectDone) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.green,
+              ),
+            );
+          } else if (state is AddCommentToProjectDone) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
@@ -89,7 +98,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                 ),
               ),
             ),
-            if (state is VoteOnProjectLoading)
+            if (state is VoteOnProjectLoading ||
+                state is AddCommentToProjectLoading)
               Container(
                 color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
                 child: Center(
@@ -432,102 +442,176 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
   }
 
   Widget _buildcomment(BuildContext context) {
-    return // Comment section starts here
-        Card(
-      shadowColor: Colors.transparent,
-      color: Theme.of(context).colorScheme.surfaceContainer,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      margin: const EdgeInsets.all(0),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "يمكنك كتابة تعليق وإرساله للجهة المعنية في حال كان لديك مقترح لهذه القضية:",
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
-                fontSize: 10,
-                fontWeight: FontWeight.w500,
-              ),
+    return BlocBuilder<UserManagerBloc, UserManagerState>(
+      bloc: context.read<UserManagerBloc>(),
+      builder: (context, state) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Card(
+            shadowColor: Colors.transparent,
+            color: Theme.of(context).colorScheme.surfaceContainer,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
-            const SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context)
-                    .colorScheme
-                    .surface, // The background color of the TextField container
-                borderRadius: BorderRadius.circular(8), // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2), // Shadow color
-                    spreadRadius: 1, // Spread radius of the shadow
-                    blurRadius: 1, // Blur effect of the shadow
-                    offset: const Offset(0, 0), // Offset to position the shadow
-                  ),
-                ],
-              ),
-              child: TextField(
-                maxLines: 4,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(8),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText: "فيما يتعلق بنقطة القضية المقترحة...",
-                  hintStyle: const TextStyle(fontSize: 10),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: RichText(
-                    textAlign: TextAlign.start,
-                    text: TextSpan(
+            margin: const EdgeInsets.all(0),
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: context
+                      .read<UserManagerBloc>()
+                      .user
+                      .municipalityProjectsCommented
+                      .containsKey(_project.id)
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextSpan(
-                          text: 'تنويه: ',
+                        Text(
+                          "لقد قمت بالتعليق بالفعل على هذه القضية، التعليق الخاص بك:",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'IBM Plex Sans Arabic',
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                        TextSpan(
-                          text:
-                              'يتم إرسال التعليق الخاص الى الى الجهة المعنية فقط، ولا يتم مشاركته مع المستخدمين الآخرين.',
+                        const SizedBox(height: 10),
+                        Text(
+                          context
+                              .read<UserManagerBloc>()
+                              .user
+                              .municipalityProjectsCommented[_project.id]!,
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 10,
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontSize: 14,
                             fontWeight: FontWeight.normal,
-                            fontFamily: 'IBM Plex Sans Arabic',
                           ),
                         ),
                       ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "يمكنك كتابة تعليق وإرساله للجهة المعنية في حال كان لديك مقترح لهذه القضية:",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surface, // The background color of the TextField container
+                            borderRadius:
+                                BorderRadius.circular(8), // Rounded corners
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey
+                                    .withOpacity(0.2), // Shadow color
+                                spreadRadius: 1, // Spread radius of the shadow
+                                blurRadius: 1, // Blur effect of the shadow
+                                offset: const Offset(
+                                    0, 0), // Offset to position the shadow
+                              ),
+                            ],
+                          ),
+                          child: TextField(
+                            maxLines: 4,
+                            maxLength: 200,
+                            controller: _commentController,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(8),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide.none,
+                              ),
+                              hintText: "قم بكتابة تعليق جديد...",
+                              hintStyle: const TextStyle(fontSize: 10),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: RichText(
+                                textAlign: TextAlign.start,
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'تنويه: ',
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'IBM Plex Sans Arabic',
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          'يتم إرسال التعليق الخاص الى الى الجهة المعنية فقط، ولا يتم مشاركته مع المستخدمين الآخرين.',
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: 'IBM Plex Sans Arabic',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            IconButton(
+                              icon: Transform(
+                                alignment: Alignment.center,
+                                transform: Matrix4.identity()..rotateY(3.14159),
+                                child: SvgPicture.asset(
+                                  'assets/icons/post.svg',
+                                  colorFilter: ColorFilter.mode(
+                                    Theme.of(context).colorScheme.primary,
+                                    BlendMode.srcIn,
+                                  ),
+                                  width: 24,
+                                  height: 24,
+                                ),
+                              ),
+                              color: Theme.of(context).colorScheme.secondary,
+                              onPressed: () {
+                                if (_commentController.text.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text("الرجاء كتابة تعليق"),
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.error,
+                                    ),
+                                  );
+                                  return;
+                                }
+                                submitDialog(
+                                  context,
+                                  _project.id,
+                                  _commentController.text,
+                                  _bloc,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                const SizedBox(width: 4),
-                IconButton(
-                  icon: const Icon(Icons.send, size: 18),
-                  color: Theme.of(context).colorScheme.secondary,
-                  onPressed: () {
-                    submitDialog(context);
-                  },
-                ),
-              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
     // Comment section ends here
   }

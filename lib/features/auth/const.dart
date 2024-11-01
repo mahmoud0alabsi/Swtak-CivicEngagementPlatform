@@ -10,6 +10,7 @@ String kSalt = 'salt';
 
 String kParliamentVotes = 'parliament_votes';
 String kMunicipalityVotes = 'municipality_votes';
+String kMunicipalityProjectsCommented = 'municipality_projects_commented';
 String kMunicipalityProjectUserVote = 'user_vote';
 String kMunicipalityProjectIsUserPostComment = 'post_comment';
 String kMunicipalityProjectUserComment = 'user_comment';

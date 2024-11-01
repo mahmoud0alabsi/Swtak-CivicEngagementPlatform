@@ -1,6 +1,8 @@
+import 'package:citizens_voice_app/features/municipality/presentation/bloc/ongoing_projects/ongoing_projects_bloc.dart';
 import 'package:flutter/material.dart';
 
-void submitDialog(BuildContext context) {
+void submitDialog(BuildContext context, String projectId, String comment,
+    OngoingProjectsBloc bloc) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -53,7 +55,6 @@ void submitDialog(BuildContext context) {
                       fontSize: 14,
                       color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.bold,
-                      //decoration: TextDecoration.underline,
                     ),
                   ),
                   TextSpan(
@@ -66,7 +67,7 @@ void submitDialog(BuildContext context) {
                   ),
                   TextSpan(
                     text:
-                        "لن تتمكن من تعديل أو حذف رسالتك بعد إرسالها، لذا يُرجى التأكد من المحتوى قبل المتابعة.",
+                        "بعد الإرسال لا يمكنك تعديل التعليق أو حذفه، هل أنت متأكد من الإرسال؟",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -86,17 +87,27 @@ void submitDialog(BuildContext context) {
         ),
         actions: [
           _buildDialogButton(
-              context, "إلغاء", Theme.of(context).colorScheme.secondary),
+              context, "إلغاء", Theme.of(context).colorScheme.secondary, () {
+            Navigator.of(context).pop();
+          }),
           // const SizedBox(width: 10),
           _buildDialogButton(
-              context, "تأكيد", Theme.of(context).colorScheme.primary)
+            context,
+            "تأكيد",
+            Theme.of(context).colorScheme.primary,
+            () {
+              bloc.add(AddCommentToProject(projectId, comment, context));
+              Navigator.of(context).pop();
+            },
+          ),
         ],
       );
     },
   );
 }
 
-Widget _buildDialogButton(BuildContext context, String label, Color color) {
+Widget _buildDialogButton(
+    BuildContext context, String label, Color color, Function() onPressed) {
   return SizedBox(
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -107,9 +118,7 @@ Widget _buildDialogButton(BuildContext context, String label, Color color) {
         ),
         minimumSize: const Size(100, 40),
       ),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
+      onPressed: onPressed,
       child: Text(
         label,
         style: TextStyle(

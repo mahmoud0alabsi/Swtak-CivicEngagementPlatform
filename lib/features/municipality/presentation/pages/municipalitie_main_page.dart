@@ -44,11 +44,15 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: appBar(context),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-          child: Column(
-            children: [
-              Card(
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 16,
+                left: 16,
+                right: 16,
+              ),
+              child: Card(
                 shadowColor: Colors.transparent,
                 color: Theme.of(context).colorScheme.surfaceContainer,
                 shape: RoundedRectangleBorder(
@@ -94,10 +98,16 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 15,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
               ),
-              LayoutBuilder(
+              child: LayoutBuilder(
                 builder: (context, constraints) {
                   double screenWidth = MediaQuery.of(context).size.width;
                   double buttonWidth = (screenWidth - 32 - 10) /
@@ -161,18 +171,30 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
                   );
                 },
               ),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    _buildProjectsTab(context),
-                    _buildArchiveTab(context),
-                  ],
-                ),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                physics: const BouncingScrollPhysics(),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                    ),
+                    child: _buildProjectsTab(context),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                    ),
+                    child: _buildArchiveTab(context),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -283,38 +305,34 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
 
   // Build Archive Tab (Second Tab) with expandable cards
   Widget _buildArchiveTab(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ArchivedProjectsBloc(),
-      lazy: false,
-      child: BlocConsumer<ArchivedProjectsBloc, ArchivedProjectsState>(
-        listener: (context, state) {
-          if (state is ArchivedProjectsError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage),
-                backgroundColor: Theme.of(context).colorScheme.error,
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is ArchivedProjectsLoading ||
-              state is ArchivedProjectsInitial) {
-            return const LoadingSpinner();
-          }
-          List<MunicipalityProjectEntity> projects =
-              context.read<ArchivedProjectsBloc>().archivedProjects;
-          return ListView.separated(
-              padding: const EdgeInsets.only(bottom: 15.0),
-              separatorBuilder: (BuildContext context, int index) =>
-                  const SizedBox(height: 10),
-              itemCount: projects.length,
-              itemBuilder: (context, index) {
-                return _buildArchiveCard(
-                    projects[index], Icons.school_outlined);
-              });
-        },
-      ),
+    return BlocConsumer<ArchivedProjectsBloc, ArchivedProjectsState>(
+      listener: (context, state) {
+        if (state is ArchivedProjectsError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errorMessage),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is ArchivedProjectsLoading ||
+            state is ArchivedProjectsInitial) {
+          return const LoadingSpinner();
+        }
+        List<MunicipalityProjectEntity> projects =
+            context.read<ArchivedProjectsBloc>().archivedProjects;
+        return ListView.separated(
+            padding: const EdgeInsets.only(bottom: 15.0),
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(height: 10),
+            itemCount: projects.length,
+            itemBuilder: (context, index) {
+              return _buildArchiveCard(
+                  projects[index], Icons.school_outlined);
+            });
+      },
     );
     // return ListView(
     //   children: [

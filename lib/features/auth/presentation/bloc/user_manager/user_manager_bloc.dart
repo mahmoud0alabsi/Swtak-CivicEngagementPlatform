@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:citizens_voice_app/features/auth/business/entities/custom_user_entity.dart';
 import 'package:citizens_voice_app/features/auth/data/models/custom_user_model.dart';
@@ -15,6 +17,7 @@ class UserManagerBloc extends Bloc<UserManagerEvent, UserManagerState> {
     on<LoadUserData>(_onLoadUserData);
     on<AddUserVoteParliament>(_onAddUserVotingParliament);
     on<AddUserVoteMunicipality>(_onAddUserVotingMunicipality);
+    on<AddCommentToMunicipalityProject>(_onAddCommentToMunicipalityProject);
     add(LoadUserData());
   }
 
@@ -55,6 +58,23 @@ class UserManagerBloc extends Bloc<UserManagerEvent, UserManagerState> {
       emit(UserManagerLoaded());
     } catch (e) {
       emit(UserManagerError('حدث خطأ أثناء التصويت، يرجى المحاولة مرة أخرى'));
+      rethrow;
+    }
+  }
+
+  FutureOr<void> _onAddCommentToMunicipalityProject(
+      AddCommentToMunicipalityProject event, Emitter<UserManagerState> emit) {
+    emit(UserManagerLoading());
+    try {
+      return _userRepositoryImpl
+          .addCommentToMunicipalityProject(event.projectId, event.comment)
+          .then((value) {
+        _user.municipalityProjectsCommented[event.projectId] = event.comment;
+        emit(UserManagerLoaded());
+      });
+    } catch (e) {
+      emit(UserManagerError(
+          'حدث خطأ أثناء إضافة التعليق، يرجى المحاولة مرة أخرى'));
       rethrow;
     }
   }

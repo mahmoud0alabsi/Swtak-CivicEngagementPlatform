@@ -6,6 +6,7 @@ class CustomUserEntity {
   final String phoneNumber;
   final Map<String, dynamic> parliamentVotes;
   final Map<String, dynamic> municipalityVotes;
+  final Map<String, dynamic> municipalityProjectsCommented;
 
   CustomUserEntity({
     required this.uid,
@@ -15,5 +16,6 @@ class CustomUserEntity {
     required this.phoneNumber,
     required this.parliamentVotes,
     required this.municipalityVotes,
+    this.municipalityProjectsCommented = const {},
   });
 }

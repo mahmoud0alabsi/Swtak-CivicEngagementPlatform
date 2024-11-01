@@ -4,8 +4,8 @@ import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../SuggestionCards.dart';
-import '../addnewsug.dart';
+import '../../widgets/suggestion_cards.dart';
+import '../../widgets/filter_card.dart';
 
 Widget buildParliamentTab(BuildContext context) {
   return BlocConsumer<ParliamentSuggestionsBloc, ParliamentSuggestionsState>(
@@ -27,12 +27,19 @@ Widget buildParliamentTab(BuildContext context) {
 
       List<SuggestionEntity> suggestions =
           context.read<ParliamentSuggestionsBloc>().suggestions;
+
+      if (suggestions.isEmpty) {
+        return const Center(
+          child: Text('لا يوجد اقتراحات بعد'),
+        );
+      }
+
       // sort suggestions by upvotes count
       suggestions.sort((a, b) => b.upvotesCount.compareTo(a.upvotesCount));
 
       return ListView(
         children: [
-          const filtercard(),
+          const Filtercard(),
           const SizedBox(height: 12),
           ListView.separated(
             physics: const NeverScrollableScrollPhysics(),

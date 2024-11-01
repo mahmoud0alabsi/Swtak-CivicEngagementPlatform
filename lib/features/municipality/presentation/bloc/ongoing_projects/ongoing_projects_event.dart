@@ -12,3 +12,11 @@ class VoteForProject extends OngoingProjectsEvent {
 
   VoteForProject(this.projectId, this.voteOption, this.context);
 }
+
+class AddCommentToProject extends OngoingProjectsEvent {
+  final String projectId;
+  final String comment;
+  final BuildContext context;
+
+  AddCommentToProject(this.projectId, this.comment, this.context);
+}

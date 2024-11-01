@@ -7,6 +7,8 @@ abstract class IMunicipalityProjectsDataSource {
   Future<List<MunicipalityProjectModel>> getOngoingProjects();
   Future<List<MunicipalityProjectModel>> getArchivedProjects();
   Future<Map<String, dynamic>> voteForProject(String projectId, String vote);
+  Future<void> addCommentToProject(
+      String projectId, String comment, String commenter, String commenterId);
 }
 
 class MunicipalityProjectsRemoteDataSourceImpl
@@ -79,24 +81,78 @@ class MunicipalityProjectsRemoteDataSourceImpl
   Future<Map<String, dynamic>> voteForProject(
       String projectId, String vote) async {
     try {
-      await _firestore
-          .collection(municipalityProjectsCollection)
-          .doc(projectId)
-          .update({
-        kVoting: {
-          kAgree: vote == kAgree ? FieldValue.increment(1) : 0,
-          kDisagree: vote == kDisagree ? FieldValue.increment(1) : 0,
+      final projectDoc =
+          _firestore.collection(municipalityProjectsCollection).doc(projectId);
+      await _firestore.runTransaction((transaction) async {
+        final project = await transaction.get(projectDoc);
+        if (!project.exists) {
+          return Future.value({'success': false});
+        }
+
+        var agree = project.data()?[kVoting][kAgree];
+        var disagree = project.data()?[kVoting][kDisagree];
+        if (vote == kAgree) {
+          agree++;
+          transaction.update(projectDoc, {
+            kVoting: {
+              kAgree: agree,
+              kDisagree: disagree,
+            }
+          });
+        } else {
+          disagree++;
+          transaction.update(projectDoc, {
+            kVoting: {
+              kAgree: agree,
+              kDisagree: disagree,
+            }
+          });
         }
       });
 
-      return Future.value({
-        'status': 'success',
-        'message': 'تم التصويت بنجاح، شكراً لك على مشاركتك',
-      });
+      return Future.value({'success': true});
+      // await _firestore
+      //     .collection(municipalityProjectsCollection)
+      //     .doc(projectId)
+      //     .update({
+      //   kVoting: {
+      //     kAgree: vote == kAgree ? FieldValue.increment(1) : 0,
+      //     kDisagree: vote == kDisagree ? FieldValue.increment(1) : 0,
+      //   }
+      // });
+
+      // return Future.value({
+      //   'status': 'success',
+      //   'message': 'تم التصويت بنجاح، شكراً لك على مشاركتك',
+      // });
     } catch (e) {
       ErrorHandler.crashlyticsLogError(e, StackTrace.current,
           reason: 'Error in voteForProject - MunicipalityProjectsDataSource');
       return Future.value({});
+    }
+  }
+
+  @override
+  Future<void> addCommentToProject(String projectId, String comment,
+      String commenter, String commenterId) async {
+    try {
+      return _firestore
+          .collection(municipalityProjectsCollection)
+          .doc(projectId)
+          .update({
+        kComments: FieldValue.arrayUnion([
+          {
+            kComment: comment,
+            kCommentDate: DateTime.now(),
+            kCommenter: commenter,
+            kCommenterId: commenterId,
+          },
+        ]),
+      });
+    } catch (e) {
+      ErrorHandler.crashlyticsLogError(e, StackTrace.current,
+          reason:
+              'Error in addCommentToProject - MunicipalityProjectsDataSource');
     }
   }
 }

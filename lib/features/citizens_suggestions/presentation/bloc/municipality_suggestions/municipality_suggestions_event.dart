@@ -28,10 +28,10 @@ class AddCommentToMunicipalitySuggestion extends MunicipalitySuggestionsEvent {
   );
 }
 
-class GetMySuggestions extends MunicipalitySuggestionsEvent {
+class GetMyMunicipalitySuggestions extends MunicipalitySuggestionsEvent {
   final String uid;
 
-  GetMySuggestions(this.uid);
+  GetMyMunicipalitySuggestions(this.uid);
 }
 
 class PostMunicipalitySuggestion extends MunicipalitySuggestionsEvent {

@@ -22,6 +22,7 @@ class OngoingProjectsBloc
   OngoingProjectsBloc() : super(OngoingProjectsInitial()) {
     on<LoadOngoingProjects>(_onLoadProjects);
     on<VoteForProject>(_onVoteForProject);
+    on<AddCommentToProject>(_onAddCommentToProject);
 
     add(LoadOngoingProjects());
   }
@@ -79,6 +80,30 @@ class OngoingProjectsBloc
     } catch (e) {
       emit(OngoingProjectsError(
           'حدث خطأ أثناء التصويت، يرجى المحاولة مرة أخرى'));
+    }
+  }
+
+  void _onAddCommentToProject(
+      AddCommentToProject event, Emitter<OngoingProjectsState> emit) async {
+    emit(AddCommentToProjectLoading());
+    try {
+      // store comment in user's comments (users collection)
+      event.context.read<UserManagerBloc>().add(AddCommentToMunicipalityProject(
+            event.projectId,
+            event.comment,
+          ));
+
+      await municipalityProjectsRepositoryImpl.addCommentToProject(
+        event.projectId,
+        event.comment,
+        _user.fullName,
+        _user.uid,
+      );
+
+      emit(AddCommentToProjectDone('تم إضافة التعليق بنجاح'));
+    } catch (e) {
+      emit(OngoingProjectsError(
+          'حدث خطأ أثناء إضافة التعليق، يرجى المحاولة مرة أخرى'));
     }
   }
 

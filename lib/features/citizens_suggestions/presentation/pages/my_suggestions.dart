@@ -1,13 +1,20 @@
 import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
+import 'package:citizens_voice_app/features/citizens_suggestions/presentation/bloc/municipality_suggestions/municipality_suggestions_bloc.dart';
 import 'package:citizens_voice_app/features/citizens_suggestions/presentation/bloc/parliament_suggestions/parliament_suggestions_bloc.dart';
-import 'package:citizens_voice_app/features/citizens_suggestions/presentation/pages/SuggestionCards.dart';
+import 'package:citizens_voice_app/features/citizens_suggestions/presentation/widgets/municipality_suggestion_cards.dart';
+import 'package:citizens_voice_app/features/citizens_suggestions/presentation/widgets/suggestion_cards.dart';
 import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MySuggestions extends StatefulWidget {
   final ParliamentSuggestionsBloc parliamentSuggestionsBloc;
-  const MySuggestions({super.key, required this.parliamentSuggestionsBloc});
+  final MunicipalitySuggestionsBloc municipalitySuggestionsBloc;
+  const MySuggestions({
+    super.key,
+    required this.parliamentSuggestionsBloc,
+    required this.municipalitySuggestionsBloc,
+  });
 
   @override
   MySuggestionsPageState createState() => MySuggestionsPageState();
@@ -15,38 +22,26 @@ class MySuggestions extends StatefulWidget {
 
 class MySuggestionsPageState extends State<MySuggestions> {
   late ParliamentSuggestionsBloc parliamentSuggestionsBloc;
+  late MunicipalitySuggestionsBloc municipalitySuggestionsBloc;
+
   int currentIndex = 0;
   final int maxCards = 3;
-  final List<Map<String, dynamic>> suggestions = [
-    {
-      'title': 'اصلاح خط مياه',
-      'description':
-          'تُعتبر مشكلة تسرب المياه من خطوط المياه من القضايا الحيوية التي تؤثر على حياة المواطنين اليومية. عند وجود تسرب أو كسر في خط المياه، يتسبب ذلك في هدر كبير للمياه، مما يؤدي إلى نقص الإمدادات في المناطق المجاورة وظهور مشاكل صحية نتيجة تلوث المياه. لذلك، يتعين على البلدية التدخل بشكل سريع لمعالجة هذه المشكلة',
-    },
-    {
-      'title': 'بناء مدرسة',
-      'description':
-          'تلبيةً لاحتياجات المجتمع، يطالب المواطنون البلدية ببدء مشروع بناء مدرسة جديدة، حيث ستساهم هذه المدرسة في تخفيف الضغط على المدارس القائمة وتوفير بيئة تعليمية آمنة ومجهزة. يجب أن تكون المدرسة مجهزة بكافة المرافق اللازمة، مثل الفصول الدراسية، المكتبة، وملاعب الأطفال، مما يوفر للطلاب تجربة تعليمية شاملة. إن الاستثمار في التعليم هو استثمار في مستقبل الأجيال القادمة، ولذلك يعد بناء مدرسة جديدة خطوة حيوية نحو تحقيق تنمية مستدامة في المنطقة.',
-    },
-  ];
 
   @override
   void initState() {
     super.initState();
     parliamentSuggestionsBloc = widget.parliamentSuggestionsBloc;
+    municipalitySuggestionsBloc = widget.municipalitySuggestionsBloc;
   }
 
   @override
   Widget build(BuildContext context) {
-    int totalSuggestions = suggestions.length;
-    int displayedCount = (currentIndex + maxCards <= totalSuggestions)
-        ? maxCards
-        : totalSuggestions - currentIndex;
-
     return MultiBlocProvider(
       providers: [
         BlocProvider<ParliamentSuggestionsBloc>.value(
             value: parliamentSuggestionsBloc),
+        BlocProvider<MunicipalitySuggestionsBloc>.value(
+            value: municipalitySuggestionsBloc),
       ],
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -126,7 +121,13 @@ class MySuggestionsPageState extends State<MySuggestions> {
                     );
                   },
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
+                Divider(
+                  color:
+                      Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+                  thickness: 1,
+                ),
+                const SizedBox(height: 10),
                 Card(
                   color: Theme.of(context).colorScheme.surfaceContainer,
                   shape: RoundedRectangleBorder(
@@ -149,6 +150,54 @@ class MySuggestionsPageState extends State<MySuggestions> {
                       ],
                     ),
                   ),
+                ),
+                const SizedBox(height: 16),
+                BlocBuilder(
+                  bloc: municipalitySuggestionsBloc,
+                  builder: (context, state) {
+                    municipalitySuggestionsBloc
+                        .add(GetMyMunicipalitySuggestions(
+                      context.read<UserManagerBloc>().user.uid,
+                    ));
+
+                    if (state is MunicipalityMySuggestionsLoading) {
+                      return const LoadingSpinner();
+                    }
+
+                    if (municipalitySuggestionsBloc.mySuggestions.isEmpty) {
+                      return const Center(
+                        child: Text('لا توجد مقترحات'),
+                      );
+                    }
+
+                    return Column(
+                      children: [
+                        ListView.separated(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 12),
+                            itemCount: municipalitySuggestionsBloc
+                                .mySuggestions.length,
+                            itemBuilder: (context, index) {
+                              return MunicipalitySuggestionCard(
+                                bloc: municipalitySuggestionsBloc,
+                                suggestion: municipalitySuggestionsBloc
+                                    .mySuggestions[index],
+                              );
+                            }),
+                        const SizedBox(height: 16),
+                        Text(
+                          '${municipalitySuggestionsBloc.mySuggestions.length}/$maxCards',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
                 const SizedBox(height: 16),
               ],

@@ -3,4 +3,6 @@ abstract class IUserRepository {
       String roundId, String projectId, String voteOption);
 
   Future<void> addUserVoteInMunicipality(String projectId, String voteOption);
+  Future<void> addCommentToMunicipalityProject(
+      String projectId, String comment);
 }

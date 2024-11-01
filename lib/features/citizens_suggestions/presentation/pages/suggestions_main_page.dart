@@ -1,3 +1,4 @@
+import 'package:citizens_voice_app/features/citizens_suggestions/presentation/bloc/municipality_suggestions/municipality_suggestions_bloc.dart';
 import 'package:citizens_voice_app/features/citizens_suggestions/presentation/bloc/parliament_suggestions/parliament_suggestions_bloc.dart';
 import 'package:citizens_voice_app/features/citizens_suggestions/presentation/pages/tabs/municipality_tab.dart';
 import 'package:citizens_voice_app/features/citizens_suggestions/presentation/pages/new_suggestion.dart';
@@ -34,15 +35,15 @@ class SuggestionsscreenState extends State<Suggestionsscreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          top: 16,
-          left: 16,
-          right: 16,
-        ),
-        child: Column(
-          children: [
-            Container(
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 16,
+              left: 16,
+              right: 16,
+            ),
+            child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainer,
                 borderRadius: BorderRadius.circular(8),
@@ -80,18 +81,30 @@ class SuggestionsscreenState extends State<Suggestionsscreen>
                 ],
               ),
             ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  buildParliamentTab(context),
-                  buildMunicipalityTab(context),
-                ],
-              ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              physics: const BouncingScrollPhysics(),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                  ),
+                  child: buildParliamentTab(context),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                  ),
+                  child: buildMunicipalityTab(context),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -99,6 +112,8 @@ class SuggestionsscreenState extends State<Suggestionsscreen>
   AppBar appBar(BuildContext context) {
     ParliamentSuggestionsBloc parliamentSuggestionsBloc =
         context.read<ParliamentSuggestionsBloc>();
+    MunicipalitySuggestionsBloc municipalitySuggestionsBloc =
+        context.read<MunicipalitySuggestionsBloc>();
     return AppBar(
       actions: [
         Padding(
@@ -112,30 +127,33 @@ class SuggestionsscreenState extends State<Suggestionsscreen>
                     MaterialPageRoute(
                       builder: (context) => MySuggestions(
                         parliamentSuggestionsBloc: parliamentSuggestionsBloc,
+                        municipalitySuggestionsBloc:
+                            municipalitySuggestionsBloc,
                       ),
                     ),
                   );
                 },
-                child: Icon(
-                  Icons.history_rounded,
-                  size: 25,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                // SvgPicture.asset(
-                //   'assets/icons/s1.svg',
-                //   width: 20,
-                //   height: 20,
-                // ),
-              ),
-              const SizedBox(width: 16),
-              GestureDetector(
-                onTap: () {},
-                child: SvgPicture.asset(
-                  'assets/icons/s4.svg',
+                child:
+                    // Icon(
+                    //   Icons.history_rounded,
+                    //   size: 25,
+                    //   color: Theme.of(context).colorScheme.primary,
+                    // ),
+                    SvgPicture.asset(
+                  'assets/icons/s1.svg',
                   width: 20,
                   height: 20,
                 ),
               ),
+              // const SizedBox(width: 16),
+              // GestureDetector(
+              //   onTap: () {},
+              //   child: SvgPicture.asset(
+              //     'assets/icons/s4.svg',
+              //     width: 20,
+              //     height: 20,
+              //   ),
+              // ),
               const SizedBox(width: 16),
               GestureDetector(
                 onTap: () {
@@ -144,6 +162,8 @@ class SuggestionsscreenState extends State<Suggestionsscreen>
                     MaterialPageRoute(
                       builder: (context) => NewSuggestion(
                         parliamentSuggestionsBloc: parliamentSuggestionsBloc,
+                        municipalitySuggestionsBloc:
+                            municipalitySuggestionsBloc,
                       ),
                     ),
                   );

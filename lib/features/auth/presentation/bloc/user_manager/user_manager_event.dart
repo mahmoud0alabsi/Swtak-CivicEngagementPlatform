@@ -18,3 +18,10 @@ final class AddUserVoteMunicipality extends UserManagerEvent {
 
   AddUserVoteMunicipality(this.projectId, this.voteOption);
 }
+
+final class AddCommentToMunicipalityProject extends UserManagerEvent {
+  final String projectId;
+  final String comment;
+
+  AddCommentToMunicipalityProject(this.projectId, this.comment);
+}
