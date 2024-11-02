@@ -115,69 +115,6 @@ class SuggestionsscreenState extends State<Suggestionsscreen>
     MunicipalitySuggestionsBloc municipalitySuggestionsBloc =
         context.read<MunicipalitySuggestionsBloc>();
     return AppBar(
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MySuggestions(
-                        parliamentSuggestionsBloc: parliamentSuggestionsBloc,
-                        municipalitySuggestionsBloc:
-                            municipalitySuggestionsBloc,
-                      ),
-                    ),
-                  );
-                },
-                child:
-                    // Icon(
-                    //   Icons.history_rounded,
-                    //   size: 25,
-                    //   color: Theme.of(context).colorScheme.primary,
-                    // ),
-                    SvgPicture.asset(
-                  'assets/icons/s1.svg',
-                  width: 20,
-                  height: 20,
-                ),
-              ),
-              // const SizedBox(width: 16),
-              // GestureDetector(
-              //   onTap: () {},
-              //   child: SvgPicture.asset(
-              //     'assets/icons/s4.svg',
-              //     width: 20,
-              //     height: 20,
-              //   ),
-              // ),
-              const SizedBox(width: 16),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NewSuggestion(
-                        parliamentSuggestionsBloc: parliamentSuggestionsBloc,
-                        municipalitySuggestionsBloc:
-                            municipalitySuggestionsBloc,
-                      ),
-                    ),
-                  );
-                },
-                child: SvgPicture.asset(
-                  'assets/icons/s3.svg',
-                  width: 20,
-                  height: 20,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
       title: Text(
         "اقتراحات المواطنين",
         style: TextStyle(
@@ -187,6 +124,53 @@ class SuggestionsscreenState extends State<Suggestionsscreen>
         ),
         textAlign: TextAlign.end,
       ),
+      actions: [
+        SizedBox(
+          width: 40,
+          height: 40,
+          child: IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/s1.svg',
+              height: 20,
+              width: 20,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MySuggestions(
+                    parliamentSuggestionsBloc: parliamentSuggestionsBloc,
+                    municipalitySuggestionsBloc: municipalitySuggestionsBloc,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        SizedBox(
+          width: 40,
+          height: 40,
+          child: IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/s3.svg',
+              height: 20,
+              width: 20,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewSuggestion(
+                    parliamentSuggestionsBloc: parliamentSuggestionsBloc,
+                    municipalitySuggestionsBloc: municipalitySuggestionsBloc,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(width: 8),
+      ],
     );
   }
 }

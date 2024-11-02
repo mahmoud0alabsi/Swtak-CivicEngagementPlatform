@@ -14,22 +14,22 @@ class RouterPage extends StatefulWidget {
 class _RouterPageState extends State<RouterPage> {
   @override
   Widget build(BuildContext context) {
-    return const PagesWrapper();
-    // return StreamBuilder<CustomUserEntity?>(
-    //   stream: AuthRepositoryImpl().firebaseAuthCustomUserStream,
-    //   builder: (context, snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return const Scaffold(
-    //         body: Center(
-    //           child: CircularProgressIndicator(),
-    //         ),
-    //       );
-    //     }
-    //     if (snapshot.data != null && snapshot.data!.uid.isNotEmpty) {
-    //     return const PagesWrapper();
-    //     }
-    //     return const WelcomePage();
-    //   },
-    // );
+    // return const PagesWrapper();
+    return StreamBuilder<CustomUserEntity?>(
+      stream: AuthRepositoryImpl().firebaseAuthCustomUserStream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        if (snapshot.data != null && snapshot.data!.uid.isNotEmpty) {
+        return const PagesWrapper();
+        }
+        return const WelcomePage();
+      },
+    );
   }
 }

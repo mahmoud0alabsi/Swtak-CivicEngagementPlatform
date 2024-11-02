@@ -1,10 +1,13 @@
+import 'package:citizens_voice_app/core/date_formatter.dart';
+import 'package:citizens_voice_app/core/fields_map.dart';
 import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
+import 'package:citizens_voice_app/features/municipality/const.dart';
 import 'package:citizens_voice_app/features/parliament/business/entities/parliament_round_entity.dart';
 import 'package:citizens_voice_app/features/parliament/presentation/bloc/archived_rounds/archived_rounds_bloc.dart';
 import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:citizens_voice_app/metadata/suggestions_metadata.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ParliamentArchivePage extends StatefulWidget {
   const ParliamentArchivePage({super.key});
@@ -14,7 +17,7 @@ class ParliamentArchivePage extends StatefulWidget {
 }
 
 class ParliamentArchivePageState extends State<ParliamentArchivePage> {
-  final int _expandedCardIndex = -1; // To track the currently expanded card
+  int _expandedCardIndex = -1; // To track the currently expanded card
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +102,9 @@ class ParliamentArchivePageState extends State<ParliamentArchivePage> {
                             bloc.archivedRounds[index];
                         round.projects.sort((a, b) =>
                             a.projectNumber.compareTo(b.projectNumber));
+
+                        int roundIndex = index;
+
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,30 +123,30 @@ class ParliamentArchivePageState extends State<ParliamentArchivePage> {
                             const SizedBox(height: 5),
                             ...round.projects.map(
                               (project) {
+                                int issueIndex = round.projects.indexWhere(
+                                    (element) => element == project);
                                 return Column(
                                   children: [
                                     IssueCard(
                                       issueNumber: project.projectNumber,
                                       title: project.title,
                                       voteDetails: project.details,
-                                      // voteDate: issue['date']!,
-                                      voteResult: 'المواطنين: أوافق',
+                                      voteDate: round.dateOfPost,
+                                      voting: project.voting,
                                       myvote: project.userVote,
                                       parlvote: 'أوافق',
-                                      isExpanded: true,
-                                      // _expandedCardIndex ==
-                                      //     (roundIndex * 10 + issueIndex),
-                                      icon: Icons
-                                          .help, // Use the custom icon for each card
+                                      isExpanded: _expandedCardIndex ==
+                                          (roundIndex * 10 + issueIndex),
+                                      icon: getProjectTypeIcon(project.type),
                                       onCardTap: () {
                                         setState(() {
-                                          // _expandedCardIndex =
-                                          //     _expandedCardIndex ==
-                                          //             (roundIndex * 10 +
-                                          //                 issueIndex)
-                                          //         ? -1
-                                          //         : (roundIndex * 10 +
-                                          //             issueIndex);
+                                          _expandedCardIndex =
+                                              _expandedCardIndex ==
+                                                      (roundIndex * 10 +
+                                                          issueIndex)
+                                                  ? -1
+                                                  : (roundIndex * 10 +
+                                                      issueIndex);
                                         });
                                       },
                                     ),
@@ -201,19 +207,21 @@ class IssueCard extends StatelessWidget {
   final int issueNumber;
   final String title;
   final String voteDetails;
-  final String voteResult;
+  final DateTime voteDate;
+  final Map<String, dynamic> voting;
   final String myvote;
   final String parlvote;
   final bool isExpanded;
   final VoidCallback onCardTap;
-  final IconData icon;
+  final String icon;
 
   const IssueCard({
     super.key,
     required this.issueNumber,
     required this.title,
     required this.voteDetails,
-    required this.voteResult,
+    required this.voteDate,
+    required this.voting,
     required this.myvote,
     required this.parlvote,
     required this.isExpanded,
@@ -238,44 +246,33 @@ class IssueCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainer,
-                    shape: BoxShape.rectangle,
-                  ),
-                  child: Center(
-                    child: Icon(
-                      icon,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 40,
-                    ),
-                  ),
+                SvgPicture.asset(
+                  icon,
+                  height: 34,
+                  width: 34,
+                  colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.primary, BlendMode.srcIn),
                 ),
                 const SizedBox(width: 10),
-                Flexible(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'قضية رقم $issueNumber',
+                        'مشروع رقم $issueNumber',
                         style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        textDirection: TextDirection.rtl,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.secondary),
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 4),
                       Text(
                         title,
                         style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w800,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        textDirection: TextDirection.rtl,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w800,
+                            color: Theme.of(context).colorScheme.secondary),
                       ),
                     ],
                   ),
@@ -285,19 +282,26 @@ class IssueCard extends StatelessWidget {
             if (isExpanded) ...[
               const SizedBox(height: 10),
               _buildExpandedText('تفاصيل التصويت: ', voteDetails, context),
-              const SizedBox(height: 8),
-              if (myvote != '') _buildExpandedText('تصويتك: ', myvote, context),
-              const SizedBox(height: 8),
-              Text(
-                'نتائج التصويت:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              const SizedBox(height: 8),
-              _buildBarGraph(voteResult, parlvote, context),
+              const SizedBox(height: 9),
+              _buildExpandedText(
+                  'التاريخ: ', getDateFormattedWithYear(voteDate), context),
+              const SizedBox(height: 9),
+              if (myvote.isNotEmpty) ...[
+                _buildExpandedText('نتيجة تصويتك: ', myvote, context),
+                const SizedBox(height: 9),
+              ],
+              _buildBarGraph(
+                  voting[kAgree] > voting[kDisagree] ? kAgreeAr : kDisagreeAr,
+                  voting[kAgree] > voting[kDisagree]
+                      ? voting[kAgree] / (voting[kAgree] + voting[kDisagree])
+                      : voting[kDisagree] /
+                          (voting[kAgree] + voting[kDisagree]),
+                  voting[kAgree] > voting[kDisagree]
+                      ? voting[kAgree]
+                      : voting[kDisagree],
+                  context),
+              const SizedBox(height: 10),
+              _buildBarGraph(parlvote, 0.74, 70, context),
               const SizedBox(height: 10),
             ],
           ],
@@ -307,49 +311,125 @@ class IssueCard extends StatelessWidget {
   }
 
   Widget _buildBarGraph(
-      String voteResult, String parlvote, BuildContext context) {
-    double extractNumericValue(String input) {
-      final numericString = input.replaceAll(RegExp(r'[^0-9.]'), '');
-      return double.tryParse(numericString) ?? 0.0;
-    }
-
-    double voteValue = extractNumericValue(voteResult) / 100;
-    double parlValue = extractNumericValue(parlvote) / 100;
-
+      String voteResult, double percent, int votes, BuildContext context) {
     return Column(
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Text('المواطنين '),
-            Expanded(
-              child: LinearProgressIndicator(
-                value: voteValue,
-                backgroundColor: Colors.grey.shade300,
-                color: const Color(0xFFD90429),
+            Text(
+              'تصويت المواطنين: ',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.secondary,
               ),
             ),
-            const SizedBox(width: 8),
-            Text(voteResult),
+            Text(
+              '$voteResult ($votes)',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         Row(
           children: [
-            const Text('النواب '),
             Expanded(
               child: LinearProgressIndicator(
-                value: parlValue,
-                backgroundColor: Colors.grey.shade300,
-                color: const Color(0xFFD90429),
+                value: percent,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                color: Theme.of(context).colorScheme.primary,
+                minHeight: 6,
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
             const SizedBox(width: 8),
-            Text(parlvote),
+            Text(
+              '${(percent * 100).toStringAsFixed(1)}%',
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
           ],
         ),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //       child: Column(
+        //         children: [
+        //           Text(
+        //             '${(percent * 100).toStringAsFixed(1)}%',
+        //             style: TextStyle(
+        //                 fontSize: 12,
+        //                 fontWeight: FontWeight.bold,
+        //                 color: Theme.of(context).colorScheme.secondary),
+        //           ),
+        //           const SizedBox(height: 4),
+        //           LinearProgressIndicator(
+        //             value: percent,
+        //             backgroundColor: Colors.grey.shade300,
+        //             color: const Color(0xFFD90429),
+        //             minHeight: 8,
+        //             borderRadius: BorderRadius.circular(8),
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }
+
+  // Widget _buildBarGraph(
+  //     String voteResult, String parlvote, BuildContext context) {
+  //   double extractNumericValue(String input) {
+  //     final numericString = input.replaceAll(RegExp(r'[^0-9.]'), '');
+  //     return double.tryParse(numericString) ?? 0.0;
+  //   }
+
+  //   double voteValue = extractNumericValue(voteResult) / 100;
+  //   double parlValue = extractNumericValue(parlvote) / 100;
+
+  //   return Column(
+  //     children: [
+  //       Row(
+  //         children: [
+  //           const Text('المواطنين '),
+  //           Expanded(
+  //             child: LinearProgressIndicator(
+  //               value: voteValue,
+  //               backgroundColor: Colors.grey.shade300,
+  //               color: const Color(0xFFD90429),
+  //             ),
+  //           ),
+  //           const SizedBox(width: 8),
+  //           Text(voteResult),
+  //         ],
+  //       ),
+  //       const SizedBox(height: 8),
+  //       Row(
+  //         children: [
+  //           const Text('النواب '),
+  //           Expanded(
+  //             child: LinearProgressIndicator(
+  //               value: parlValue,
+  //               backgroundColor: Colors.grey.shade300,
+  //               color: const Color(0xFFD90429),
+  //             ),
+  //           ),
+  //           const SizedBox(width: 8),
+  //           Text(parlvote),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildExpandedText(
       String label, String content, BuildContext context) {

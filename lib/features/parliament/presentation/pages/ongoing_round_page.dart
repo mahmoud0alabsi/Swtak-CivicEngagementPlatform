@@ -1,3 +1,4 @@
+import 'package:citizens_voice_app/core/fields_map.dart';
 import 'package:citizens_voice_app/features/parliament/business/entities/parliament_project_entity.dart';
 import 'package:citizens_voice_app/features/parliament/business/entities/parliament_round_entity.dart';
 import 'package:citizens_voice_app/features/parliament/presentation/bloc/ongoing_projects/ongoing_projects_bloc.dart';
@@ -141,6 +142,7 @@ class _ParliamentOngoingRoundPageState
                           child: IssueCard(
                             issueNumber: projects[index].projectNumber,
                             title: projects[index].title,
+                            type: projects[index].type,
                             tags: projects[index].tags,
                             icon: Icons.school_outlined,
                           ),
@@ -162,15 +164,18 @@ class _ParliamentOngoingRoundPageState
 class IssueCard extends StatelessWidget {
   final int issueNumber;
   final String title;
+  final String type;
   final List<String> tags;
   final IconData icon;
 
-  const IssueCard(
-      {super.key,
-      required this.issueNumber,
-      required this.title,
-      required this.tags,
-      required this.icon});
+  const IssueCard({
+    super.key,
+    required this.issueNumber,
+    required this.title,
+    required this.type,
+    required this.tags,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -191,10 +196,14 @@ class IssueCard extends StatelessWidget {
               shape: BoxShape.rectangle,
             ),
             child: Center(
-              child: Icon(
-                icon,
-                color: Theme.of(context).colorScheme.primary,
-                size: 40,
+              child: SvgPicture.asset(
+                getProjectTypeIcon(type),
+                height: 34,
+                width: 34,
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.primary,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),

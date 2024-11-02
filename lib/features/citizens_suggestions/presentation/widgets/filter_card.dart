@@ -1,4 +1,6 @@
+import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Filtercard extends StatelessWidget {
@@ -17,30 +19,44 @@ class Filtercard extends StatelessWidget {
         margin: const EdgeInsets.all(0),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Row(
+          child: Column(
             children: [
-              SvgPicture.asset(
-                'assets/icons/share2.svg',
-                width: 20,
-                height: 20,
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/share2.svg',
+                    width: 20,
+                    height: 20,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "شارك وتصفح اخر الإقتراحات",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: Theme.of(context).colorScheme.primary),
+                    textAlign: TextAlign.end,
+                  ),
+                  const Spacer(),
+                  SvgPicture.asset(
+                    'assets/icons/s2.svg',
+                    width: 20,
+                    height: 20,
+                  ),
+                ],
               ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                "شارك وتصفح اخر المقترحات",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: Theme.of(context).colorScheme.primary),
-                textAlign: TextAlign.end,
-              ),
-              const Spacer(),
-              SvgPicture.asset(
-                'assets/icons/s2.svg',
-                width: 20,
-                height: 20,
-              ),
+              const SizedBox(height: 10),
+              Row(children: [
+                Text(
+                  'أنت الآن تشاهد الإقتراحات في: ${context.read<UserManagerBloc>().user.residence}',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 10,
+                  ),
+                )
+              ]),
             ],
           ),
         ),

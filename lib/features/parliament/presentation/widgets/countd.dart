@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 
 class CountdownWidget extends StatefulWidget {
   final DateTime dateOfPost;
   final int daysOfAvailability;
-  const CountdownWidget({super.key, required this.dateOfPost, required this.daysOfAvailability});
+  const CountdownWidget(
+      {super.key, required this.dateOfPost, required this.daysOfAvailability});
 
   @override
   CountdownWidgetState createState() => CountdownWidgetState();
@@ -17,7 +19,9 @@ class CountdownWidgetState extends State<CountdownWidget> {
   @override
   void initState() {
     super.initState();
-    _timeLeft = widget.dateOfPost.add(Duration(days: widget.daysOfAvailability)).difference(DateTime.now());
+    _timeLeft = widget.dateOfPost
+        .add(Duration(days: widget.daysOfAvailability))
+        .difference(DateTime.now());
     _startTimer();
   }
 
@@ -94,19 +98,71 @@ class CountdownWidgetState extends State<CountdownWidget> {
           const SizedBox(height: 15),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // الساعات
-              buildTimeBox("${_timeLeft.inSeconds.remainder(60)}", "ثانية"),
-              buildSeparator(), // الثواني على اليمين
-              buildTimeBox(
-                  "${_timeLeft.inMinutes.remainder(60)}", "دقيقة"), // الدقائق
-              buildSeparator(),
-              buildTimeBox("${_timeLeft.inHours.remainder(24)}", "ساعة"),
-              buildSeparator(),
-              buildTimeBox("${_timeLeft.inDays}", "يوم"), // الأيام على اليسار
+              Directionality(
+                textDirection: TextDirection.ltr,
+                child: SlideCountdownSeparated(
+                  duration: _timeLeft,
+                  countUp: false,
+                  separatorStyle: TextStyle(
+                    fontSize: 25,
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                  ),
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.secondary,
+                      width: 1.5,
+                    ),
+                  ),
+                  durationTitle: DurationTitle.ar(),
+                  separatorPadding: const EdgeInsets.symmetric(horizontal: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 5,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('ثانية',
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.surfaceContainer)),
+                const SizedBox(width: 50),
+                Text('دقيقة',
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.surfaceContainer)),
+                const SizedBox(width: 50),
+                Text('ساعة',
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.surfaceContainer)),
+                const SizedBox(width: 52),
+                Text(' يوم',
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.surfaceContainer)),
+              ],
+            ),
+          ),
+          const SizedBox(height: 15),
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

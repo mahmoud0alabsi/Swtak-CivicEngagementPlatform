@@ -1,10 +1,9 @@
-import 'package:citizens_voice_app/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:citizens_voice_app/features/parliament/business/entities/parliament_round_entity.dart';
 import 'package:citizens_voice_app/features/parliament/presentation/bloc/ongoing_round/ongoing_round_bloc.dart';
+import 'package:citizens_voice_app/features/parliament/presentation/pages/parlstat.dart';
 import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../widgets/main_header.dart';
 import 'archive_page.dart';
@@ -37,35 +36,23 @@ class _ParliamentMainPageState extends State<ParliamentMainPage> {
             width: 40,
             height: 40,
             child: IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/notfi.svg',
-                height: 20,
-                width: 20,
+              icon: Icon(
+                Icons.bar_chart_rounded,
+                color: Theme.of(context).colorScheme.primary,
+                size: 25,
               ),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => NotificationsPage(),
+                    builder: (context) =>
+                        const ParliamentVotingStatisticsPage(),
                   ),
                 );
               },
             ),
           ),
-          SizedBox(
-            width: 40,
-            height: 40,
-            child: IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/profile.svg',
-                height: 20,
-                width: 20,
-              ),
-              onPressed: () {
-                // Navigator.pop(context);
-              },
-            ),
-          ),
+          const SizedBox(width: 8),
         ],
       ),
       body: BlocConsumer<OngoingRoundBloc, OngoingRoundState>(

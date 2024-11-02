@@ -15,9 +15,9 @@ class OngoingRoundBloc extends Bloc<OngoingRoundEvent, OngoingRoundState> {
   ParliamentRoundEntity _parliamentRoundEntity =
       ParliamentRoundEntity.emptyObj();
   late CustomUserEntity _user;
+
   OngoingRoundBloc() : super(OngoingRoundInitial()) {
     on<LoadOngoingRound>(_onLoadOngoingRound);
-
     add(LoadOngoingRound());
   }
 

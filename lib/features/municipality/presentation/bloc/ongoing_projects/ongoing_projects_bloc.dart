@@ -23,7 +23,6 @@ class OngoingProjectsBloc
     on<LoadOngoingProjects>(_onLoadProjects);
     on<VoteForProject>(_onVoteForProject);
     on<AddCommentToProject>(_onAddCommentToProject);
-
     add(LoadOngoingProjects());
   }
 

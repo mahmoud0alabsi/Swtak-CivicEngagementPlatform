@@ -219,7 +219,7 @@ class MySuggestionsPageState extends State<MySuggestions> {
         },
       ),
       title: Text(
-        'مقترحاتي',
+        'اقتراحاتي',
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 20,

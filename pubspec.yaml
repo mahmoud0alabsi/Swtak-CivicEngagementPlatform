@@ -28,6 +28,9 @@ dependencies:
   google_nav_bar: ^5.0.6
   flutter_svg: ^2.0.10+1
   device_preview: ^1.2.0
+  slide_countdown: ^2.0.0
+  carousel_slider: ^5.0.0
+  syncfusion_flutter_charts: ^27.1.57
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +44,7 @@ flutter:
     - assets/fonts/
     - assets/images/
     - assets/icons/
+    - assets/icons/fields/
 
   fonts:
     - family: IBM Plex Sans Arabic

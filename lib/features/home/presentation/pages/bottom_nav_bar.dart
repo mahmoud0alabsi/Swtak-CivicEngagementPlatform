@@ -141,7 +141,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   duration: const Duration(milliseconds: 300),
                   tabBackgroundColor: Theme.of(context).colorScheme.primary,
                   textStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.surface,
+                    color: Theme.of(context).colorScheme.surfaceContainer,
                     fontSize: 12.0,
                     fontWeight: FontWeight.bold,
                   ),

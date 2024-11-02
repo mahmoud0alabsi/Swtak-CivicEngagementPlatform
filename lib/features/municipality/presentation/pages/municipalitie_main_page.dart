@@ -1,6 +1,10 @@
+import 'package:citizens_voice_app/core/date_formatter.dart';
+import 'package:citizens_voice_app/core/fields_map.dart';
 import 'package:citizens_voice_app/features/municipality/business/entities/municipality_project_entity.dart';
+import 'package:citizens_voice_app/features/municipality/const.dart';
 import 'package:citizens_voice_app/features/municipality/presentation/bloc/archived_projects/archived_projects_bloc.dart';
 import 'package:citizens_voice_app/features/municipality/presentation/bloc/ongoing_projects/ongoing_projects_bloc.dart';
+import 'package:citizens_voice_app/features/municipality/presentation/pages/munstat.dart';
 import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -210,7 +214,7 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
               'مجلس البلدية',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.w900,
+                fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
               textDirection: TextDirection.rtl,
@@ -219,6 +223,29 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
           ),
         ],
       ),
+      actions: [
+        SizedBox(
+          width: 40,
+          height: 40,
+          child: IconButton(
+            icon: Icon(
+              Icons.bar_chart_rounded,
+              color: Theme.of(context).colorScheme.primary,
+              size: 25,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      const MunicipalityVotingStatisticsPage(),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(width: 8),
+      ],
     );
   }
 
@@ -247,9 +274,12 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
           children: [
             SvgPicture.asset(
               svgPath,
-              color: _tabController.index == tabIndex
+              colorFilter: ColorFilter.mode(
+                _tabController.index == tabIndex
                   ? Theme.of(context).colorScheme.surfaceContainer
                   : Theme.of(context).colorScheme.primary,
+                BlendMode.srcIn,
+              ),
               height: 22,
               width: 22,
             ),
@@ -323,70 +353,17 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
         }
         List<MunicipalityProjectEntity> projects =
             context.read<ArchivedProjectsBloc>().archivedProjects;
+        projects.sort((a, b) => b.projectNumber.compareTo(a.projectNumber));
         return ListView.separated(
             padding: const EdgeInsets.only(bottom: 15.0),
             separatorBuilder: (BuildContext context, int index) =>
                 const SizedBox(height: 10),
             itemCount: projects.length,
             itemBuilder: (context, index) {
-              return _buildArchiveCard(
-                  projects[index], Icons.school_outlined);
+              return _buildArchiveCard(projects[index], Icons.school_outlined);
             });
       },
     );
-    // return ListView(
-    //   children: [
-    //     _buildArchiveCard(
-    //         1,
-    //         'تعديل قانون التعليم العام',
-    //         'اقتراح لزيادة مخصصات التعليم وتحسين البنية التحتية للمدارس في المناطق النائية.',
-    //         'الإثنين 16-09-2024',
-    //         '60% لا أوافق',
-    //         'لا أوافق',
-    //         Icons.school_outlined),
-    //     // _buildArchiveCard(
-    //     //     2,
-    //     //     'قانون دعم رواد الأعمال والشركات الناشئة',
-    //     //     'اقتراح لتقديم دعم مالي للشركات الناشئة وتخفيف الضرائب لمدة 5 سنوات.',
-    //     //     'الثلاثاء 17-09-2024',
-    //     //     '77% أوافق',
-    //     //     'أوافق',
-    //     //     Icons.business_center_outlined),
-    //     // _buildArchiveCard(
-    //     //     3,
-    //     //     'مشروع قانون تنظيم التجارة الإلكترونية',
-    //     //     'اقتراح لوضع قوانين جديدة تضمن حقوق المستهلكين وتعزيز الأمن الإلكتروني.',
-    //     //     'الأربعاء 18-09-2024',
-    //     //     '54% أوافق',
-    //     //     'لا أوافق',
-    //     //     Icons.local_gas_station_outlined),
-    //     // _buildArchiveCard(
-    //     //     4,
-    //     //     'تعديل قانون التعليم العام',
-    //     //     'اقتراح لزيادة مخصصات التعليم وتحسين البنية التحتية للمدارس في المناطق النائية.',
-    //     //     'الإثنين 16-09-2024',
-    //     //     '60% أوافق',
-    //     //     ' اوافق',
-    //     //     Icons.school_outlined),
-    //     // _buildArchiveCard(
-    //     //     5,
-    //     //     'قانون دعم رواد الأعمال والشركات الناشئة',
-    //     //     'اقتراح لتقديم دعم مالي للشركات الناشئة وتخفيف الضرائب لمدة 5 سنوات.',
-    //     //     'الثلاثاء 17-09-2024',
-    //     //     '93% أوافق',
-    //     //     ' اوافق',
-    //     //     Icons.park_outlined),
-    //     // _buildArchiveCard(
-    //     //     6,
-    //     //     'مشروع قانون تنظيم التجارة الإلكترونية',
-    //     //     'اقتراح لوضع قوانين جديدة تضمن حقوق المستهلكين وتعزيز الأمن الإلكتروني.',
-    //     //     'الأربعاء 18-09-2024',
-    //     //     '52% أوافق',
-    //     //     'لا اوافق',
-    //     //     Icons.local_airport_outlined)
-
-    //   ],
-    // );
   }
 
   // Issue Card for TabBarView (clickable)
@@ -426,7 +403,7 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  _getRemainingTimeText(
+                  getRemainingTimeText(
                     project.dateOfEnd.difference(DateTime.now()),
                   ),
                   style: TextStyle(
@@ -448,10 +425,14 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
                     shape: BoxShape.rectangle,
                   ),
                   child: Center(
-                    child: Icon(
-                      icon,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 40,
+                    child: SvgPicture.asset(
+                      getProjectTypeIcon(project.type),
+                      height: 36,
+                      width: 36,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.primary,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 ),
@@ -500,29 +481,6 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
     );
   }
 
-// Helper method to format remaining time as a string
-  String _getRemainingTimeText(Duration remainingTime) {
-    if (remainingTime.inDays > 2 && remainingTime.inDays < 11) {
-      return 'متبقي ${remainingTime.inDays} أيام';
-    } else if (remainingTime.inDays >= 11) {
-      return 'متبقي ${remainingTime.inDays} يوم';
-    } else if (remainingTime.inDays == 2) {
-      return 'متبقي يومان';
-    } else if (remainingTime.inDays == 1) {
-      return 'متبقي يوم واحد';
-    } else if (remainingTime.inHours > 1) {
-      return '${remainingTime.inHours} ساعة';
-    } else if (remainingTime.inHours == 1) {
-      return 'ساعة واحدة';
-    } else if (remainingTime.inMinutes > 1) {
-      return '${remainingTime.inMinutes} دقيقة';
-    } else if (remainingTime.inMinutes == 1) {
-      return 'دقيقة واحدة';
-    } else {
-      return 'انتهت المدة';
-    }
-  }
-
   // Archive Card with expandable details
   Widget _buildArchiveCard(MunicipalityProjectEntity project, IconData icon) {
     return GestureDetector(
@@ -534,7 +492,6 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
         });
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 15),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainer,
@@ -547,9 +504,16 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(icon,
-                    color: Theme.of(context).colorScheme.primary, size: 45),
-                const SizedBox(width: 10),
+                SvgPicture.asset(
+                  getProjectTypeIcon(project.type),
+                  height: 34,
+                  width: 34,
+                  colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.primary,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -558,10 +522,11 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
                       Text(
                         'مشروع رقم ${project.projectNumber}',
                         style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 10,
                             fontWeight: FontWeight.w500,
                             color: Theme.of(context).colorScheme.secondary),
                       ),
+                      const SizedBox(height: 4),
                       Text(
                         project.title,
                         style: TextStyle(
@@ -578,12 +543,26 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
               const SizedBox(height: 10),
               _buildExpandedText('تفاصيل التصويت: ', project.details, context),
               const SizedBox(height: 9),
-              _buildExpandedText(
-                  'التاريخ: ', project.dateOfPost.toString(), context),
+              _buildExpandedText('التاريخ: ',
+                  getDateFormattedWithYear(project.dateOfPost), context),
               const SizedBox(height: 9),
-              _buildExpandedText('نتيجة تصويتك: ', project.userVote, context),
-              const SizedBox(height: 9),
-              _buildBarGraph('', context),
+              if (project.userVote.isNotEmpty) ...[
+                _buildExpandedText('نتيجة تصويتك: ', project.userVote, context),
+                const SizedBox(height: 9),
+              ],
+              _buildBarGraph(
+                  project.voting[kAgree] > project.voting[kDisagree]
+                      ? kAgreeAr
+                      : kDisagreeAr,
+                  project.voting[kAgree] > project.voting[kDisagree]
+                      ? project.voting[kAgree] /
+                          (project.voting[kAgree] + project.voting[kDisagree])
+                      : project.voting[kDisagree] /
+                          (project.voting[kAgree] + project.voting[kDisagree]),
+                  project.voting[kAgree] > project.voting[kDisagree]
+                      ? project.voting[kAgree]
+                      : project.voting[kDisagree],
+                  context),
               const SizedBox(height: 10),
             ],
           ],
@@ -603,13 +582,18 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
           text: label,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 14,
+            fontSize: 12,
             color: Theme.of(context).colorScheme.secondary,
+            fontFamily: 'IBM Plex Sans Arabic',
           ),
           children: [
             TextSpan(
               text: content,
-              style: const TextStyle(fontWeight: FontWeight.normal),
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+                fontFamily: 'IBM Plex Sans Arabic',
+              ),
             ),
           ],
         ),
@@ -618,36 +602,53 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
   }
 
   // Method to display a simple bar graph
-  Widget _buildBarGraph(String voteResult, BuildContext context) {
-    double extractNumericValue(String input) {
-      final numericString = input.replaceAll(RegExp(r'[^0-9.]'), '');
-      return double.tryParse(numericString) ?? 0.0;
-    }
-
-    double voteValue = extractNumericValue(voteResult) / 100;
-
+  Widget _buildBarGraph(
+      String voteResult, double percent, int votes, BuildContext context) {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('تصويت المواطنين: ',
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary)),
+            Text(
+              'تصويت المواطنين: ',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+            Text(
+              '$voteResult ($votes)',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        Row(
+          children: [
             Expanded(
               child: LinearProgressIndicator(
-                value: voteValue,
-                backgroundColor: Colors.grey.shade300,
-                color: const Color(0xFFD90429),
+                value: percent,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                color: Theme.of(context).colorScheme.primary,
+                minHeight: 6,
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
             const SizedBox(width: 8),
-            Text(voteResult), // Display percentage as is
+            Text(
+              '${(percent * 100).toStringAsFixed(1)}%',
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
           ],
         ),
-        const SizedBox(height: 8),
       ],
     );
   }

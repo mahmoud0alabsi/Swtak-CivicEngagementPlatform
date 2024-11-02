@@ -1,5 +1,6 @@
 // import 'package:citizens_voice_app/dummydata/data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class NotificationsPage extends StatelessWidget {
   NotificationsPage({super.key});
@@ -21,18 +22,6 @@ class NotificationsPage extends StatelessWidget {
       title: 'تم تحديث البيانات',
       info: 'تم تحديث البيانات الخاصة بك بنجاح',
       dateTime: DateTime.now().subtract(const Duration(hours: 3)),
-      icon: const Icon(Icons.info),
-    ),
-    NotificationData(
-      title: 'تم تحديث البيانات',
-      info: 'تم تحديث البيانات الخاصة بك بنجاح',
-      dateTime: DateTime.now().subtract(const Duration(hours: 4)),
-      icon: const Icon(Icons.info),
-    ),
-    NotificationData(
-      title: 'تم تحديث البيانات',
-      info: 'تم تحديث البيانات الخاصة بك بنجاح',
-      dateTime: DateTime.now().subtract(const Duration(hours: 5)),
       icon: const Icon(Icons.info),
     ),
   ];
@@ -73,7 +62,12 @@ class NotificationsPage extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 5),
             child: ListTile(
               contentPadding: const EdgeInsets.all(10),
-              leading: notification.icon,
+              leading: //notification.icon,
+                  SvgPicture.asset(
+                'assets/icons/vote_now.svg',
+                width: 20,
+                height: 22,
+              ),
               title: Text(
                 notification.title,
                 style: const TextStyle(

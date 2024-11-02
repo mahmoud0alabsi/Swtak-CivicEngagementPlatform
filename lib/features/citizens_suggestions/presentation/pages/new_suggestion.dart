@@ -103,7 +103,7 @@ class NewSuggestionPageState extends State<NewSuggestion> {
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   label: const Text(
-                    'نوع المقترح',
+                    'نوع الإقتراح',
                     style: TextStyle(
                       color: Color.fromARGB(255, 123, 123, 123),
                       fontSize: 15,
@@ -142,7 +142,7 @@ class NewSuggestionPageState extends State<NewSuggestion> {
                       ? municipalityForm(screenWidth, context)
                       : Center(
                           child: Text(
-                            'الرجاء اختيار نوع المقترح',
+                            'الرجاء اختيار نوع الإقتراح',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary,
                               fontSize: 16,
