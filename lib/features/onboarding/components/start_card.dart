@@ -41,17 +41,20 @@ class _StartCardState extends State<StartCard> {
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: Text(
-              "اطمَئِنْ",
+              "استبيان",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
                   fontSize: 26,
                   fontWeight: FontWeight.bold),
             ),
           ),
+          const SizedBox(
+            height: 20,
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 64, right: 64),
             child: Text(
-              "اطمَئِنْ هو تطبيق يقدم حلول صحية مبتكرة لإنشاء أسلوب تواصل ومتابعة مستمرة لحالة المريض من قبل عائلته ومن خلال الكادر الطبي المسؤول",
+              '"أفضل طريقة لإيصال صوتكم هو من خلال المشاركة في صنع القرار من خلال القنوات الدستورية والبرلمان"',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.secondary,
@@ -60,7 +63,22 @@ class _StartCardState extends State<StartCard> {
             ),
           ),
           const SizedBox(
-            height: 48,
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 64, right: 64),
+            child: Text(
+              'ولي العهد، 14 اكتوبر 2021 \n مؤتمر تمكين الشباب',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
           ),
           Padding(
             padding: EdgeInsets.only(

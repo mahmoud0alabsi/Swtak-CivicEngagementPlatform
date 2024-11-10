@@ -22,6 +22,7 @@ class MunicipalitySuggestionsBloc
         _onAddCommentToMunicipalitySuggestion);
     on<GetMyMunicipalitySuggestions>(_onGetMyMunicipalitySuggestions);
     on<PostMunicipalitySuggestion>(_onPostMunicipalitySuggestion);
+    on<FilterMunicipalitySuggestions>(_onFilterMunicipalitySuggestions);
 
     add(LoadMunicipalitySuggestions());
   }
@@ -95,8 +96,8 @@ class MunicipalitySuggestionsBloc
     }
   }
 
-  void _onGetMyMunicipalitySuggestions(
-      GetMyMunicipalitySuggestions event, Emitter<MunicipalitySuggestionsState> emit) {
+  void _onGetMyMunicipalitySuggestions(GetMyMunicipalitySuggestions event,
+      Emitter<MunicipalitySuggestionsState> emit) {
     emit(MunicipalityMySuggestionsLoading());
     try {
       mySuggestions = suggestions
@@ -148,6 +149,27 @@ class MunicipalitySuggestionsBloc
     } catch (e) {
       emit(MunicipalitySuggestionPostError(
           'حدث خطأ عند نشر المقترح، يرجى المحاولة مرة أخرى'));
+    }
+  }
+
+  void _onFilterMunicipalitySuggestions(FilterMunicipalitySuggestions event,
+      Emitter<MunicipalitySuggestionsState> emit) {
+    emit(MunicipalitySuggestionsLoading());
+    try {
+      if (event.governorate == '') {
+        emit(FilteredMunicipalitySuggestions(suggestions));
+        return;
+      }
+      List<MunicipalitySuggestionEntity> filteredSuggestions = suggestions
+          .where((suggestion) =>
+              suggestion.governorate == event.governorate &&
+              suggestion.area == event.area &&
+              suggestion.municipality == event.municipality)
+          .toList();
+      emit(FilteredMunicipalitySuggestions(filteredSuggestions));
+    } catch (e) {
+      emit(MunicipalitySuggestionsError(
+          'حدث خطأ عند تحميل المقترحات في قسم البلدية، يرجى المحاولة مرة أخرى'));
     }
   }
 }

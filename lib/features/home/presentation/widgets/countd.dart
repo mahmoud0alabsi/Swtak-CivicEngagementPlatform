@@ -91,15 +91,14 @@ class _CountState extends State<Count1> {
                         Directionality(
                           textDirection: TextDirection.ltr,
                           child: SlideCountdownSeparated(
-                            
                             duration: duration,
                             countUp: false,
                             separatorStyle: TextStyle(
                               fontSize: 25,
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).colorScheme.primary,
                             ),

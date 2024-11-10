@@ -160,7 +160,6 @@ class _ParliamentMainPageState extends State<ParliamentMainPage> {
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'IBM Plex Sans Arabic',
-                            decoration: TextDecoration.underline,
                           ),
                         ),
                         TextSpan(

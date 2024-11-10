@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 class CenterNextButton extends StatelessWidget {
   final AnimationController animationController;
   final VoidCallback onNextClick;
+  final VoidCallback onCreateAccountClick;
   const CenterNextButton(
       {super.key,
       required this.animationController,
-      required this.onNextClick});
+      required this.onNextClick,
+      required this.onCreateAccountClick});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class CenterNextButton extends StatelessWidget {
 
     return Padding(
       padding:
-          EdgeInsets.only(bottom: 16 + MediaQuery.of(context).padding.bottom),
+          EdgeInsets.only(bottom: 24 + MediaQuery.of(context).padding.bottom),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,7 +70,9 @@ class CenterNextButton extends StatelessWidget {
               animation: animationController,
               builder: (context, child) => Padding(
                 padding: EdgeInsets.only(
-                    bottom: 38 - (38 * signUpMoveAnimation.value)),
+                    bottom: 38 - (38 * signUpMoveAnimation.value) > 0
+                        ? 38 - (38 * signUpMoveAnimation.value)
+                        : 0),
                 child: Container(
                   height: 58,
                   width: 58 + (200 * signUpMoveAnimation.value),
@@ -140,6 +144,66 @@ class CenterNextButton extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 10),
+          // SlideTransition(
+          //   position: topMoveAnimation,
+          //   child: AnimatedBuilder(
+          //     animation: animationController,
+          //     builder: (context, child) => Padding(
+          //       padding: EdgeInsets.only(
+          //           bottom: 38 - (38 * signUpMoveAnimation.value)),
+          //       child: PageTransitionSwitcher(
+          //         duration: const Duration(milliseconds: 480),
+          //         reverse: signUpMoveAnimation.value < 0.7,
+          //         transitionBuilder: (
+          //           Widget child,
+          //           Animation<double> animation,
+          //           Animation<double> secondaryAnimation,
+          //         ) {
+          //           return SharedAxisTransition(
+          //             fillColor: const Color.fromARGB(0, 72, 93, 223),
+          //             animation: animation,
+          //             secondaryAnimation: secondaryAnimation,
+          //             transitionType: SharedAxisTransitionType.vertical,
+          //             child: child,
+          //           );
+          //         },
+          //         child: signUpMoveAnimation.value > 0.7
+          //             ? InkWell(
+          //                 key: const ValueKey('Sign Up button'),
+          //                 onTap: onCreateAccountClick,
+          //                 child: Padding(
+          //                   padding:
+          //                       const EdgeInsets.only(left: 16.0, right: 16.0),
+          //                   child: Row(
+          //                     mainAxisAlignment: MainAxisAlignment.center,
+          //                     children: [
+          //                       Text(
+          //                         'إنشاء حساب',
+          //                         style: TextStyle(
+          //                           color:
+          //                               Theme.of(context).colorScheme.secondary,
+          //                           fontSize: 16,
+          //                           fontWeight: FontWeight.w500,
+          //                         ),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               )
+          //             : InkWell(
+          //                 key: const ValueKey('next button'),
+          //                 onTap: onCreateAccountClick,
+          //                 child: const Padding(
+          //                   padding: EdgeInsets.all(16.0),
+          //                   child: Icon(Icons.arrow_forward_ios_rounded,
+          //                       color: Colors.white),
+          //                 ),
+          //               ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -150,8 +214,7 @@ class CenterNextButton extends StatelessWidget {
 
     if (animationController.value >= 0.9) {
       selectedIndex = 4;
-    }
-    else if (animationController.value >= 0.7) {
+    } else if (animationController.value >= 0.7) {
       selectedIndex = 3;
     } else if (animationController.value >= 0.5) {
       selectedIndex = 2;

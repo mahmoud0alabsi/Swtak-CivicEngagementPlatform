@@ -281,7 +281,7 @@ class IssueCard extends StatelessWidget {
             ),
             if (isExpanded) ...[
               const SizedBox(height: 10),
-              _buildExpandedText('تفاصيل التصويت: ', voteDetails, context),
+              _buildExpandedText('تفاصيل المشروع: ', voteDetails, context),
               const SizedBox(height: 9),
               _buildExpandedText(
                   'التاريخ: ', getDateFormattedWithYear(voteDate), context),
@@ -291,17 +291,18 @@ class IssueCard extends StatelessWidget {
                 const SizedBox(height: 9),
               ],
               _buildBarGraph(
-                  voting[kAgree] > voting[kDisagree] ? kAgreeAr : kDisagreeAr,
-                  voting[kAgree] > voting[kDisagree]
+                  'تصويت المواطنين',
+                  voting[kAgree] >= voting[kDisagree] ? kAgreeAr : kDisagreeAr,
+                  voting[kAgree] >= voting[kDisagree]
                       ? voting[kAgree] / (voting[kAgree] + voting[kDisagree])
                       : voting[kDisagree] /
                           (voting[kAgree] + voting[kDisagree]),
-                  voting[kAgree] > voting[kDisagree]
+                  voting[kAgree] >= voting[kDisagree]
                       ? voting[kAgree]
                       : voting[kDisagree],
                   context),
               const SizedBox(height: 10),
-              _buildBarGraph(parlvote, 0.74, 70, context),
+              _buildBarGraph('تصويت النواب', parlvote, 0.55, 78, context),
               const SizedBox(height: 10),
             ],
           ],
@@ -310,15 +311,15 @@ class IssueCard extends StatelessWidget {
     );
   }
 
-  Widget _buildBarGraph(
-      String voteResult, double percent, int votes, BuildContext context) {
+  Widget _buildBarGraph(String title, String voteResult, double percent,
+      int votes, BuildContext context) {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              'تصويت المواطنين: ',
+              '$title: ',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -329,7 +330,7 @@ class IssueCard extends StatelessWidget {
               '$voteResult ($votes)',
               style: TextStyle(
                 fontSize: 12,
-                fontWeight: FontWeight.normal,
+                fontWeight: FontWeight.w500,
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),
@@ -433,30 +434,27 @@ class IssueCard extends StatelessWidget {
 
   Widget _buildExpandedText(
       String label, String content, BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: RichText(
-        textAlign: TextAlign.right,
-        text: TextSpan(
-          text: label,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 12,
-            color: Theme.of(context).colorScheme.secondary,
-            fontFamily: 'IBM Plex Sans Arabic',
-          ),
-          children: [
-            TextSpan(
-              text: content,
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: 12,
-                color: Theme.of(context).colorScheme.secondary,
-                fontFamily: 'IBM Plex Sans Arabic',
-              ),
-            ),
-          ],
+    return RichText(
+      textAlign: TextAlign.right,
+      text: TextSpan(
+        text: label,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
+          color: Theme.of(context).colorScheme.secondary,
+          fontFamily: 'IBM Plex Sans Arabic',
         ),
+        children: [
+          TextSpan(
+            text: content,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.secondary,
+              fontFamily: 'IBM Plex Sans Arabic',
+            ),
+          ),
+        ],
       ),
     );
   }

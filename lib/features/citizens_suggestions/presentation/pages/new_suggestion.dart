@@ -508,12 +508,18 @@ class NewSuggestionPageState extends State<NewSuggestion> {
             });
           }, Icons.location_on_outlined),
           const SizedBox(height: 20),
-          _buildDropdown('البلدية', areas[selectedCity] ?? [], selectedArea,
-              (value) {
-            setState(() {
-              selectedArea = value;
-            });
-          }, Icons.location_on_outlined, autoSelectIfOne: true),
+          _buildDropdown(
+            'البلدية',
+            areas[selectedCity] ?? [],
+            selectedArea,
+            (value) {
+              setState(() {
+                selectedArea = value;
+              });
+            },
+            Icons.location_on_outlined,
+            autoSelectIfOne: true,
+          ),
         ],
       ),
     );

@@ -41,3 +41,10 @@ final class MunicipalitySuggestionPostError
 
   MunicipalitySuggestionPostError(this.message);
 }
+
+final class FilteredMunicipalitySuggestions
+    extends MunicipalitySuggestionsState {
+  final List<MunicipalitySuggestionEntity> suggestions;
+
+  FilteredMunicipalitySuggestions(this.suggestions);
+}

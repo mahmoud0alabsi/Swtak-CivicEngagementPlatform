@@ -114,13 +114,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+                topLeft: Radius.circular(0),
+                topRight: Radius.circular(0),
               ),
               boxShadow: [
                 BoxShadow(
                   blurRadius: 10,
-                  color: Color.fromRGBO(7, 33, 58, 0.1),
+                  color: Color.fromRGBO(7, 33, 58, 0),
                 ),
               ],
             ),
@@ -130,8 +130,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
                 child: GNav(
                   curve: Curves.easeOutExpo,
-                  rippleColor: const Color.fromRGBO(117, 194, 246, 1),
-                  hoverColor: const Color.fromRGBO(117, 194, 246, 1),
+                  backgroundColor: const Color.fromRGBO(117, 194, 246, 0),
+                  rippleColor: const Color.fromRGBO(117, 194, 246, 0),
+                  hoverColor: const Color.fromRGBO(117, 194, 246, 0),
                   haptic: true,
                   tabBorderRadius: 15,
                   gap: 3,

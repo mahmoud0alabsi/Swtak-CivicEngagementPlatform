@@ -1,3 +1,4 @@
+import 'package:citizens_voice_app/core/date_formatter.dart';
 import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
 import 'package:citizens_voice_app/features/municipality/business/entities/municipality_project_entity.dart';
 import 'package:citizens_voice_app/features/municipality/const.dart';
@@ -158,24 +159,25 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
-            // const SizedBox(height: 16),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(
-            //     horizontal: 8.0,
-            //   ),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     mainAxisSize: MainAxisSize.max,
-            //     children: [
-            //       _buildInfoText(context, "الرقم: $number", TextAlign.start),
-            //       // const Spacer(),
-            //       // _buildInfoText(
-            //       //     context, responsibleInstitution, TextAlign.end),
-            //       // const Spacer(),
-            //       // _buildInfoText(context, dataOfPost),
-            //     ],
-            //   ),
-            // ),
+            const SizedBox(height: 14),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  _buildInfoText(context, "الرقم: ${_project.projectNumber}",
+                      TextAlign.start),
+                  const Spacer(),
+                  _buildInfoText(
+                      context,
+                      getSuggestionDateFormatted(_project.dateOfPost),
+                      TextAlign.end),
+                ],
+              ),
+            ),
             const Divider(
               color: Color.fromARGB(255, 236, 233, 233),
               thickness: 1,
@@ -241,8 +243,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
               "اختر الخيار المناسب أدناه للتعبير عن رأيك ومشاركتك موقفك حول هذه القضية:",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.secondary,
-                fontSize: 10,
-                fontWeight: FontWeight.w500,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 15),
@@ -329,14 +331,14 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Text(
-                "لقد قمت بالتصويت بالفعل على هذه القضية",
+                "لقد قمت بالتصويت بالفعل على هذا المشروع",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
                   fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 10),
               RichText(
                 textAlign: TextAlign.start,
                 text: TextSpan(
@@ -344,7 +346,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                     TextSpan(
                       text: 'تصويتك: ',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.secondary,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'IBM Plex Sans Arabic',
@@ -354,7 +356,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                       text:
                           _project.userVote == kAgree ? kAgreeAr : kDisagreeAr,
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.secondary,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'IBM Plex Sans Arabic',
@@ -363,10 +365,25 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                   ],
                 ),
               ),
+              const SizedBox(height: 10),
+              // Text(
+              //   'المواطنين: ${_project.voting[kAgree]} موافقين، ${_project.voting[kDisagree]} غير موافقين',
+              // ),
+              _buildBarGraph(
+                  _project.voting[kAgree] >= _project.voting[kDisagree]
+                      ? kAgreeAr
+                      : kDisagreeAr,
+                  _project.voting[kAgree] >= _project.voting[kDisagree]
+                      ? _project.voting[kAgree] /
+                          (_project.voting[kAgree] + _project.voting[kDisagree])
+                      : _project.voting[kDisagree] /
+                          (_project.voting[kAgree] +
+                              _project.voting[kDisagree]),
+                  _project.voting[kAgree] >= _project.voting[kDisagree]
+                      ? _project.voting[kAgree]
+                      : _project.voting[kDisagree],
+                  context),
               const SizedBox(height: 15),
-              Text(
-                'المواطنين: ${_project.voting[kAgree]} موافقين، ${_project.voting[kDisagree]} غير موافقين',
-              ),
             ],
           ),
         ),
@@ -466,11 +483,11 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "لقد قمت بالتعليق بالفعل على هذه القضية، التعليق الخاص بك:",
+                          "لقد قمت بالتعليق بالفعل على هذا المشروع، التعليق الخاص بك:",
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -495,8 +512,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           "يمكنك كتابة تعليق وإرساله للجهة المعنية في حال كان لديك مقترح لهذه القضية:",
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -614,5 +631,56 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
       },
     );
     // Comment section ends here
+  }
+
+  Widget _buildBarGraph(
+      String voteResult, double percent, int votes, BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'تصويت المواطنين: ',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+            Text(
+              '$voteResult ($votes)',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        Row(
+          children: [
+            Expanded(
+              child: LinearProgressIndicator(
+                value: percent,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                color: Theme.of(context).colorScheme.primary,
+                minHeight: 6,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              '${(percent * 100).toStringAsFixed(1)}%',
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }

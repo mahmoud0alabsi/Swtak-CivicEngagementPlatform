@@ -58,7 +58,7 @@ class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
   @override
   Stream<CustomUserModel?> get firebaseAuthUser {
     return _firebaseAuth.userChanges().map((firebaseUser) {
-      if (firebaseUser == null) {
+      if (firebaseUser == null || firebaseUser.uid.isEmpty) {
         return null;
       }
       return CustomUserModel.fromFirebaseAuthUser(firebaseUser);

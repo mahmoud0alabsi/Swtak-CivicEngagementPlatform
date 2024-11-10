@@ -136,6 +136,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
       child: Padding(
         padding: const EdgeInsets.all(14.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               title,
@@ -167,21 +168,14 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
               color: Color.fromARGB(255, 236, 233, 233),
               thickness: 1,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 8,
-                left: 8,
-                right: 8,
+            Text(
+              details.replaceAll('\\n', '\n'),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 14,
+                height: 1.5,
               ),
-              child: Text(
-                details.replaceAll('\\n', '\n'),
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 14,
-                  height: 1.5,
-                ),
-                textAlign: TextAlign.start,
-              ),
+              textAlign: TextAlign.start,
             ),
           ],
         ),
@@ -315,44 +309,39 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Text(
-                "لقد قمت بالتصويت بالفعل على هذه القضية",
+                "لقد قمت بالتصويت بالفعل على هذا المشروع",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
                   fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+              const SizedBox(height: 10),
+              if (_project.userVote.isNotEmpty) ...[
+                _buildExpandedText(
+                    'نتيجة تصويتك: ',
+                    _project.userVote == kAgree ? kAgreeAr : kDisagreeAr,
+                    context),
+                const SizedBox(height: 10),
+              ],
+              _buildBarGraph(
+                  'تصويت المواطنين',
+                  _project.voting[kAgree] >= _project.voting[kDisagree]
+                      ? kAgreeAr
+                      : kDisagreeAr,
+                  _project.voting[kAgree] >= _project.voting[kDisagree]
+                      ? _project.voting[kAgree] /
+                          (_project.voting[kAgree] + _project.voting[kDisagree])
+                      : _project.voting[kDisagree] /
+                          (_project.voting[kAgree] +
+                              _project.voting[kDisagree]),
+                  _project.voting[kAgree] >= _project.voting[kDisagree]
+                      ? _project.voting[kAgree]
+                      : _project.voting[kDisagree],
+                  context),
+              const SizedBox(height: 10),
+              _buildBarGraph('تصويت النواب', 'أوافق', 0.74, 70, context),
               const SizedBox(height: 15),
-              RichText(
-                textAlign: TextAlign.start,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'تصويتك: ',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'IBM Plex Sans Arabic',
-                      ),
-                    ),
-                    TextSpan(
-                      text:
-                          _project.userVote == kAgree ? kAgreeAr : kDisagreeAr,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'IBM Plex Sans Arabic',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 15),
-              Text(
-                'المواطنين: ${_project.voting[kAgree]} موافقين، ${_project.voting[kDisagree]} غير موافقين',
-              ),
             ],
           ),
         ),
@@ -423,6 +412,109 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildBarGraph(String title, String voteResult, double percent,
+      int votes, BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              '$title: ',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+            Text(
+              '$voteResult ($votes)',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        Row(
+          children: [
+            Expanded(
+              child: LinearProgressIndicator(
+                value: percent,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                color: Theme.of(context).colorScheme.primary,
+                minHeight: 6,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              '${(percent * 100).toStringAsFixed(1)}%',
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ],
+        ),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //       child: Column(
+        //         children: [
+        //           Text(
+        //             '${(percent * 100).toStringAsFixed(1)}%',
+        //             style: TextStyle(
+        //                 fontSize: 12,
+        //                 fontWeight: FontWeight.bold,
+        //                 color: Theme.of(context).colorScheme.secondary),
+        //           ),
+        //           const SizedBox(height: 4),
+        //           LinearProgressIndicator(
+        //             value: percent,
+        //             backgroundColor: Colors.grey.shade300,
+        //             color: const Color(0xFFD90429),
+        //             minHeight: 8,
+        //             borderRadius: BorderRadius.circular(8),
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   ],
+        // ),
+      ],
+    );
+  }
+
+  Widget _buildExpandedText(
+      String label, String content, BuildContext context) {
+    return RichText(
+      textAlign: TextAlign.right,
+      text: TextSpan(
+        text: label,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
+          color: Theme.of(context).colorScheme.secondary,
+          fontFamily: 'IBM Plex Sans Arabic',
+        ),
+        children: [
+          TextSpan(
+            text: content,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.secondary,
+              fontFamily: 'IBM Plex Sans Arabic',
+            ),
+          ),
+        ],
       ),
     );
   }

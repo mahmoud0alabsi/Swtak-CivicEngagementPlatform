@@ -1,13 +1,23 @@
+import 'package:citizens_voice_app/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:citizens_voice_app/features/auth/presentation/bloc/logout/logout_bloc.dart';
+import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'about.dart';
 import 'help.dart';
 import 'privacy.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +76,7 @@ class ProfileScreen extends StatelessWidget {
                       ), // Optional, removes default background
                     ),
                     title: Text(
-                      "محمد رامي خالد ارناؤوط",
+                      context.read<UserManagerBloc>().user.fullName,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.surface,
                         fontSize: 16,
@@ -74,7 +84,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     subtitle: Text(
-                      "2000666666",
+                      context.read<UserManagerBloc>().user.nationalId,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.surface,
                         fontSize: 13,
@@ -364,7 +374,9 @@ class ProfileScreen extends StatelessWidget {
                     size: 20,
                   ),
                   onTap: () {
-                    // submitDialog(context);
+                    // context.read<LogoutBloc>().add(Logout());
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pop(context);
                   },
                 ),
               ),

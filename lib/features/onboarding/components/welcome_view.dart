@@ -74,7 +74,7 @@ class WelcomeView extends StatelessWidget {
               SlideTransition(
                 position: welcomeFirstHalfAnimation,
                 child: Text(
-                  "توثيق الإجراءات الطبية",
+                  "أهلاً بك...\nقرار اليوم يبدأ من صوتك",
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontSize: 26,
@@ -85,7 +85,7 @@ class WelcomeView extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     left: 64, right: 64, top: 16, bottom: 16),
                 child: Text(
-                  "حلول عملية لتسهيل توثيق الإجراءات الطبية المقدمة للمريض ومشاركتها مع الكوادر الطبية المعنية بمتابعة حالة المريض وتقديم الرعاية والخدمات اللازمة .",
+                  "صوت واحد يمكن أن يصنع الفرق. اختر، عبّر، وشارك في صنع المستقبل",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,

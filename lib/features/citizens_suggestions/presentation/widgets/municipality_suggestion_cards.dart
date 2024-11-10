@@ -195,7 +195,8 @@ class MunicipalitySuggestionCardState
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MunicipalitySuggestionDetailsPage(
+                            builder: (context) =>
+                                MunicipalitySuggestionDetailsPage(
                               bloc: bloc,
                               suggestion: suggestion,
                             ),

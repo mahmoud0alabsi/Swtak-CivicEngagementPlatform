@@ -28,10 +28,8 @@ Widget buildMunicipalityTab(BuildContext context) {
       List<MunicipalitySuggestionEntity> suggestions =
           context.read<MunicipalitySuggestionsBloc>().suggestions;
 
-      if (suggestions.isEmpty) {
-        return const Center(
-          child: Text('لا يوجد اقتراحات بعد'),
-        );
+      if (state is FilteredMunicipalitySuggestions) {
+        suggestions = state.suggestions;
       }
 
       // sort suggestions by upvotes count
@@ -39,20 +37,35 @@ Widget buildMunicipalityTab(BuildContext context) {
 
       return ListView(
         children: [
-          const Filtercard(),
-          const SizedBox(height: 12),
-          ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
-            itemCount: suggestions.length,
-            itemBuilder: (context, index) {
-              return MunicipalitySuggestionCard(
-                bloc: context.read<MunicipalitySuggestionsBloc>(),
-                suggestion: suggestions[index],
-              );
-            },
+          Filtercard(
+            type: 'municipality',
+            bloc: context.read<MunicipalitySuggestionsBloc>(),
           ),
+          const SizedBox(height: 12),
+          suggestions.isEmpty
+              ? Center(
+                  child: Text(
+                    'لا يوجد اقتراحات',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                )
+              : ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 12),
+                  itemCount: suggestions.length,
+                  itemBuilder: (context, index) {
+                    return MunicipalitySuggestionCard(
+                      bloc: context.read<MunicipalitySuggestionsBloc>(),
+                      suggestion: suggestions[index],
+                    );
+                  },
+                ),
           const SizedBox(height: 16),
         ],
       );

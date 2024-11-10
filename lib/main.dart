@@ -1,4 +1,5 @@
 import 'package:citizens_voice_app/features/auth/presentation/bloc/login/login_bloc.dart';
+import 'package:citizens_voice_app/features/auth/presentation/bloc/logout/logout_bloc.dart';
 import 'package:citizens_voice_app/features/auth/presentation/bloc/otp/otp_bloc.dart';
 import 'package:citizens_voice_app/features/auth/presentation/bloc/registration/registration_bloc.dart';
 import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
@@ -32,6 +33,9 @@ Future<void> main() async {
         ),
         BlocProvider(
           create: (context) => LoginBloc(),
+        ),
+        BlocProvider(
+          create: (context) => LogoutBloc(),
         ),
         BlocProvider(
           create: (context) => RegistrationBloc(),

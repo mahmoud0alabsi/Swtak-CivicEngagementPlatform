@@ -70,7 +70,7 @@ class CarousalItem extends StatelessWidget {
                 project.dateOfEnd.difference(DateTime.now()),
               ),
               style: TextStyle(
-                fontSize: 8,
+                fontSize: 10,
                 color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
@@ -150,7 +150,7 @@ class CarousalItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         color: Theme.of(context).colorScheme.secondary,
       ),
-      alignment: Alignment.centerRight,
+      alignment: Alignment.center,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 6.0,
@@ -165,9 +165,9 @@ class CarousalItem extends StatelessWidget {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.surfaceContainer,
                 fontWeight: FontWeight.w700,
-                fontSize: 10,
+                fontSize: 11,
               ),
-              textAlign: TextAlign.start,
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 2),
             Text(
@@ -175,9 +175,9 @@ class CarousalItem extends StatelessWidget {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.surfaceContainer,
                 fontWeight: FontWeight.w700,
-                fontSize: 10,
+                fontSize: 11,
               ),
-              textAlign: TextAlign.start,
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -204,9 +204,10 @@ class CarousalItem extends StatelessWidget {
             "رقم المشروع\n${project.projectNumber}",
             style: TextStyle(
               color: Theme.of(context).colorScheme.surfaceContainer,
-              fontSize: 10,
+              fontSize: 9,
               fontWeight: FontWeight.w700,
             ),
+            maxLines: 2,
             textAlign: TextAlign.center,
           ),
         ),

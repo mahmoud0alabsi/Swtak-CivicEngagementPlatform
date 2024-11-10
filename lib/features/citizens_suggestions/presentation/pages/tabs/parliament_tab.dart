@@ -39,7 +39,10 @@ Widget buildParliamentTab(BuildContext context) {
 
       return ListView(
         children: [
-          const Filtercard(),
+          const Filtercard(
+            type: 'parliament',
+            bloc: null,
+          ),
           const SizedBox(height: 12),
           ListView.separated(
             physics: const NeverScrollableScrollPhysics(),

@@ -59,3 +59,15 @@ class PostMunicipalitySuggestion extends MunicipalitySuggestionsEvent {
     required this.municipality,
   });
 }
+
+class FilterMunicipalitySuggestions extends MunicipalitySuggestionsEvent {
+  final String governorate;
+  final String area;
+  final String municipality;
+
+  FilterMunicipalitySuggestions({
+    required this.governorate,
+    required this.area,
+    required this.municipality,
+  });
+}

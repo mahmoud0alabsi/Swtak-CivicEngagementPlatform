@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ThirdCard extends StatelessWidget {
   final AnimationController animationController;
@@ -92,11 +93,35 @@ class ThirdCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SlideTransition(
+                position: imageFirstHalfAnimation,
+                child: SlideTransition(
+                  position: imageSecondHalfAnimation,
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                        left: 30, right: 30, top: 100, bottom: 20),
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      radius: 75,
+                      child: SvgPicture.asset(
+                        'assets/icons/pulb.svg',
+                        fit: BoxFit.contain,
+                        width: MediaQuery.of(context).size.width,
+                        height: 105,
+                        colorFilter: ColorFilter.mode(
+                          Theme.of(context).colorScheme.surfaceContainer,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SlideTransition(
                 position: headerFirstHalfAnimation,
                 child: SlideTransition(
                   position: headerSecondHalfAnimation,
                   child: Text(
-                    "توثيق الإجراءات الطبية",
+                    "أنت قائد التغيير",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontSize: 26.0,
@@ -111,7 +136,7 @@ class ThirdCard extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       left: 64, right: 64, top: 16, bottom: 16),
                   child: Text(
-                    "وذلك من خلال متابعة طبية وتحديثات مستمرة حول الحالة الصحية للمريض بطريقة سهلة وسلسة ، وإطلاع ذوي المريض على التحديثات على مدار الساعة.",
+                    "هل لديك فكرة لمشروع في على مستوى المملكة او في بلديتك؟ اقترحها الآن ودع صوتك يقود التغيير في مجتمعك.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
@@ -120,19 +145,6 @@ class ThirdCard extends StatelessWidget {
                   ),
                 ),
               ),
-              // SlideTransition(
-              //   position: imageFirstHalfAnimation,
-              //   child: SlideTransition(
-              //     position: imageSecondHalfAnimation,
-              //     child: Container(
-              //       constraints: const BoxConstraints(maxWidth: 350, maxHeight: 250),
-              //       child: Image.asset(
-              //         'assets/introduction_animation/mood_dairy_image.png',
-              //         fit: BoxFit.contain,
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),

@@ -72,8 +72,8 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
                         children: [
                           SvgPicture.asset(
                             'assets/icons/handshake.svg',
-                            width: 24,
-                            height: 26,
+                            width: 22,
+                            height: 24,
                           ),
                           const SizedBox(
                             width: 12,
@@ -97,7 +97,32 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
                           fontSize: 12,
                           color: Theme.of(context).colorScheme.secondary,
                         ),
-                      )
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 3),
+                          Flexible(
+                            child: Text(
+                              'العاصمة - الجبيهة - أمانة عمان الكبرى',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).colorScheme.secondary,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -276,8 +301,8 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
               svgPath,
               colorFilter: ColorFilter.mode(
                 _tabController.index == tabIndex
-                  ? Theme.of(context).colorScheme.surfaceContainer
-                  : Theme.of(context).colorScheme.primary,
+                    ? Theme.of(context).colorScheme.surfaceContainer
+                    : Theme.of(context).colorScheme.primary,
                 BlendMode.srcIn,
               ),
               height: 22,
@@ -541,7 +566,7 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
             ),
             if (_expandedCardIndex == project.projectNumber) ...[
               const SizedBox(height: 10),
-              _buildExpandedText('تفاصيل التصويت: ', project.details, context),
+              _buildExpandedText('تفاصيل المشروع: ', project.details, context),
               const SizedBox(height: 9),
               _buildExpandedText('التاريخ: ',
                   getDateFormattedWithYear(project.dateOfPost), context),
@@ -551,15 +576,15 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
                 const SizedBox(height: 9),
               ],
               _buildBarGraph(
-                  project.voting[kAgree] > project.voting[kDisagree]
+                  project.voting[kAgree] >= project.voting[kDisagree]
                       ? kAgreeAr
                       : kDisagreeAr,
-                  project.voting[kAgree] > project.voting[kDisagree]
+                  project.voting[kAgree] >= project.voting[kDisagree]
                       ? project.voting[kAgree] /
                           (project.voting[kAgree] + project.voting[kDisagree])
                       : project.voting[kDisagree] /
                           (project.voting[kAgree] + project.voting[kDisagree]),
-                  project.voting[kAgree] > project.voting[kDisagree]
+                  project.voting[kAgree] >= project.voting[kDisagree]
                       ? project.voting[kAgree]
                       : project.voting[kDisagree],
                   context),
@@ -574,29 +599,26 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
   // Method to display expanded text
   Widget _buildExpandedText(
       String label, String content, BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: RichText(
-        textAlign: TextAlign.right,
-        text: TextSpan(
-          text: label,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 12,
-            color: Theme.of(context).colorScheme.secondary,
-            fontFamily: 'IBM Plex Sans Arabic',
-          ),
-          children: [
-            TextSpan(
-              text: content,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.normal,
-                fontFamily: 'IBM Plex Sans Arabic',
-              ),
-            ),
-          ],
+    return RichText(
+      textAlign: TextAlign.right,
+      text: TextSpan(
+        text: label,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
+          color: Theme.of(context).colorScheme.secondary,
+          fontFamily: 'IBM Plex Sans Arabic',
         ),
+        children: [
+          TextSpan(
+            text: content,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.normal,
+              fontFamily: 'IBM Plex Sans Arabic',
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -621,7 +643,7 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
               '$voteResult ($votes)',
               style: TextStyle(
                 fontSize: 12,
-                fontWeight: FontWeight.normal,
+                fontWeight: FontWeight.w500,
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),

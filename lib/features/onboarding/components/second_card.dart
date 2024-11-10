@@ -1,6 +1,8 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'package:citizens_voice_app/theme/custom_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SecondCard extends StatelessWidget {
   final AnimationController animationController;
@@ -116,25 +118,41 @@ class SecondCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // SlideTransition(
-              //   position: _imageFirstHalfAnimation,
-              //   child: SlideTransition(
-              //     position: _imageSecondHalfAnimation,
-              //     child: Container(
-              //       constraints: const BoxConstraints(maxWidth: 350, maxHeight: 250),
-              //       child: Image.asset(
-              //         'assets/introduction_animation/care_image.png',
-              //         fit: BoxFit.contain,
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              SlideTransition(
+                position: _imageFirstHalfAnimation,
+                child: SlideTransition(
+                  position: _imageSecondHalfAnimation,
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                        left: 30, right: 30, top: 100, bottom: 20),
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      radius: 75,
+                      child: Icon(
+                        CustomIcons.building,
+                        size: 90,
+                        color: Theme.of(context).colorScheme.surfaceContainer,
+                      ), 
+                      // SvgPicture.asset(
+                      //   'assets/icons/municipality_tab.svg',
+                      //   fit: BoxFit.contain,
+                      //   width: MediaQuery.of(context).size.width,
+                      //   height: 110,
+                      //   colorFilter: ColorFilter.mode(
+                      //     Theme.of(context).colorScheme.surfaceContainer,
+                      //     BlendMode.srcIn,
+                      //   ),
+                      // ),
+                    ),
+                  ),
+                ),
+              ),
               SlideTransition(
                 position: _headerFirstHalfAnimation,
                 child: SlideTransition(
                   position: _headerSecondHalfAnimation,
                   child: Text(
-                    "توثيق الإجراءات الطبية",
+                    "رأيك يساهم في التطوير",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontSize: 26.0,
@@ -147,9 +165,9 @@ class SecondCard extends StatelessWidget {
                 position: textAnimation,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      left: 64, right: 64, top: 16, bottom: 16),
+                      left: 64, right: 64, top: 16, bottom: 30),
                   child: Text(
-                    "وذلك من خلال متابعة طبية وتحديثات مستمرة حول الحالة الصحية للمريض بطريقة سهلة وسلسة ، وإطلاع ذوي المريض على التحديثات على مدار الساعة.",
+                    "صوتك في بلديتك! صوّت على مشاريع بلديتك، وشارك بآرائك وتعليقاتك لتطوير منطقتك وتحسينها.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,

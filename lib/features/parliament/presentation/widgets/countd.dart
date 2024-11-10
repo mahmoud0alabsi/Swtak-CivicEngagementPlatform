@@ -117,10 +117,10 @@ class CountdownWidgetState extends State<CountdownWidget> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.secondary,
-                      width: 1.5,
-                    ),
+                    // border: Border.all(
+                    //   color: Theme.of(context).colorScheme.secondary,
+                    //   width: 1.5,
+                    // ),
                   ),
                   durationTitle: DurationTitle.ar(),
                   separatorPadding: const EdgeInsets.symmetric(horizontal: 8),

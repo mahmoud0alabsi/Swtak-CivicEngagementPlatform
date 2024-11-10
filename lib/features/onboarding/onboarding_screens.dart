@@ -1,3 +1,5 @@
+import 'package:citizens_voice_app/features/auth/presentation/pages/login_page.dart';
+import 'package:citizens_voice_app/features/auth/presentation/pages/register_page.dart';
 import 'package:citizens_voice_app/features/onboarding/components/second_card.dart';
 import 'package:citizens_voice_app/features/onboarding/components/third_card.dart';
 
@@ -36,7 +38,7 @@ class OnboardingScreensState extends State<OnboardingScreens>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       body: ClipRect(
         child: Stack(
           children: [
@@ -63,6 +65,7 @@ class OnboardingScreensState extends State<OnboardingScreens>
             CenterNextButton(
               animationController: _animationController!,
               onNextClick: _onNextClick,
+              onCreateAccountClick: _createAccountClick,
             ),
           ],
         ),
@@ -112,15 +115,21 @@ class OnboardingScreensState extends State<OnboardingScreens>
   }
 
   void _loginClick() {
-    // Get.to(() => const LoginTypesPage(),
-    //     transition: Transition.leftToRight,
-    //     duration: const Duration(milliseconds: 750));
-    // Navigator.pushReplacement(
-    //       context,
-    //       MaterialPageRoute<void>(
-    //         builder: (BuildContext context) =>
-    //             const LoginTypesPage(),
-    //       ),
-    //     );
+    Navigator.push(
+      //pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginPage(),
+      ),
+    );
+  }
+
+  void _createAccountClick() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const RegisterPage(),
+      ),
+    );
   }
 }

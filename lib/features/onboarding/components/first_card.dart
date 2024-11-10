@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class FirstCard extends StatelessWidget {
   final AnimationController animationController;
@@ -98,22 +99,34 @@ class FirstCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // SlideTransition(
-              //   position: imageAnimation,
-              //   child: Container(
-              //     padding: const EdgeInsets.only(left: 30, right: 30, top: 100),
-              //     child: Image.asset(
-              //       'assets/introduction_animation/relax_image.png',
-              //       fit: BoxFit.contain,
-              //     ),
-              //   ),
-              // ),
+              SlideTransition(
+                position: imageAnimation,
+                child: Container(
+                  padding: const EdgeInsets.only(
+                      left: 30, right: 30, top: 100, bottom: 20),
+                  child: CircleAvatar(
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    radius: 75,
+                    child: SvgPicture.asset(
+                      'assets/icons/parliament_tab.svg',
+                      fit: BoxFit.contain,
+                      width: MediaQuery.of(context).size.width,
+                      height: 110,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.surfaceContainer,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
               SlideTransition(
                 position: headerFirstHalfAnimation,
                 child: SlideTransition(
                   position: headerSecondHalfAnimation,
                   child: Text(
-                    "تحديثات الحالة الصحية",
+                    "صوتك يصنع الفرق",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontSize: 26.0,
@@ -137,9 +150,9 @@ class FirstCard extends StatelessWidget {
                 position: textAnimation,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      left: 64, right: 64, top: 16, bottom: 16),
+                      left: 64, right: 64, top: 16, bottom: 30),
                   child: Text(
-                    "وذلك من خلال متابعة طبية وتحديثات مستمرة حول الحالة الصحية للمريض بطريقة سهلة وسلسة ، وإطلاع ذوي المريض على التحديثات على مدار الساعة.",
+                    "شارك في اتخاذ القرار! عبّر عن رأيك وصوّت بالموافقة أو الرفض على القضايا والمشاريع التي يناقشها مجلس النواب، وأثّر برأيك على مستقبل وطنك.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
