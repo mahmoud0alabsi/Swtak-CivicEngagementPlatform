@@ -50,7 +50,11 @@ class NewSuggestionPageState extends State<NewSuggestion> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: appBar(context),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(
+          left: 16.0,
+          right: 16.0,
+          top: 16.0,
+        ),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -361,8 +365,8 @@ class NewSuggestionPageState extends State<NewSuggestion> {
                           type: '',
                           tags: const [],
                           governorate: selectedGovernorate!,
-                          municipality: selectedCity!,
-                          area: selectedArea!,
+                          municipality: selectedArea!,
+                          area: selectedCity!,
                         ),
                       );
                     }
@@ -450,7 +454,7 @@ class NewSuggestionPageState extends State<NewSuggestion> {
       _buildTextField('العنوان', controller: titleController, maxLength: 50),
       const SizedBox(height: 20),
       _buildTextField('وصف المقترح...',
-          controller: descriptionController, maxLines: 5, maxLength: 250),
+          controller: descriptionController, maxLines: 5, maxLength: 2000),
     ];
   }
 

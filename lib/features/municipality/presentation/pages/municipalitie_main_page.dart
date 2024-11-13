@@ -113,7 +113,7 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
                           const SizedBox(width: 3),
                           Flexible(
                             child: Text(
-                              'العاصمة - الجبيهة - أمانة عمان الكبرى',
+                              'الزرقاء - الرصيفة - بلدية الرصيفة',
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Theme.of(context).colorScheme.secondary,

@@ -20,7 +20,7 @@ Widget buildMunicipalityTab(BuildContext context) {
       }
     },
     builder: (context, state) {
-      if (state is MunicipalityMySuggestionsLoading ||
+      if (state is MunicipalitySuggestionsLoading ||
           state is MunicipalitySuggestionsInitial) {
         return const LoadingSpinner();
       }
@@ -35,38 +35,50 @@ Widget buildMunicipalityTab(BuildContext context) {
       // sort suggestions by upvotes count
       suggestions.sort((a, b) => b.upvotesCount.compareTo(a.upvotesCount));
 
-      return ListView(
+      return Stack(
         children: [
-          Filtercard(
-            type: 'municipality',
-            bloc: context.read<MunicipalitySuggestionsBloc>(),
-          ),
-          const SizedBox(height: 12),
-          suggestions.isEmpty
-              ? Center(
-                  child: Text(
-                    'لا يوجد اقتراحات',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: Theme.of(context).colorScheme.primary,
+          ListView(
+            children: [
+              Filtercard(
+                type: 'municipality',
+                bloc: context.read<MunicipalitySuggestionsBloc>(),
+              ),
+              const SizedBox(height: 12),
+              suggestions.isEmpty
+                  ? Center(
+                      child: Text(
+                        'لا يوجد اقتراحات',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    )
+                  : ListView.separated(
+                      key: ValueKey(suggestions.map((e) => e.id).join()),
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
+                      itemCount: suggestions.length,
+                      itemBuilder: (context, index) {
+                        return MunicipalitySuggestionCard(
+                          bloc: context.read<MunicipalitySuggestionsBloc>(),
+                          suggestion: suggestions[index],
+                        );
+                      },
                     ),
-                  ),
-                )
-              : ListView.separated(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 12),
-                  itemCount: suggestions.length,
-                  itemBuilder: (context, index) {
-                    return MunicipalitySuggestionCard(
-                      bloc: context.read<MunicipalitySuggestionsBloc>(),
-                      suggestion: suggestions[index],
-                    );
-                  },
-                ),
-          const SizedBox(height: 16),
+              const SizedBox(height: 16),
+            ],
+          ),
+          if (state is MunicipalitySuggestionsUpvoting)
+            Container(
+              color: Colors.white.withOpacity(0.5),
+              child: const Center(
+                child: LoadingSpinner(),
+              ),
+            ),
         ],
       );
     },

@@ -25,7 +25,7 @@ class HelpAndSupportPage extends StatelessWidget {
                 'المساعدة والدعم الفني',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.w900,
+                  fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
                 textDirection: TextDirection.rtl,
@@ -63,12 +63,12 @@ class HelpAndSupportPage extends StatelessWidget {
                           BlendMode
                               .srcIn), // Optionally, you can set a color if needed
                     ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: Text(
                             'المساعدة والدعم الفني',
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).colorScheme.secondary,
                             ),

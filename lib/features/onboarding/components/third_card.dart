@@ -100,7 +100,7 @@ class ThirdCard extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         left: 30, right: 30, top: 100, bottom: 20),
                     child: CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                       radius: 75,
                       child: SvgPicture.asset(
                         'assets/icons/pulb.svg',
@@ -121,7 +121,7 @@ class ThirdCard extends StatelessWidget {
                 child: SlideTransition(
                   position: headerSecondHalfAnimation,
                   child: Text(
-                    "أنت قائد التغيير",
+                    "أنت صوت التغيير",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontSize: 26.0,
@@ -136,7 +136,7 @@ class ThirdCard extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       left: 64, right: 64, top: 16, bottom: 16),
                   child: Text(
-                    "هل لديك فكرة لمشروع في على مستوى المملكة او في بلديتك؟ اقترحها الآن ودع صوتك يقود التغيير في مجتمعك.",
+                    "هل لديك فكرة لمشروع على مستوى المملكة او في بلديتك؟ اقترحها الآن ودع صوتك يساهم في تطوير مجتمعك.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,

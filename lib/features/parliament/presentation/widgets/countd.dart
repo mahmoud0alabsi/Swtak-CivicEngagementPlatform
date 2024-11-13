@@ -105,6 +105,7 @@ class CountdownWidgetState extends State<CountdownWidget> {
                 child: SlideCountdownSeparated(
                   duration: _timeLeft,
                   countUp: false,
+                  showZeroValue: true,
                   separatorStyle: TextStyle(
                     fontSize: 25,
                     color: Theme.of(context).colorScheme.surfaceContainer,

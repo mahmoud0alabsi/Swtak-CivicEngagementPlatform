@@ -269,6 +269,9 @@ class _LoginPageState extends State<LoginPage> {
                                               ? Icons.visibility_off
                                               : Icons.visibility,
                                           size: 20.0,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
                                         ),
                                         onPressed: () {
                                           setState(() {
@@ -309,7 +312,7 @@ class _LoginPageState extends State<LoginPage> {
                                   'نسيت الرقم السري؟',
                                   style: TextStyle(
                                     color:
-                                        Theme.of(context).colorScheme.primary,
+                                        Theme.of(context).colorScheme.secondary,
                                     fontSize: 14,
                                   ),
                                 ),
@@ -340,7 +343,7 @@ class _LoginPageState extends State<LoginPage> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  elevation: 8,
+                                  elevation: 6,
                                   shadowColor: Colors.black,
                                 ),
                                 child: Text(

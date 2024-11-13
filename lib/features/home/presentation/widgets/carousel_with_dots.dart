@@ -36,7 +36,8 @@ class _CarouselWithDotsState extends State<CarouselWithDots> {
         ongoingProjects.sort((a, b) => a.dateOfEnd.compareTo(b.dateOfEnd));
 
         // get the first 3 projects
-        ongoingProjects = ongoingProjects.sublist(0, 3);
+        ongoingProjects = ongoingProjects.sublist(
+            0, ongoingProjects.length > 3 ? 3 : ongoingProjects.length);
 
         return Column(
           children: [
@@ -64,7 +65,7 @@ class _CarouselWithDotsState extends State<CarouselWithDots> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(3, (index) {
+              children: List.generate(ongoingProjects.length, (index) {
                 return GestureDetector(
                   onTap: () {
                     setState(() {

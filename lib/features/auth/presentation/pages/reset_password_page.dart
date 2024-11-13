@@ -9,7 +9,7 @@ class ResetPasswordPage extends StatefulWidget {
 
 class _ResetPasswordPageState extends State<ResetPasswordPage> {
   bool _obscurePassword = true;
-  final bool _obscureConfirmPassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios),
+          color: Theme.of(context).colorScheme.primary,
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -94,7 +95,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
               // Confirm Password input field with visibility toggle
               TextField(
-                obscureText: _obscurePassword,
+                obscureText: _obscureConfirmPassword,
                 decoration: InputDecoration(
                   labelText: "تأكيد الرمز السري",
                   labelStyle: TextStyle(
@@ -115,14 +116,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   suffixIcon: IconButton(
                     alignment: Alignment.centerLeft,
                     icon: Icon(
-                      _obscurePassword
+                      _obscureConfirmPassword
                           ? Icons.visibility_off
                           : Icons.visibility,
                     ),
                     onPressed: () {
                       setState(() {
-                        _obscurePassword =
-                            !_obscurePassword; // Toggle visibility
+                        _obscureConfirmPassword =
+                            !_obscureConfirmPassword; // Toggle visibility
                       });
                     },
                   ),

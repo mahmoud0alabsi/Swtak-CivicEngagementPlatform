@@ -37,26 +37,50 @@ Widget buildParliamentTab(BuildContext context) {
       // sort suggestions by upvotes count
       suggestions.sort((a, b) => b.upvotesCount.compareTo(a.upvotesCount));
 
-      return ListView(
+      return Stack(
         children: [
-          const Filtercard(
-            type: 'parliament',
-            bloc: null,
+          ListView(
+            children: [
+              const Filtercard(
+                type: 'parliament',
+                bloc: null,
+              ),
+              const SizedBox(height: 12),
+              suggestions.isEmpty
+                  ? Center(
+                      child: Text(
+                        'لا يوجد اقتراحات',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    )
+                  : ListView.separated(
+                      key: ValueKey(suggestions.map((e) => e.id).join()),
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
+                      itemCount: suggestions.length,
+                      itemBuilder: (context, index) {
+                        return SuggestionCard(
+                          bloc: context.read<ParliamentSuggestionsBloc>(),
+                          suggestion: suggestions[index],
+                        );
+                      },
+                    ),
+              const SizedBox(height: 16),
+            ],
           ),
-          const SizedBox(height: 12),
-          ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
-            itemCount: suggestions.length,
-            itemBuilder: (context, index) {
-              return SuggestionCard(
-                bloc: context.read<ParliamentSuggestionsBloc>(),
-                suggestion: suggestions[index],
-              );
-            },
-          ),
-          const SizedBox(height: 16),
+          if (state is ParliamentSuggestionsUpvoting)
+            Container(
+              color: Colors.white.withOpacity(0.5),
+              child: const Center(
+                child: LoadingSpinner(),
+              ),
+            ),
         ],
       );
     },

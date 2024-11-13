@@ -339,9 +339,9 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                       ? _project.voting[kAgree]
                       : _project.voting[kDisagree],
                   context),
-              const SizedBox(height: 10),
-              _buildBarGraph('تصويت النواب', 'أوافق', 0.74, 70, context),
-              const SizedBox(height: 15),
+              // const SizedBox(height: 10),
+              // _buildBarGraph('تصويت النواب', 'أوافق', 0.74, 70, context),
+              // const SizedBox(height: 15),
             ],
           ),
         ),

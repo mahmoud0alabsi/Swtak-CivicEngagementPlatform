@@ -83,7 +83,7 @@ class ParliamentArchivePageState extends State<ParliamentArchivePage> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            'تصفح المشاريع السابقة ونتائج التصويت عليها، بالاضافة الى مشاركاتك في التصويت.',
+                            'تصفح المشاريع السابقة ونتائج التصويت عليها من قبل المواطنين ومجلس النواب، بالاضافة الى مشاركاتك في التصويت.',
                             style: TextStyle(
                               fontSize: 12,
                               color: Theme.of(context).colorScheme.secondary,

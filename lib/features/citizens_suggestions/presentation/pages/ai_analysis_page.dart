@@ -57,45 +57,47 @@ class AiAnalysisPagePageState extends State<AiAnalysisPage> {
                 ),
               );
             } else if (state is AiAnalysisLoaded) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
+              return SingleChildScrollView(
+                child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).colorScheme.surfaceContainer,
-                  ),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Opacity(
-                      //   opacity: 0.05,
-                      //   child: Image.asset(
-                      //     'assets/images/ai_loading.gif',
-                      //     width: 200,
-                      //     height: 200,
-                      //     color: Theme.of(context).colorScheme.primary,
-                      //   ),
-                      // ),
-                      HtmlWidget(
-                        state.aiSuggestion,
-                        textStyle: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context).colorScheme.secondary,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).colorScheme.surfaceContainer,
+                    ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Opacity(
+                        //   opacity: 0.05,
+                        //   child: Image.asset(
+                        //     'assets/images/ai_loading.gif',
+                        //     width: 200,
+                        //     height: 200,
+                        //     color: Theme.of(context).colorScheme.primary,
+                        //   ),
+                        // ),
+                        HtmlWidget(
+                          state.aiSuggestion,
+                          textStyle: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                         ),
-                      ),
-                      // Text(
-                      //   state.aiSuggestion,
-                      //   style: TextStyle(
-                      //     fontSize: 16,
-                      //     fontWeight: FontWeight.w400,
-                      //     color: Theme.of(context).colorScheme.secondary,
-                      //   ),
-                      //   textAlign: TextAlign.start,
-                      // ),
-                    ],
+                        // Text(
+                        //   state.aiSuggestion,
+                        //   style: TextStyle(
+                        //     fontSize: 16,
+                        //     fontWeight: FontWeight.w400,
+                        //     color: Theme.of(context).colorScheme.secondary,
+                        //   ),
+                        //   textAlign: TextAlign.start,
+                        // ),
+                      ],
+                    ),
                   ),
                 ),
               );

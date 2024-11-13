@@ -534,7 +534,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AboutPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const AboutPage()),
                     );
                   },
                 ),
@@ -573,7 +574,7 @@ class EditProfileScreen extends StatelessWidget {
                 'معلوماتي',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.w900,
+                  fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
                 textDirection: TextDirection.rtl,
@@ -598,21 +599,31 @@ class EditProfileScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.primary),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 14),
 
               // الرقم الوطني
               const Padding(
                 padding: EdgeInsets.only(top: 7.5, bottom: 5.5),
                 child: Text('الرقم الوطني',
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
               ),
               TextFormField(
+                controller: TextEditingController(
+                  text: context.read<UserManagerBloc>().user.nationalId,
+                ),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12), // حواف دائرية
                   ),
                   hintText: 'أدخل الرقم الوطني',
+                  hintStyle: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.70),
+                  ),
                   fillColor: Theme.of(context).colorScheme.surfaceContainer,
                   filled: true,
                   enabledBorder: OutlineInputBorder(
@@ -628,21 +639,30 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-
+              const SizedBox(height: 14),
               // الاسم الرباعي
               const Padding(
                 padding: EdgeInsets.only(top: 7.5, bottom: 5.5),
                 child: Text('الاسم الرباعي',
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
               ),
               TextFormField(
+                controller: TextEditingController(
+                  text: context.read<UserManagerBloc>().user.fullName,
+                ),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12), // حواف دائرية
                   ),
                   hintText: 'أدخل الاسم الرباعي',
+                  hintStyle: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.70),
+                  ),
                   fillColor: Theme.of(context).colorScheme.surfaceContainer,
                   filled: true,
                   enabledBorder: OutlineInputBorder(
@@ -658,21 +678,31 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 14),
 
               // مكان الإقامة
               const Padding(
                 padding: EdgeInsets.only(top: 7.5, bottom: 5.5),
                 child: Text('مكان الإقامة',
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
               ),
               TextFormField(
+                controller: TextEditingController(
+                  text: context.read<UserManagerBloc>().user.residence,
+                ),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12), // حواف دائرية
                   ),
                   hintText: 'أدخل مكان الإقامة',
+                  hintStyle: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.70),
+                  ),
                   fillColor: Theme.of(context).colorScheme.surfaceContainer,
                   filled: true,
                   enabledBorder: OutlineInputBorder(
@@ -688,26 +718,37 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 14),
 
               // رقم الهاتف
               const Padding(
                 padding: EdgeInsets.only(top: 7.5, bottom: 5.5),
                 child: Text('رقم الهاتف',
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
               ),
               TextFormField(
+                controller: TextEditingController(
+                  text: context.read<UserManagerBloc>().user.phoneNumber,
+                ),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12), // حواف دائرية
                   ),
                   hintText: 'أدخل رقم الهاتف',
+                  hintStyle: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.70),
+                  ),
                   fillColor: Theme.of(context).colorScheme.surfaceContainer,
                   filled: true,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
-                        12), // حواف دائرية عند عدم التركيز
+                      12,
+                    ), // حواف دائرية عند عدم التركيز
                     borderSide: BorderSide(color: Colors.grey.shade400),
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -725,18 +766,32 @@ class EditProfileScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
+                    shape: RoundedRectangleBorder(
+                      // Define the shape with border radius
+                      borderRadius: BorderRadius.circular(
+                          12.0), // Set your desired radius here
+                    ),
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // تنفيذ عملية التحديث هنا
-                    }
-                  },
-                  child: Text('تحديث',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).colorScheme.surface)),
+                  child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'تحديث',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color:
+                                Theme.of(context).colorScheme.surfaceContainer,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -789,10 +844,10 @@ class CustomSwitchState extends State<CustomSwitch> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isActive = !isActive;
-        });
-        widget.onChanged(isActive);
+        // setState(() {
+        //   isActive = !isActive;
+        // });
+        // widget.onChanged(isActive);
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
@@ -880,10 +935,10 @@ class CustomSwitchLanguageState extends State<CustomSwitchLanguage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isActive = !isActive;
-        });
-        widget.onChanged(isActive);
+        // setState(() {
+        //   isActive = !isActive;
+        // });
+        // widget.onChanged(isActive);
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),

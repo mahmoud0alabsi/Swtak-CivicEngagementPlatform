@@ -41,7 +41,11 @@ class ParliamentSuggestionsBloc
   void _onToggleUpvoteParliamentSuggestion(
       ToggleUpvoteParliamentSuggestion event,
       Emitter<ParliamentSuggestionsState> emit) async {
+    emit(ParliamentSuggestionsUpvoting());
     try {
+      await parliamentSuggestionsRepoImpl.toggleUpvoteParliamentSuggestion(
+          event.suggestionId, event.uid);
+
       // toggle upvote for the suggestion
       for (var suggestion in suggestions) {
         if (suggestion.id == event.suggestionId) {
@@ -54,9 +58,6 @@ class ParliamentSuggestionsBloc
           }
         }
       }
-
-      await parliamentSuggestionsRepoImpl.toggleUpvoteParliamentSuggestion(
-          event.suggestionId, event.uid);
       emit(ParliamentSuggestionsUpvoted());
     } catch (e) {
       emit(ParliamentSuggestionsError(

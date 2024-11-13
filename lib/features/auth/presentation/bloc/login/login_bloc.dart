@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:citizens_voice_app/features/auth/business/entities/custom_user_entity.dart';
 import 'package:citizens_voice_app/features/auth/const.dart';
@@ -34,10 +36,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         ));
       } else {
         add(OnLoginError(
-            message: 'الرقم الوطني أو كلمة المرور غير صحيحة، يرجى المحاولة مرة أخرى'));
+            message:
+                'الرقم الوطني أو كلمة المرور غير صحيحة، يرجى المحاولة مرة أخرى'));
       }
     } catch (e) {
-      emit(LoginFailure(message: e.toString()));
+      emit(
+        LoginFailure(
+            message: e.toString().contains('network error')
+                ? 'ليس لديك اتصال بالانترنت، يرجى إعادة المحاولة لاحقا'
+                : e.toString()),
+      );
     }
   }
 

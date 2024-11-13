@@ -61,24 +61,31 @@ class WelcomeView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // SlideTransition(
-              //   position: welcomeImageAnimation,
-              //   child: Container(
-              //     constraints: const BoxConstraints(maxWidth: 350, maxHeight: 350),
-              //     child: Image.asset(
-              //       'assets/introduction_animation/welcome.png',
-              //       fit: BoxFit.contain,
-              //     ),
-              //   ),
-              // ),
+              SlideTransition(
+                position: welcomeImageAnimation,
+                child: Container(
+                  constraints:
+                      const BoxConstraints(maxWidth: 350, maxHeight: 350),
+                  child: Image.asset(
+                    'assets/images/election_box.jpg',
+                    fit: BoxFit.contain,
+                    width: 200,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               SlideTransition(
                 position: welcomeFirstHalfAnimation,
                 child: Text(
-                  "أهلاً بك...\nقرار اليوم يبدأ من صوتك",
+                  "قرار اليوم يبدأ من صوتك...",
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold),
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.start,
                 ),
               ),
               Padding(
@@ -86,7 +93,7 @@ class WelcomeView extends StatelessWidget {
                     left: 64, right: 64, top: 16, bottom: 16),
                 child: Text(
                   "صوت واحد يمكن أن يصنع الفرق. اختر، عبّر، وشارك في صنع المستقبل",
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.start,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
                     fontSize: 15,

@@ -509,7 +509,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "يمكنك كتابة تعليق وإرساله للجهة المعنية في حال كان لديك مقترح لهذه القضية:",
+                          "يمكنك كتابة تعليق وإرساله للجهة المعنية في حال كان لديك مقترح حول هذ المشروع:",
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontSize: 12,
@@ -572,7 +572,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                                     ),
                                     TextSpan(
                                       text:
-                                          'يتم إرسال التعليق الخاص الى الى الجهة المعنية فقط، ولا يتم مشاركته مع المستخدمين الآخرين.',
+                                          'يتم إرسال التعليق الخاص الى الجهة المعنية فقط، ولا يتم مشاركته مع المستخدمين الآخرين.',
                                       style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme

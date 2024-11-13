@@ -1,5 +1,6 @@
 import 'package:citizens_voice_app/features/auth/const.dart';
 import 'package:citizens_voice_app/features/auth/presentation/bloc/otp/otp_bloc.dart';
+import 'package:citizens_voice_app/features/citizens_suggestions/presentation/pages/suggestions_metadata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'login_page.dart';
@@ -22,6 +23,10 @@ class _RegisterPageState extends State<RegisterPage> {
   String? selectedResidence;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+
+  String? selectedGovernorate;
+  String? selectedCity;
+  String? selectedArea;
 
   String? _validateNationalId(String? value) {
     if (value == null || value.isEmpty) {
@@ -297,7 +302,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 decoration: InputDecoration(
-                                  labelText: 'مكان الإقامة',
+                                  labelText: 'المحافظة',
                                   labelStyle: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme
@@ -342,8 +347,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   contentPadding:
                                       const EdgeInsets.only(right: 10),
                                 ),
-                                items: <String>['الزرقاء', 'عمان', 'العقبة']
-                                    .map((String value) {
+                                items: governorates.map((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(value,
@@ -351,7 +355,156 @@ class _RegisterPageState extends State<RegisterPage> {
                                   );
                                 }).toList(),
                                 onChanged: (String? newValue) {
-                                  selectedResidence = newValue;
+                                  setState(() {
+                                    selectedResidence = newValue;
+                                    selectedGovernorate = newValue;
+                                  });
+                                },
+                                icon: const Icon(Icons.arrow_drop_down),
+                                isExpanded:
+                                    true, // Make the dropdown span the full width
+                                alignment: Alignment
+                                    .centerRight, // Align dropdown content to the right
+                              ),
+                              const SizedBox(height: 15),
+                              DropdownButtonFormField<String>(
+                                validator: _validateResidence,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                decoration: InputDecoration(
+                                  labelText: 'المنطقة',
+                                  labelStyle: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.75),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF9E9E9E)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        const BorderSide(color: Colors.grey),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  contentPadding:
+                                      const EdgeInsets.only(right: 10),
+                                ),
+                                items: municipalities[selectedGovernorate] !=
+                                        null
+                                    ? municipalities[selectedGovernorate]!
+                                        .map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value,
+                                              textDirection: TextDirection.rtl),
+                                        );
+                                      }).toList()
+                                    : [],
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedResidence = newValue;
+                                    selectedCity = newValue;
+                                  });
+                                },
+                                icon: const Icon(Icons.arrow_drop_down),
+                                isExpanded:
+                                    true, // Make the dropdown span the full width
+                                alignment: Alignment
+                                    .centerRight, // Align dropdown content to the right
+                              ),
+                              const SizedBox(height: 15),
+                              DropdownButtonFormField<String>(
+                                validator: _validateResidence,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                decoration: InputDecoration(
+                                  labelText: 'البلدية',
+                                  labelStyle: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.75),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF9E9E9E)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        const BorderSide(color: Colors.grey),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  contentPadding:
+                                      const EdgeInsets.only(right: 10),
+                                ),
+                                items: areas[selectedCity] != null
+                                    ? areas[selectedCity]!.map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value,
+                                              textDirection: TextDirection.rtl),
+                                        );
+                                      }).toList()
+                                    : [],
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedResidence = newValue;
+                                    selectedArea = newValue;
+                                  });
                                 },
                                 icon: const Icon(Icons.arrow_drop_down),
                                 isExpanded:
@@ -616,7 +769,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              elevation: 8,
+                              elevation: 6,
                               shadowColor: Colors.black,
                             ),
                             child: Text(

@@ -42,7 +42,6 @@ class CenterNextButton extends StatelessWidget {
         curve: Curves.fastOutSlowIn,
       ),
     ));
-
     return Padding(
       padding:
           EdgeInsets.only(bottom: 24 + MediaQuery.of(context).padding.bottom),
@@ -124,6 +123,8 @@ class CenterNextButton extends StatelessWidget {
                         : InkWell(
                             key: const ValueKey('next button'),
                             onTap: onNextClick,
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
                             child: const Padding(
                               padding: EdgeInsets.all(16.0),
                               child: Icon(Icons.arrow_forward_ios_rounded,
@@ -135,8 +136,9 @@ class CenterNextButton extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 10),
           Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(top: 0),
             child: SlideTransition(
               position: loginTextMoveAnimation,
               child: const Row(
@@ -144,56 +146,51 @@ class CenterNextButton extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
           // SlideTransition(
           //   position: topMoveAnimation,
           //   child: AnimatedBuilder(
           //     animation: animationController,
           //     builder: (context, child) => Padding(
           //       padding: EdgeInsets.only(
-          //           bottom: 38 - (38 * signUpMoveAnimation.value)),
-          //       child: PageTransitionSwitcher(
-          //         duration: const Duration(milliseconds: 480),
-          //         reverse: signUpMoveAnimation.value < 0.7,
-          //         transitionBuilder: (
-          //           Widget child,
-          //           Animation<double> animation,
-          //           Animation<double> secondaryAnimation,
-          //         ) {
-          //           return SharedAxisTransition(
-          //             fillColor: const Color.fromARGB(0, 72, 93, 223),
-          //             animation: animation,
-          //             secondaryAnimation: secondaryAnimation,
-          //             transitionType: SharedAxisTransitionType.vertical,
-          //             child: child,
-          //           );
-          //         },
+          //           bottom: 38 - (38 * signUpMoveAnimation.value) > 0
+          //               ? 38 - (38 * signUpMoveAnimation.value)
+          //               : 0),
+          //       child: Container(
+          //         height: 58,
+          //         width: 58 + (200 * signUpMoveAnimation.value),
+          //         decoration: BoxDecoration(
+          //           borderRadius: BorderRadius.circular(
+          //               8 + 32 * (1 - signUpMoveAnimation.value)),
+          //           color: Theme.of(context).primaryColor,
+          //         ),
           //         child: signUpMoveAnimation.value > 0.7
           //             ? InkWell(
           //                 key: const ValueKey('Sign Up button'),
-          //                 onTap: onCreateAccountClick,
-          //                 child: Padding(
-          //                   padding:
-          //                       const EdgeInsets.only(left: 16.0, right: 16.0),
+          //                 onTap: onNextClick,
+          //                 child: const Padding(
+          //                   padding: EdgeInsets.only(left: 16.0, right: 16.0),
           //                   child: Row(
-          //                     mainAxisAlignment: MainAxisAlignment.center,
+          //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
           //                     children: [
           //                       Text(
-          //                         'إنشاء حساب',
+          //                         'تسجيل الدخول',
           //                         style: TextStyle(
-          //                           color:
-          //                               Theme.of(context).colorScheme.secondary,
-          //                           fontSize: 16,
+          //                           color: Colors.white,
+          //                           fontSize: 18,
           //                           fontWeight: FontWeight.w500,
           //                         ),
           //                       ),
+          //                       Icon(Icons.arrow_forward_rounded,
+          //                           color: Colors.white),
           //                     ],
           //                   ),
           //                 ),
           //               )
           //             : InkWell(
           //                 key: const ValueKey('next button'),
-          //                 onTap: onCreateAccountClick,
+          //                 onTap: onNextClick,
+          //                 splashColor: Colors.transparent,
+          //                 highlightColor: Colors.transparent,
           //                 child: const Padding(
           //                   padding: EdgeInsets.all(16.0),
           //                   child: Icon(Icons.arrow_forward_ios_rounded,
@@ -204,6 +201,60 @@ class CenterNextButton extends StatelessWidget {
           //     ),
           //   ),
           // ),
+
+          AnimatedBuilder(
+            animation: animationController,
+            builder: (context, child) => AnimatedOpacity(
+              opacity: signUpMoveAnimation.value >= 0.9 ? 1 : 0,
+              duration: const Duration(milliseconds: 480),
+              child: Container(
+                height: 58,
+                width: 258,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      8 + 32 * (1 - signUpMoveAnimation.value)),
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                  boxShadow: [
+                    BoxShadow(
+                      color:
+                          Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+                      blurRadius: 1,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: signUpMoveAnimation.value > 0.8
+                    ? InkWell(
+                        key: const ValueKey('Sign Up button'),
+                        onTap: onCreateAccountClick,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                'إنشاء حساب جديد',
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_rounded,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+              ),
+            ),
+          ),
         ],
       ),
     );

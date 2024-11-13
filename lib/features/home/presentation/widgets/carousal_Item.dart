@@ -30,7 +30,7 @@ class CarousalItem extends StatelessWidget {
         );
       },
       child: SizedBox(
-        height: 125,
+        height: 150,
         width: 478,
         child: Card(
           color: Theme.of(context).colorScheme.surfaceContainer,
@@ -104,8 +104,8 @@ class CarousalItem extends StatelessWidget {
           child: Center(
               child: SvgPicture.asset(
             getProjectTypeIcon(project.type),
-            height: 40,
-            width: 40,
+            height: 44,
+            width: 44,
             colorFilter: ColorFilter.mode(
               Theme.of(context).colorScheme.surfaceContainer,
               BlendMode.srcIn,
@@ -145,7 +145,7 @@ class CarousalItem extends StatelessWidget {
   Widget _buildDateContainer(BuildContext context) {
     return Container(
       height: 42,
-      width: 90,
+      width: 75,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Theme.of(context).colorScheme.secondary,
@@ -175,7 +175,7 @@ class CarousalItem extends StatelessWidget {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.surfaceContainer,
                 fontWeight: FontWeight.w700,
-                fontSize: 11,
+                fontSize: 8,
               ),
               textAlign: TextAlign.center,
             ),

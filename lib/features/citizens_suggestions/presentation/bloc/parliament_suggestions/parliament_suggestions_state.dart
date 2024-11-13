@@ -15,6 +15,8 @@ final class ParliamentSuggestionsError extends ParliamentSuggestionsState {
   ParliamentSuggestionsError(this.message);
 }
 
+final class ParliamentSuggestionsUpvoting extends ParliamentSuggestionsState {}
+
 final class ParliamentSuggestionsUpvoted extends ParliamentSuggestionsState {}
 
 final class ParliamentSuggestionsCommented extends ParliamentSuggestionsState {}

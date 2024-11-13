@@ -21,7 +21,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                 'سياسية الخصوصية',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.w900,
+                  fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
                 textDirection: TextDirection.rtl,
@@ -62,7 +62,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "نحن نحترم خصوصية المستخدمين ونتعهد بحماية معلوماتهم الشخصية. تم تصميم سياسة الخصوصية هذه لشرح كيفية جمع واستخدام وحماية بياناتك ضمن تطبيق صوت المواطن. إن خصوصيتك مهمة جدًا بالنسبة لنا، ولذلك نلتزم بتوفير تجربة آمنة وموثوقة لجميع مستخدمينا. نعمل على ضمان أن يتم جمع بياناتك ومعالجتها بما يتوافق مع القوانين المحلية والدولية لحماية البيانات.",
+                      "نحن نحترم خصوصية المستخدمين ونتعهد بحماية معلوماتهم الشخصية. تم تصميم سياسة الخصوصية هذه لشرح كيفية جمع واستخدام وحماية بياناتك ضمن تطبيق صوتك. إن خصوصيتك مهمة جدًا بالنسبة لنا، ولذلك نلتزم بتوفير تجربة آمنة وموثوقة لجميع مستخدمينا. نعمل على ضمان أن يتم جمع بياناتك ومعالجتها بما يتوافق مع القوانين المحلية والدولية لحماية البيانات.",
                       style: TextStyle(fontSize: 16,color: Theme.of(context).colorScheme.secondary),
                     ),
                     SizedBox(height: 16),
@@ -155,7 +155,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                 // Copyright
                 Center(
                   child: Text(
-                    "حقوق النشر © 2024 صوت المواطن. جميع الحقوق\n محفوظة.",
+                    "حقوق النشر © 2024 صوتك. جميع الحقوق\n محفوظة.",
                     style: TextStyle(fontSize: 14,color: Theme.of(context).colorScheme.secondary),
                     textAlign: TextAlign.center,
                   ),

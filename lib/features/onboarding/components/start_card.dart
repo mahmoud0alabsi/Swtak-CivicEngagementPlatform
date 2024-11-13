@@ -28,23 +28,25 @@ class _StartCardState extends State<StartCard> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          // Container(
-          //   padding: const EdgeInsets.only(left: 30, right: 30, top: 170),
-          //   child: SizedBox(
-          //     width: MediaQuery.of(context).size.width,
-          //     child: Image.asset(
-          //       'assets/introduction_animation/introduction_image.png',
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
-          // ),
+          Container(
+            padding: const EdgeInsets.only(left: 30, right: 30, top: 170),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Image.asset(
+                'assets/images/election_box.jpg',
+                fit: BoxFit.contain,
+                width: 50,
+                height: 50,
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: Text(
-              "استبيان",
+              "صوتك",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 26,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold),
             ),
           ),
@@ -58,7 +60,8 @@ class _StartCardState extends State<StartCard> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.secondary,
-                fontSize: 15,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -68,12 +71,12 @@ class _StartCardState extends State<StartCard> {
           Padding(
             padding: const EdgeInsets.only(left: 64, right: 64),
             child: Text(
-              'ولي العهد، 14 اكتوبر 2021 \n مؤتمر تمكين الشباب',
+              'ولـي العهـــد\n1/12/2020',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.secondary,
                 fontSize: 12,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.normal,
               ),
             ),
           ),

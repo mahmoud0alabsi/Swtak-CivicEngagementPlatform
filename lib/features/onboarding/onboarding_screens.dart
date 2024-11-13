@@ -74,7 +74,7 @@ class OnboardingScreensState extends State<OnboardingScreens>
   }
 
   void _onSkipClick() {
-    _animationController?.animateTo(1.0,
+    _animationController?.animateTo(0.8,
         duration: const Duration(milliseconds: 1200));
   }
 
@@ -116,7 +116,6 @@ class OnboardingScreensState extends State<OnboardingScreens>
 
   void _loginClick() {
     Navigator.push(
-      //pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => const LoginPage(),

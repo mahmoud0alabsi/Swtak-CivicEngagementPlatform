@@ -126,7 +126,7 @@ class SecondCard extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         left: 30, right: 30, top: 100, bottom: 20),
                     child: CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                       radius: 75,
                       child: Icon(
                         CustomIcons.building,

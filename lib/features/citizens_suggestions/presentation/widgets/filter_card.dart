@@ -78,8 +78,8 @@ class _FiltercardState extends State<Filtercard> {
                     ),
                 ],
               ),
-              const SizedBox(height: 10),
-              if (widget.type == 'municipality')
+              if (widget.type == 'municipality') ...[
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
@@ -94,7 +94,7 @@ class _FiltercardState extends State<Filtercard> {
                       child: Text(
                         isFiltering
                             ? '$selectedGovernorate - ${selectedCity!} - ${selectedArea!}'
-                            : 'العاصمة - الجبيهة - أمانة عمان الكبرى',
+                            : 'الزرقاء - الرصيفة - بلدية الرصيفة',
                         style: TextStyle(
                           fontSize: 12,
                           color: Theme.of(context).colorScheme.secondary,
@@ -104,6 +104,7 @@ class _FiltercardState extends State<Filtercard> {
                     ),
                   ],
                 ),
+              ],
               if (_openFilter) ...[
                 const SizedBox(height: 20),
                 Form(

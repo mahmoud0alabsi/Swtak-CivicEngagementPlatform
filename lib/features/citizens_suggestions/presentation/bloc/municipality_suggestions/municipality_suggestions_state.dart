@@ -18,8 +18,14 @@ final class MunicipalitySuggestionsError extends MunicipalitySuggestionsState {
   MunicipalitySuggestionsError(this.message);
 }
 
-final class MunicipalitySuggestionsUpvoted
+final class MunicipalitySuggestionsUpvoting
     extends MunicipalitySuggestionsState {}
+
+final class MunicipalitySuggestionsUpvoted
+    extends MunicipalitySuggestionsState {
+  final List<MunicipalitySuggestionEntity> suggestions;
+  MunicipalitySuggestionsUpvoted(this.suggestions);
+}
 
 final class MunicipalitySuggestionsCommented
     extends MunicipalitySuggestionsState {}

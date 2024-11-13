@@ -274,10 +274,11 @@ class _SubtleBounceTextState extends State<SubtleBounceText>
     );
 
     // Define a subtle scaling animation
-    _animation = Tween<double>(begin: 0, end: 5).animate(
+    _animation = Tween<double>(begin: -5, end: 0).animate(
       CurvedAnimation(
         parent: _controller,
         curve: Curves.easeInOut,
+        reverseCurve: Curves.easeInOut,
       ),
     );
 

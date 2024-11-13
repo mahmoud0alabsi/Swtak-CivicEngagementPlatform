@@ -105,7 +105,7 @@ class _ParliamentOngoingRoundPageState
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            'القضايا التي يناقشها البرلمان حالياً، يمكنك اختيار أي منها للتصويت والمشاركة في اتخاذ القرار:',
+                            'تصفح المشاريع التي يناقشها مجلس النواب حالياً، يمكنك اختيار أي منها للتصويت والمشاركة في اتخاذ القرار.',
                             style: TextStyle(
                               fontSize: 12,
                               color: Theme.of(context).colorScheme.secondary,

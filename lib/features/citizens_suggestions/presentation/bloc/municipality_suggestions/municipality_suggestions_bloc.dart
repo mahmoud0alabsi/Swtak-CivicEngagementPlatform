@@ -43,7 +43,11 @@ class MunicipalitySuggestionsBloc
   void _onToggleUpvoteMunicipalitySuggestion(
       ToggleUpvoteMunicipalitySuggestion event,
       Emitter<MunicipalitySuggestionsState> emit) async {
+    emit(MunicipalitySuggestionsUpvoting());
     try {
+      await municipalitySuggestionsRepoImpl.toggleUpvoteMunicipalitySuggestion(
+          event.suggestionId, event.uid);
+
       // toggle upvote for the suggestion
       for (var suggestion in suggestions) {
         if (suggestion.id == event.suggestionId) {
@@ -57,9 +61,7 @@ class MunicipalitySuggestionsBloc
         }
       }
 
-      await municipalitySuggestionsRepoImpl.toggleUpvoteMunicipalitySuggestion(
-          event.suggestionId, event.uid);
-      emit(MunicipalitySuggestionsUpvoted());
+      emit(MunicipalitySuggestionsUpvoted(suggestions));
     } catch (e) {
       emit(MunicipalitySuggestionsError(
           'حدث خطأ عند التصويت على المقترح، يرجى المحاولة مرة أخرى'));

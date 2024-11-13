@@ -19,7 +19,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Theme.of(context).colorScheme.primary,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -86,7 +89,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 // Action when button is pressed
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ResetPasswordPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const ResetPasswordPage()),
                 );
               },
               child: Text(

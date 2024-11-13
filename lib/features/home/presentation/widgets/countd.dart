@@ -93,6 +93,7 @@ class _CountState extends State<Count1> {
                           child: SlideCountdownSeparated(
                             duration: duration,
                             countUp: false,
+                            showZeroValue: true,
                             separatorStyle: TextStyle(
                               fontSize: 25,
                               color: Theme.of(context).colorScheme.secondary,
