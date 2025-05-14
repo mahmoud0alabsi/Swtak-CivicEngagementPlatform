@@ -39,7 +39,7 @@ class AboutPage extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
           ),
-          elevation: 4,
+          elevation: 0,
           color: Theme.of(context).colorScheme.surfaceContainer,
           child: Padding(
             padding:

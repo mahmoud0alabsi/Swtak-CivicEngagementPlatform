@@ -1,7 +1,7 @@
 import 'package:citizens_voice_app/features/parliament/presentation/bloc/ongoing_round/ongoing_round_bloc.dart';
-import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 class Count1 extends StatefulWidget {
@@ -28,12 +28,99 @@ class _CountState extends State<Count1> {
           bloc: context.read<OngoingRoundBloc>(),
           builder: (context, state) {
             if (state is OngoingRoundLoading || state is OngoingRoundInitial) {
-              return const Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 32,
+              return Skeletonizer(
+                enabled: true,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'شارك الآن في التصويت على القضايا المطروحة من قبل مجلس البرلمان',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: SlideCountdownSeparated(
+                          duration: const Duration(
+                            seconds: 1000,
+                          ),
+                          countUp: false,
+                          showZeroValue: true,
+                          separatorStyle: TextStyle(
+                            fontSize: 25,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).colorScheme.surfaceContainer,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          durationTitle: DurationTitle.ar(),
+                          separatorPadding:
+                              const EdgeInsets.symmetric(horizontal: 8),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 5,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'ثانية',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                            const SizedBox(width: 42),
+                            Text('دقيقة',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary)),
+                            const SizedBox(width: 42),
+                            Text('ساعة',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary)),
+                            const SizedBox(width: 46),
+                            Text(' يوم',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                child: LoadingSpinner(),
               );
             }
             Duration duration = context

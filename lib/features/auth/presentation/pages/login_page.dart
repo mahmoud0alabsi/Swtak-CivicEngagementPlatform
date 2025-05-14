@@ -3,6 +3,7 @@ import 'package:citizens_voice_app/features/auth/presentation/bloc/login/login_b
 import 'package:citizens_voice_app/features/auth/presentation/bloc/otp/otp_bloc.dart';
 import 'package:citizens_voice_app/features/auth/presentation/pages/register_page.dart';
 import 'package:citizens_voice_app/features/auth/presentation/pages/verification_page.dart';
+import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,6 +43,14 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
+  String avatarImage = 'assets/images/logo_transparent.png';
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(AssetImage(avatarImage), context);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,9 +81,7 @@ class _LoginPageState extends State<LoginPage> {
         child: BlocBuilder<OtpBloc, OtpState>(
           builder: (context, otpState) {
             if (otpState is OtpLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              const LoadingSpinner();
             }
             return BlocListener<LoginBloc, LoginState>(
               listener: (context, state) {
@@ -100,9 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: BlocBuilder<LoginBloc, LoginState>(
                   builder: (context, state) {
                     if (state is LoginLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return const LoadingSpinner();
                     }
                     return SingleChildScrollView(
                       child: Padding(
@@ -112,11 +117,17 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 80,
-                              height: 80,
-                              color: Colors.grey[300], // Placeholder for logo
-                              child: const Center(child: Text('Logo')),
+                            const SizedBox(height: 30), // Spacing
+                            CircleAvatar(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              radius: 85,
+                              child: Image.asset(
+                                avatarImage,
+                                fit: BoxFit.contain,
+                                width: 150,
+                                height: 150,
+                              ),
                             ),
                             const SizedBox(height: 30), // Spacing
                             Text(
@@ -369,12 +380,15 @@ class _LoginPageState extends State<LoginPage> {
                                 // Action for creating a new account
                               },
                               child: Text(
-                                'ليس لديك حساب؟',
+                                'ليس لديك حساب؟ إنشاء حساب جديد',
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
                                   color:
                                       Theme.of(context).colorScheme.secondary,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ],

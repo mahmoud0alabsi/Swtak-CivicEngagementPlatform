@@ -1,6 +1,7 @@
 import 'package:citizens_voice_app/features/auth/presentation/bloc/otp/otp_bloc.dart';
 import 'package:citizens_voice_app/features/auth/presentation/pages/registration_success.dart';
 import 'package:citizens_voice_app/features/home/presentation/pages/bottom_nav_bar.dart';
+import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -161,7 +162,7 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
           builder: (context, state) {
             if (state is OtpLoading || state is OtpVerified) {
               hasShownSnackBar = false;
-              return const Center(child: CircularProgressIndicator());
+              return const LoadingSpinner();
             }
             return SingleChildScrollView(
               child: Padding(

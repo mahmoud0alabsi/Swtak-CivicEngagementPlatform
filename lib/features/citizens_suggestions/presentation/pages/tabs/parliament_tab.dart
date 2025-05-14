@@ -3,6 +3,7 @@ import 'package:citizens_voice_app/features/citizens_suggestions/presentation/bl
 import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../widgets/suggestion_cards.dart';
 import '../../widgets/filter_card.dart';
@@ -22,7 +23,47 @@ Widget buildParliamentTab(BuildContext context) {
     builder: (context, state) {
       if (state is ParliamentSuggestionsLoading ||
           state is ParliamentSuggestionsInitial) {
-        return const LoadingSpinner();
+        return Skeletonizer(
+          enabled: true,
+          child: ListView(
+            children: [
+              const Skeleton.keep(
+                child: Filtercard(
+                  type: 'parliament',
+                  bloc: null,
+                ),
+              ),
+              const SizedBox(height: 12),
+              ListView.separated(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return SuggestionCard(
+                    bloc: context.read<ParliamentSuggestionsBloc>(),
+                    suggestion: SuggestionEntity(
+                      id: '0',
+                      title: 'dummy dummy dummy',
+                      details:
+                          'dummy dummy dummy dummy dummy dummy \n dummy dummy dummy dummy',
+                      dateOfPost: DateTime.now(),
+                      upvotesCount: 0,
+                      tags: [],
+                      type: 'dummy',
+                      comments: [],
+                      name: 'dummy',
+                      uid: 'dummy',
+                      upvoters: [],
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        );
       }
 
       List<SuggestionEntity> suggestions =

@@ -29,24 +29,20 @@ class CarousalItem extends StatelessWidget {
           ),
         );
       },
-      child: SizedBox(
-        height: 150,
-        width: 478,
-        child: Card(
-          color: Theme.of(context).colorScheme.surfaceContainer,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildRemainingDurationCard(context),
-              const SizedBox(height: 6),
-              _buildMainContent(context),
-            ],
-          ),
+      child: Card(
+        color: Theme.of(context).colorScheme.surfaceContainer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            _buildRemainingDurationCard(context),
+            const SizedBox(height: 12),
+            Expanded(child: _buildMainContent(context)),
+          ],
         ),
       ),
     );
@@ -84,10 +80,13 @@ class CarousalItem extends StatelessWidget {
   // Builds the main content with the icon and additional info
   Widget _buildMainContent(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        _buildIconCard(context),
+        Expanded(flex: 1, child: _buildIconCard(context)),
         const SizedBox(width: 12),
-        Expanded(child: _buildInfoColumn(context)),
+        Expanded(flex: 2, child: _buildInfoColumn(context)),
       ],
     );
   }
@@ -104,8 +103,8 @@ class CarousalItem extends StatelessWidget {
           child: Center(
               child: SvgPicture.asset(
             getProjectTypeIcon(project.type),
-            height: 44,
-            width: 44,
+            height: 42,
+            width: 42,
             colorFilter: ColorFilter.mode(
               Theme.of(context).colorScheme.surfaceContainer,
               BlendMode.srcIn,
@@ -119,6 +118,7 @@ class CarousalItem extends StatelessWidget {
   // Builds the information column with title and date
   Widget _buildInfoColumn(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -127,14 +127,17 @@ class CarousalItem extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
             fontSize: 14,
             fontWeight: FontWeight.bold,
+            overflow: TextOverflow.ellipsis,
           ),
+          maxLines: 2,
         ),
         const SizedBox(height: 12),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildDateContainer(context),
+            Flexible(child: _buildDateContainer(context)),
             const Spacer(),
-            _buildCaseNumberCard(context),
+            Flexible(child: _buildCaseNumberCard(context)),
           ],
         ),
       ],

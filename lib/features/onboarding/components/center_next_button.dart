@@ -217,7 +217,7 @@ class CenterNextButton extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                       color:
-                          Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+                          Theme.of(context).colorScheme.shadow.withOpacity(0.1),
                       blurRadius: 1,
                       offset: const Offset(0, 2),
                     ),

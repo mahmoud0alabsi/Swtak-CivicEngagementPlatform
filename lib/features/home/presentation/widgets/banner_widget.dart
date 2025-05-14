@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
-class Bannerofimage extends StatelessWidget {
+class Bannerofimage extends StatefulWidget {
   const Bannerofimage({super.key});
+
+  @override
+  State<Bannerofimage> createState() => _BannerofimageState();
+}
+
+class _BannerofimageState extends State<Bannerofimage> {
+  String avatarImage = 'assets/images/home_banner_white.jpeg';
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(AssetImage(avatarImage), context);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +25,7 @@ class Bannerofimage extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.asset(
-            'assets/images/home_banner_white.jpeg',
+            avatarImage,
             height: 200,
             width: double.infinity,
             fit: BoxFit.cover,

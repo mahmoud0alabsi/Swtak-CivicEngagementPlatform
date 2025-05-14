@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:citizens_voice_app/features/auth/business/entities/custom_user_entity.dart';
 import 'package:citizens_voice_app/features/auth/const.dart';

@@ -8,6 +8,7 @@ import 'package:citizens_voice_app/features/settings/presentation/pages/settings
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -88,14 +89,35 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'أهلا بك، ${context.read<UserManagerBloc>().user.fullName.split(' ')[0]}',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      context.read<UserManagerBloc>().state
+                              is UserManagerLoading
+                          ? Skeletonizer(
+                              enabled: true,
+                              child: Text(
+                                'Loading..................',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          : Text(
+                              'أهلا بك، ${context.read<UserManagerBloc>().user.fullName.split(' ')[0]}',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                      // Text(
+                      //   'أهلا بك، ${context.read<UserManagerBloc>().user.fullName.split(' ')[0]}',
+                      //   style: TextStyle(
+                      //     color: Theme.of(context).colorScheme.primary,
+                      //     fontSize: 18,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
                       const SizedBox(height: 16),
                       const Contributions(),
                       const SizedBox(height: 16),

@@ -10,6 +10,14 @@ class StartCard extends StatefulWidget {
 }
 
 class _StartCardState extends State<StartCard> {
+  String avatarImage = 'assets/images/logo_transparent.png';
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(AssetImage(avatarImage), context);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     final introductionanimation =
@@ -29,19 +37,26 @@ class _StartCardState extends State<StartCard> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Container(
-            padding: const EdgeInsets.only(left: 30, right: 30, top: 170),
+            padding: const EdgeInsets.only(left: 30, right: 30, top: 0),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: Image.asset(
-                'assets/images/election_box.jpg',
-                fit: BoxFit.contain,
-                width: 50,
-                height: 50,
+              child: CircleAvatar(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                radius: 85,
+                child: Image.asset(
+                  avatarImage,
+                  fit: BoxFit.contain,
+                  width: 150,
+                  height: 150,
+                ),
               ),
             ),
           ),
+          const SizedBox(
+            height: 15,
+          ),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
             child: Text(
               "صوتك",
               style: TextStyle(
@@ -51,7 +66,7 @@ class _StartCardState extends State<StartCard> {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 15,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 64, right: 64),
@@ -66,7 +81,7 @@ class _StartCardState extends State<StartCard> {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 15,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 64, right: 64),
@@ -76,7 +91,7 @@ class _StartCardState extends State<StartCard> {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.secondary,
                 fontSize: 12,
-                fontWeight: FontWeight.normal,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),

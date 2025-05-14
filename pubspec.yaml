@@ -35,6 +35,9 @@ dependencies:
   html: ^0.15.5
   chat_gpt_sdk: ^3.1.0
   flutter_widget_from_html: ^0.15.2
+  skeletonizer: ^1.4.2
+  flutter_spinkit: ^5.2.1
+  flutter_native_splash: ^2.4.2
 
 dev_dependencies:
   flutter_test:
@@ -65,3 +68,19 @@ flutter:
         - asset: assets/fonts/custom_icons.ttf
 flutter_intl:
   enabled: true
+
+
+flutter_native_splash:
+  color: "#D90429"
+  icon_background_color: "#D90429"
+  image: "assets/images/logo_transparent3.png"
+  android_12:
+    color: "#D90429"
+    icon_background_color: "#D90429"
+    image: "assets/images/logo_transparent3.png"
+
+  android: true
+  ios: true
+  web: false
+
+  fullscreen: true

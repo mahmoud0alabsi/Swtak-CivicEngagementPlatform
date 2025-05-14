@@ -194,7 +194,6 @@ class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
       bool isUserExist = await isUserExistByNID(nationalId: data[kNationalId]);
       if (!isUserExist) {
         return CustomUserModel.empty();
-        // return CustomUserModel.empty();
       } else {
         final QuerySnapshot<Map<String, dynamic>> querySnapshot =
             await _firestore

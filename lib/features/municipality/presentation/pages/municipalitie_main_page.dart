@@ -5,10 +5,10 @@ import 'package:citizens_voice_app/features/municipality/const.dart';
 import 'package:citizens_voice_app/features/municipality/presentation/bloc/archived_projects/archived_projects_bloc.dart';
 import 'package:citizens_voice_app/features/municipality/presentation/bloc/ongoing_projects/ongoing_projects_bloc.dart';
 import 'package:citizens_voice_app/features/municipality/presentation/pages/munstat.dart';
-import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'project_details.dart';
 
 class MunicipalityMainPage extends StatefulWidget {
@@ -341,7 +341,33 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
       builder: (context, state) {
         if (state is OngoingProjectsLoading ||
             state is OngoingProjectsInitial) {
-          return const LoadingSpinner();
+          return Skeletonizer(
+            enabled: true,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          height: 95,
+                          child: Skeleton.shade(
+                            child: Card(
+                              child: ListTile(
+                                title: Text('Item number $index as title'),
+                                subtitle: const Text('Subtitle here'),
+                                trailing: const Icon(Icons.ac_unit),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                ],
+              ),
+            ),
+          );
         }
         List<MunicipalityProjectEntity> projects =
             context.read<OngoingProjectsBloc>().ongoingProjects;
@@ -374,7 +400,33 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
       builder: (context, state) {
         if (state is ArchivedProjectsLoading ||
             state is ArchivedProjectsInitial) {
-          return const LoadingSpinner();
+          return Skeletonizer(
+            enabled: true,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          height: 95,
+                          child: Skeleton.shade(
+                            child: Card(
+                              child: ListTile(
+                                title: Text('Item number $index as title'),
+                                subtitle: const Text('Subtitle here'),
+                                trailing: const Icon(Icons.ac_unit),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                ],
+              ),
+            ),
+          );
         }
         List<MunicipalityProjectEntity> projects =
             context.read<ArchivedProjectsBloc>().archivedProjects;
@@ -678,7 +730,12 @@ class MunicipalityMainPageState extends State<MunicipalityMainPage>
   // Tag Widget
   Widget _buildTag(String tag) {
     return Container(
-      width: 32,
+      width: tag.length > 11 ? 66 :
+      tag.length > 10
+          ? 48
+          : tag.length > 5
+              ? 42
+              : 36,
       height: 18,
       decoration: BoxDecoration(
         color: Theme.of(context)

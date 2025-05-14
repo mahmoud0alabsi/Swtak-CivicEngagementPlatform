@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:citizens_voice_app/features/auth/const.dart';
+import 'package:citizens_voice_app/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:citizens_voice_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -45,7 +46,10 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
             add(OnOtpVerified());
           },
           onVerificationFailed: (FirebaseAuthException e) {
-            add(OnSentOtpError(message: e.message!));
+            add(OnSentOtpError(
+                message: e.message!.contains('BILLING_NOT_ENABLED')
+                    ? 'الرجاء التأكد من تفعيل خدمة الرسائل النصية على هاتفك'
+                    : e.message!));
           },
           onCodeSent: (String verificationId, int? resendToken) {
             resendOTPToken = resendToken;
@@ -53,7 +57,8 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
           },
           onCodeAutoRetrievalTimeout: (String verificationId) {});
     } catch (e) {
-      add(OnSentOtpError(message: 'لم يتم إرسال الرمز، يرجى المحاولة مرة أخرى'));
+      add(OnSentOtpError(
+          message: 'لم يتم إرسال الرمز، يرجى المحاولة مرة أخرى'));
     }
   }
 
@@ -63,22 +68,30 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
 
   void _onOtpSent(OnOtpSent event, Emitter<OtpState> emit) {
     add(StartCountdown(time: otpValidationTime));
-    emit(OtpSent(verificationId: event.verificationId, phoneNumber: data[kPhoneNumber]));
+    emit(OtpSent(
+        verificationId: event.verificationId, phoneNumber: data[kPhoneNumber]));
   }
 
   Future<void> _onRegisterVerifyOtp(
       RegisterVerifyOtp event, Emitter<OtpState> emit) async {
     emit(OtpLoading());
     try {
-      // Verify OTP
-      final result = await authRepository.verifyOtp(
-          verificationId: event.verificationId, smsCode: event.otp);
-      if (result['status'] == 'success') {
-        add(OnOtpVerified());
-        data[kUid] = result['uid'];
-        await authRepository.register(data: data);
+      // check if the user is already registered
+      bool isUserExist = await AuthRemoteDataSourceImpl()
+          .isUserExistByNID(nationalId: data[kNationalId]);
+      if (isUserExist) {
+        add(OnOtpAuthError(message: 'هذا الرقم الوطني مسجل مسبقا'));
       } else {
-        add(OnOtpAuthError(message: result['message']));
+        // Verify OTP
+        final result = await authRepository.verifyOtp(
+            verificationId: event.verificationId, smsCode: event.otp);
+        if (result['status'] == 'success') {
+          add(OnOtpVerified());
+          data[kUid] = result['uid'];
+          await authRepository.register(data: data);
+        } else {
+          add(OnOtpAuthError(message: result['message']));
+        }
       }
     } catch (e) {
       add(OnOtpAuthError(message: 'الرمز الذي أدخلته غير صحيح'));

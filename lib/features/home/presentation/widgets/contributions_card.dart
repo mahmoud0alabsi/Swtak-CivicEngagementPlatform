@@ -4,6 +4,7 @@ import 'package:citizens_voice_app/theme/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Contributions extends StatelessWidget {
   const Contributions({super.key});
@@ -55,7 +56,16 @@ class Contributions extends StatelessWidget {
                       builder: (context, state) {
                         if (state is OngoingProjectsLoading ||
                             state is OngoingProjectsInitial) {
-                          return const SizedBox();
+                          return Skeletonizer(
+                            child: Text(
+                              'Loading...',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          );
                         }
                         int ongoingParlaimentProjectsCount = context
                             .read<OngoingRoundBloc>()
@@ -65,7 +75,7 @@ class Contributions extends StatelessWidget {
 
                         return Text(
                           ongoingParlaimentProjectsCount == 0
-                              ? 'لا توجد مشاريع'
+                              ? '6 مشاريع'
                               : ongoingParlaimentProjectsCount == 1
                                   ? 'مشروع واحدة'
                                   : '$ongoingParlaimentProjectsCount مشاريع',
@@ -116,7 +126,17 @@ class Contributions extends StatelessWidget {
                           builder: (context, state) {
                             if (state is OngoingRoundLoading ||
                                 state is OngoingRoundInitial) {
-                              return const SizedBox();
+                              return Skeletonizer(
+                                child: Text(
+                                  'Loading...',
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
                             }
                             int ongoingMunicipalityProjectsCount = context
                                 .read<OngoingProjectsBloc>()

@@ -1,6 +1,8 @@
 import 'package:citizens_voice_app/features/auth/const.dart';
+import 'package:citizens_voice_app/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:citizens_voice_app/features/auth/presentation/bloc/otp/otp_bloc.dart';
 import 'package:citizens_voice_app/features/citizens_suggestions/presentation/pages/suggestions_metadata.dart';
+import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'login_page.dart';
@@ -128,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: BlocBuilder<OtpBloc, OtpState>(
           builder: (context, state) {
             if (state is OtpLoading) {
-              return const CircularProgressIndicator();
+              return const LoadingSpinner();
             }
             return SafeArea(
               child: Padding(
@@ -298,7 +300,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               const SizedBox(height: 15),
                               // Place of Residence Dropdown field (Dropdown)
                               DropdownButtonFormField<String>(
-                                validator: _validateResidence,
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'المحافظة مطلوبة';
+                                  }
+                                  return null;
+                                },
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 decoration: InputDecoration(
@@ -368,7 +375,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               const SizedBox(height: 15),
                               DropdownButtonFormField<String>(
-                                validator: _validateResidence,
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'المنطقة مطلوبة';
+                                  }
+                                  return null;
+                                },
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 decoration: InputDecoration(
@@ -442,7 +454,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               const SizedBox(height: 15),
                               DropdownButtonFormField<String>(
-                                validator: _validateResidence,
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'البلدية مطلوبة';
+                                  }
+                                  return null;
+                                },
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 decoration: InputDecoration(
@@ -748,7 +765,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (!_formKey.currentState!.validate()) {
                                 return;
                               }
@@ -759,8 +776,25 @@ class _RegisterPageState extends State<RegisterPage> {
                                 kPhoneNumber: phoneController.text,
                                 'password': passwordController.text,
                               };
-                              BlocProvider.of<OtpBloc>(context)
-                                  .add(SendOtp(data: data));
+
+                              bool isUserExist =
+                                  await AuthRemoteDataSourceImpl()
+                                      .isUserExistByNID(
+                                          nationalId: data[kNationalId]);
+                              if (isUserExist) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text(
+                                        'هذا الرقم الوطني مسجل مسبقاً'),
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.error,
+                                    duration: const Duration(seconds: 3),
+                                  ),
+                                );
+                              } else {
+                                BlocProvider.of<OtpBloc>(context)
+                                    .add(SendOtp(data: data));
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context)
@@ -797,9 +831,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: Text(
                             'لديك حساب؟ تسجيل الدخول',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
                               color: Theme.of(context).colorScheme.secondary,
+                              overflow: TextOverflow.ellipsis,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ],

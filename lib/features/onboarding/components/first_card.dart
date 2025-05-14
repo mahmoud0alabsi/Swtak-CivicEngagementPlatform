@@ -78,18 +78,18 @@ class FirstCard extends StatelessWidget {
       ),
     );
 
-    final relaxAnimation =
-        Tween<Offset>(begin: const Offset(0, -2), end: const Offset(0, 0))
-            .animate(
-      CurvedAnimation(
-        parent: animationController,
-        curve: const Interval(
-          0.0,
-          0.2,
-          curve: Curves.fastOutSlowIn,
-        ),
-      ),
-    );
+    // final relaxAnimation =
+    //     Tween<Offset>(begin: const Offset(0, -2), end: const Offset(0, 0))
+    //         .animate(
+    //   CurvedAnimation(
+    //     parent: animationController,
+    //     curve: const Interval(
+    //       0.0,
+    //       0.2,
+    //       curve: Curves.fastOutSlowIn,
+    //     ),
+    //   ),
+    // );
     return SlideTransition(
       position: firstHalfAnimation,
       child: SlideTransition(

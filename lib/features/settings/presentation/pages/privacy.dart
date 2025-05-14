@@ -36,8 +36,8 @@ class PrivacyPolicyPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Card(
+              elevation: 0,
               color: Theme.of(context).colorScheme.surfaceContainer,
-              elevation: 1,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),

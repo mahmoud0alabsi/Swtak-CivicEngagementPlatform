@@ -2,6 +2,7 @@ import 'package:citizens_voice_app/features/parliament/business/entities/parliam
 import 'package:citizens_voice_app/features/parliament/const.dart';
 import 'package:citizens_voice_app/features/parliament/presentation/bloc/ongoing_projects/ongoing_projects_bloc.dart';
 import 'package:citizens_voice_app/features/parliament/presentation/widgets/confirm_voting_dialog.dart';
+import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -89,11 +90,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             if (state is VoteOnProjectLoading)
               Container(
                 color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
+                child: const LoadingSpinner(),
               ),
           ]);
         },
@@ -177,6 +174,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
               ),
               textAlign: TextAlign.start,
             ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
@@ -220,8 +218,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
               "اختر الخيار المناسب أدناه للتعبير عن رأيك ومشاركتك موقفك حول هذه القضية:",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.secondary,
-                fontSize: 10,
-                fontWeight: FontWeight.w500,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 15),
@@ -260,7 +258,6 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'IBM Plex Sans Arabic',
-                      decoration: TextDecoration.underline,
                     ),
                   ),
                   TextSpan(

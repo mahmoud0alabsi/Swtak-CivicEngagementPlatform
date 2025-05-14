@@ -2,7 +2,6 @@
 
 import 'package:citizens_voice_app/theme/custom_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class SecondCard extends StatelessWidget {
   final AnimationController animationController;

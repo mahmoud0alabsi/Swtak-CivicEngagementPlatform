@@ -4,10 +4,10 @@ import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/
 import 'package:citizens_voice_app/features/municipality/const.dart';
 import 'package:citizens_voice_app/features/parliament/business/entities/parliament_round_entity.dart';
 import 'package:citizens_voice_app/features/parliament/presentation/bloc/archived_rounds/archived_rounds_bloc.dart';
-import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ParliamentArchivePage extends StatefulWidget {
   const ParliamentArchivePage({super.key});
@@ -28,72 +28,99 @@ class ParliamentArchivePageState extends State<ParliamentArchivePage> {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: appBar(context),
-        body: BlocConsumer<ArchivedRoundsBloc, ArchivedRoundsState>(
-          listener: (context, state) {
-            if (state is ArchivedRoundsError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          },
-          builder: (context, state) {
-            if (state is ArchivedRoundsLoading) {
-              return const LoadingSpinner();
-            }
-            ArchivedRoundsBloc bloc = context.read<ArchivedRoundsBloc>();
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(14.0),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceContainer,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(14.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.archive_outlined,
-                                color: Theme.of(context).colorScheme.secondary,
-                                size: 28,
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Text(
-                                  'الأرشيف',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
+                          Icon(
+                            Icons.archive_outlined,
+                            color: Theme.of(context).colorScheme.secondary,
+                            size: 28,
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            'تصفح المشاريع السابقة ونتائج التصويت عليها من قبل المواطنين ومجلس النواب، بالاضافة الى مشاركاتك في التصويت.',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(context).colorScheme.secondary,
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'الأرشيف',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    ListView.builder(
+                      const SizedBox(height: 10),
+                      Text(
+                        'تصفح المشاريع السابقة ونتائج التصويت عليها من قبل المواطنين ومجلس النواب، بالاضافة الى مشاركاتك في التصويت.',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 15),
+                BlocConsumer<ArchivedRoundsBloc, ArchivedRoundsState>(
+                  listener: (context, state) {
+                    if (state is ArchivedRoundsError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is ArchivedRoundsLoading ||
+                        state is ArchivedRoundsInitial) {
+                      return Skeletonizer(
+                        enabled: true,
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: 10,
+                                itemBuilder: (context, index) {
+                                  return SizedBox(
+                                    height: 75,
+                                    width: 478,
+                                    child: Skeleton.leaf(
+                                      child: Card(
+                                        child: ListTile(
+                                          title: Text(
+                                              'Item number $index as title'),
+                                          subtitle: const Text('Subtitle here'),
+                                          trailing: const Icon(Icons.ac_unit),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          ],
+                        ),
+                      );
+                    }
+                    ArchivedRoundsBloc bloc =
+                        context.read<ArchivedRoundsBloc>();
+                    return ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: bloc.archivedRounds.length,
@@ -156,20 +183,22 @@ class ParliamentArchivePageState extends State<ParliamentArchivePage> {
                               },
                             ),
                             const Divider(
+                              height: 30.0,
                               indent: 10.0,
                               endIndent: 10.0,
                               thickness: 1,
                               color: Color.fromARGB(255, 206, 206, 206),
                             ),
+                            const SizedBox(height: 10),
                           ],
                         );
                       },
-                    ),
-                  ],
+                    );
+                  },
                 ),
-              ),
-            );
-          },
+              ],
+            ),
+          ),
         ),
       ),
     );

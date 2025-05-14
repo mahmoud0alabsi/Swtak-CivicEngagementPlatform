@@ -5,6 +5,7 @@ import 'package:citizens_voice_app/features/municipality/const.dart';
 import 'package:citizens_voice_app/features/municipality/presentation/bloc/ongoing_projects/ongoing_projects_bloc.dart';
 import 'package:citizens_voice_app/features/municipality/presentation/widgets/confirm_voting_dialog.dart';
 import 'package:citizens_voice_app/features/municipality/presentation/widgets/submitDialog.dart';
+import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -103,11 +104,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                 state is AddCommentToProjectLoading)
               Container(
                 color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
+                child: const LoadingSpinner(),
               ),
           ]);
         },
@@ -187,6 +184,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                 top: 8,
                 left: 8,
                 right: 8,
+                bottom: 10,
               ),
               child: Text(
                 details.replaceAll('\\n', '\n'),

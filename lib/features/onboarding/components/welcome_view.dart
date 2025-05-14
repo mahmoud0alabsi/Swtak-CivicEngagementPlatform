@@ -69,7 +69,7 @@ class WelcomeView extends StatelessWidget {
                   child: Image.asset(
                     'assets/images/election_box.jpg',
                     fit: BoxFit.contain,
-                    width: 200,
+                    width: 250,
                   ),
                 ),
               ),
@@ -82,15 +82,16 @@ class WelcomeView extends StatelessWidget {
                   "قرار اليوم يبدأ من صوتك...",
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 22,
+                    fontSize: 26,
                     fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   textAlign: TextAlign.start,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 64, right: 64, top: 16, bottom: 16),
+                    left: 64, right: 55, top: 16, bottom: 16),
                 child: Text(
                   "صوت واحد يمكن أن يصنع الفرق. اختر، عبّر، وشارك في صنع المستقبل",
                   textAlign: TextAlign.start,

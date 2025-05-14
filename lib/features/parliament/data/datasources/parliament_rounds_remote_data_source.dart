@@ -29,46 +29,6 @@ class ParliamentRoundsDataSourceImpl implements IParliamentRoundsDataSource {
   @override
   Future<ParliamentRoundModel> getOngoingRound() async {
     try {
-      // await _firestore
-      //     .collection(parliamentRoundsCollection)
-      //     .doc('HZnfVjrFZ3SpHrLsbA11')
-      //     .collection(projectsSubCollection)
-      //     .add({
-      //   kTitle: 'مشروع الباص السريع',
-      //   kDetails:
-      //       'مشروع دعم الطالب مشروع دعم الطالب مشروع دعم الطالب مشروع دعم الطالب مشروع دعم الطالب مشروع دعم الطالب.',
-      //   kProjectNumber: 2,
-      //   kType: 'نقل',
-      //   kTags: [
-      //     'نقل',
-      //   ],
-      //   kResponsibleInstitution: 'وزارة التربية والتعليم',
-      //   kVoting: {
-      //     kAgree: 1456,
-      //     kDisagree: 123,
-      //   },
-      // });
-
-      // await _firestore
-      //     .collection(parliamentRoundsCollection)
-      //     .doc('HZnfVjrFZ3SpHrLsbA11')
-      //     .collection(projectsSubCollection)
-      //     .add({
-      //   kTitle: 'مشروع التجارة الإلكترونية',
-      //   kDetails:
-      //       'مشروع دعم الطالب مشروع دعم الطالب مشروع دعم الطالب مشروع دعم الطالب مشروع دعم الطالب مشروع دعم الطالب.',
-      //   kProjectNumber: 3,
-      //   kType: 'تجارة',
-      //   kTags: [
-      //     'تجارة',
-      //   ],
-      //   kResponsibleInstitution: 'وزارة التربية والتعليم',
-      //   kVoting: {
-      //     kAgree: 68712,
-      //     kDisagree: 2753,
-      //   },
-      // });
-
       final onGoingRound = await _firestore
           .collection(parliamentRoundsCollection)
           .where(kStatus, isEqualTo: kOngoingStatus)

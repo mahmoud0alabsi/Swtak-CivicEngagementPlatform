@@ -1,6 +1,5 @@
-import 'package:citizens_voice_app/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:citizens_voice_app/features/auth/presentation/bloc/logout/logout_bloc.dart';
 import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
+import 'package:citizens_voice_app/features/auth/presentation/pages/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -377,6 +376,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     // context.read<LogoutBloc>().add(Logout());
                     FirebaseAuth.instance.signOut();
                     Navigator.pop(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
                   },
                 ),
               ),

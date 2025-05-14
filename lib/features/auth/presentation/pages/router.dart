@@ -1,5 +1,6 @@
 import 'package:citizens_voice_app/features/home/presentation/pages/bottom_nav_bar.dart';
 import 'package:citizens_voice_app/features/onboarding/onboarding_screens.dart';
+import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -21,9 +22,7 @@ class _RouterPageState extends State<RouterPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
+            body: LoadingSpinner(),
           );
         }
         if (snapshot.data != null && snapshot.data!.uid.isNotEmpty) {

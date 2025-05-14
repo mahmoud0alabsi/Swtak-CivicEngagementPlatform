@@ -1,13 +1,11 @@
 import 'package:citizens_voice_app/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:citizens_voice_app/features/auth/presentation/bloc/logout/logout_bloc.dart';
 import 'package:citizens_voice_app/features/auth/presentation/bloc/otp/otp_bloc.dart';
-import 'package:citizens_voice_app/features/auth/presentation/bloc/registration/registration_bloc.dart';
 import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/user_manager_bloc.dart';
 import 'package:citizens_voice_app/features/auth/presentation/pages/router.dart';
 import 'package:citizens_voice_app/firebase_options.dart';
 import 'package:citizens_voice_app/generated/l10n.dart';
 import 'package:citizens_voice_app/theme/light_theme.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +35,9 @@ Future<void> main() async {
         BlocProvider(
           create: (context) => LogoutBloc(),
         ),
-        BlocProvider(
-          create: (context) => RegistrationBloc(),
-        ),
+        // BlocProvider(
+        //   create: (context) => RegistrationBloc(),
+        // ),
         BlocProvider(
           create: (context) => UserManagerBloc(),
         ),
@@ -60,7 +58,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'صوتك',
       // ================ Don't touch this code please ================
       locale: const Locale('ar'),
       localizationsDelegates: const [
@@ -72,7 +70,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: S.delegate.supportedLocales,
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       home: const RouterPage(),
       // const MainPage(),
       // ================================================
@@ -95,98 +93,3 @@ class MyApp extends StatelessWidget {
 //                               *****
 //                                ***
 //                                 *
-
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        title: Text(
-          'صوت المواطن',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 18,
-            vertical: 18,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainer,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Text(
-                      'أهلاً بك في تطبيق صوت المواطن',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'قم بالضغط على الزر بالأسفل',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      '$_counter',
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}

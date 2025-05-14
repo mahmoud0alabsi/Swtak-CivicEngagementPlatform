@@ -5,6 +5,7 @@ import 'package:citizens_voice_app/features/citizens_suggestions/presentation/wi
 import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 Widget buildMunicipalityTab(BuildContext context) {
   return BlocConsumer<MunicipalitySuggestionsBloc,
@@ -22,7 +23,50 @@ Widget buildMunicipalityTab(BuildContext context) {
     builder: (context, state) {
       if (state is MunicipalitySuggestionsLoading ||
           state is MunicipalitySuggestionsInitial) {
-        return const LoadingSpinner();
+        return Skeletonizer(
+          enabled: true,
+          child: ListView(
+            children: [
+              const Skeleton.keep(
+                child: Filtercard(
+                  type: 'municipality',
+                  bloc: null,
+                ),
+              ),
+              const SizedBox(height: 12),
+              ListView.separated(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return MunicipalitySuggestionCard(
+                    bloc: context.read<MunicipalitySuggestionsBloc>(),
+                    suggestion: MunicipalitySuggestionEntity(
+                      id: '0',
+                      title: 'dummy dummy dummy',
+                      details:
+                          'dummy dummy dummy dummy dummy dummy \n dummy dummy dummy dummy',
+                      dateOfPost: DateTime.now(),
+                      upvotesCount: 0,
+                      tags: [],
+                      type: 'dummy',
+                      comments: [],
+                      name: 'dummy',
+                      uid: 'dummy',
+                      upvoters: [],
+                      area: 'dummy',
+                      governorate: 'dummy',
+                      municipality: 'dummy',
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        );
       }
 
       List<MunicipalitySuggestionEntity> suggestions =

@@ -249,7 +249,11 @@ class IssueCard extends StatelessWidget {
   // Function to create a tag widget (unchanged)
   Widget buildTag(String tag, BuildContext context) {
     return Container(
-      width: 36,
+      width: tag.length > 10
+          ? 48
+          : tag.length > 5
+              ? 42
+              : 36,
       height: 18,
       decoration: BoxDecoration(
         color: Theme.of(context)

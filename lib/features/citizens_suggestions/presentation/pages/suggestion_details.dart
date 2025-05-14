@@ -3,6 +3,7 @@ import 'package:citizens_voice_app/features/auth/presentation/bloc/user_manager/
 import 'package:citizens_voice_app/features/citizens_suggestions/business/entities/suggestion_entity.dart';
 import 'package:citizens_voice_app/features/citizens_suggestions/const.dart';
 import 'package:citizens_voice_app/features/citizens_suggestions/presentation/bloc/parliament_suggestions/parliament_suggestions_bloc.dart';
+import 'package:citizens_voice_app/features/shared/loading_spinner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -401,9 +402,7 @@ class SuggestionDetailsPageState extends State<SuggestionDetailsPage> {
                 if (bloc.state is ParliamentSuggestionsUpvoting)
                   Container(
                     color: Colors.white.withOpacity(0.5),
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    child: const LoadingSpinner(),
                   ),
               ],
             ),

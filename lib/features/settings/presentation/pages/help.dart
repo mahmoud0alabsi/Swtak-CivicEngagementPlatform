@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 class HelpAndSupportPage extends StatelessWidget {
   final TextEditingController _concernController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  // final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
