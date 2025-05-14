@@ -4,7 +4,7 @@ A civic engagement platform that empowers citizens to propose, evaluate, and vot
 
 ## 🏆 Achievement
 - ***6th place in the Crown Prince Government Applications Award***
-- 
+  
 ## 👥 Contributors
 
 - [@Ahmad Alsafoty](https://github.com/alsafoty)
