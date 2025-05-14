@@ -4,15 +4,18 @@ A civic engagement platform that empowers citizens to propose, evaluate, and vot
 
 ## 🏆 Achievement
 - ***6th place in the Crown Prince Government Applications Award***
+- 
+## 👥 Contributors
 
+- [@Ahmad Alsafoty](https://github.com/alsafoty)
+- [@Mohammad Arnaout](https://github.com/Moh-Arnaout)
+- [@Mu`taz Moneer](https://github.com/Sopkii)
+- [@Abdelrhman khshman](https://github.com/abd-khshman)
+- [@Odai Tmrawe](https://github.com/)
+  
 ## 📱 Screenshots
 
 ![image_2025-05-14_21-54-31](https://github.com/user-attachments/assets/0d5e33e9-4380-46c8-aafa-d9e064b2bcb0)
-
-## 👥 Contributors
-
-- [@username1](https://github.com/username1)
-- [@username2](https://github.com/username2)
 
 ## 🚀 Features
 - Citizen proposal submission
