@@ -3,10 +3,11 @@
 A civic engagement platform that empowers citizens to propose, evaluate, and vote on projects related to parliamentary and municipal development. Designed to support transparent decision-making by enabling public participation and surfacing community priorities.
 
 ## 🏆 Achievement
-- 6th place in the Crown Prince Government Applications Award
+- ***6th place in the Crown Prince Government Applications Award***
 
-## Screenshots
+## 📱 Screenshots
 
+![image_2025-05-14_21-54-31](https://github.com/user-attachments/assets/0d5e33e9-4380-46c8-aafa-d9e064b2bcb0)
 
 ## 👥 Contributors
 
