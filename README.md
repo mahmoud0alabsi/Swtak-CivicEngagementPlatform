@@ -11,29 +11,34 @@ A civic engagement platform that empowers citizens to propose, evaluate, and vot
 - [@Mohammad Arnaout](https://github.com/Moh-Arnaout)
 - [@Mu`taz Moneer](https://github.com/Sopkii)
 - [@Abdelrhman khshman](https://github.com/abd-khshman)
-- [@Odai Tmrawe](https://github.com/)
+- [@Odai Tmrawe](https://github.com/odaiAltmrawe)
   
 ## 📱 Screenshots
 
 ![image_2025-05-14_21-54-31](https://github.com/user-attachments/assets/0d5e33e9-4380-46c8-aafa-d9e064b2bcb0)
 
 ## 🚀 Features
-- Citizen proposal submission
-- Project evaluation system
-- Public voting mechanism
-- Transparent decision-making process
-- Community priority surfacing
-- Cross-device accessibility
+
+### 📝 Citizen Engagement
+- **Proposal Submission**: Easy-to-use interface for citizens to submit development proposals
+- **Public Voting Mechanism**: Secure and transparent voting system for community decisions
+- **Community Priority Surfacing**: Real-time tracking and visualization of community priorities
+
+### 🤖 AI-Powered Analysis
+- **Smart Suggestion System**: AI-driven analysis of citizen proposals and feedback
+- **Trend Analysis**: Identification of emerging community needs and priorities
+- **Automated Insights**: Data-driven recommendations for parliament and municipalities
+
+### 🏛️ Government Integration
+- **Project Evaluation System**: Comprehensive framework for assessing proposal feasibility
+- **Transparent Decision-Making Process**: Clear visibility into proposal status and outcomes
+- **Municipal Collaboration**: Direct communication channel between citizens and local authorities
 
 ## 🛠️ Tech Stack
 - **Frontend**: Flutter
 - **State Management**: BLoC (Business Logic Component)
 - **Backend**: Firebase
 - **Architecture**: Clean Architecture with BLoC pattern
-
-## 📱 Platform Support
-- iOS
-- Android
 
 ## 🎯 Project Goals
 - Empower citizen participation in local governance
@@ -101,7 +106,16 @@ A civic engagement platform that empowers citizens to propose, evaluate, and vot
      cd ..
      ```
 
-4. Run the app
+4. OpenAI API Configuration
+   - Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys)
+   - Open `lib/features/citizens_suggestions/data/repositories/ai_suggestions_repo_impl.dart`
+   - Replace `'Add-Your-API-Key'` with your OpenAI API key:
+     ```dart
+     final String _apiKey = 'your-openai-api-key-here';
+     ```
+   - Note: The AI analysis feature requires a valid OpenAI API key to function
+
+5. Run the app
    ```bash
    # For development
    flutter run

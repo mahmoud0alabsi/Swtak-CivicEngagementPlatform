@@ -13,8 +13,7 @@ class AISuggestionsRepoImpl implements IAISuggestionsRepo {
       RemoteMunicipalitySuggestionsData();
 
   // TODO: Add to .env file
-  final String _apiKey =
-      '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';
+  final String _apiKey = 'Add-Your-API-Key';
 
   // Singleton
   static final AISuggestionsRepoImpl _instance =
