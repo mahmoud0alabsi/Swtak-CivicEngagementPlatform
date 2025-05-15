@@ -84,7 +84,7 @@ A civic engagement platform that empowers citizens to propose, evaluate, and vot
 ### Project Setup
 1. Clone the repository
    ```bash
-   git clone https://github.com/your-username/swtak.git
+   git clone https://github.com/mahmoud0alabsi/Swtak-CivicEngagementPlatform.git
    cd swtak
    ```
 
